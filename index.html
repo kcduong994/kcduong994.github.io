@@ -375,63 +375,64 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   
 </style> 
   
-<!-- 🔍 Widget dịch & ảnh popup Google -->
-<div id="google-widget">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-    <strong>🔍 Google Dịch & Ảnh</strong>
-    <button id="google-toggle" class="small-btn">Ẩn</button>
+<!-- Widget dịch + mở popup Google Translate -->
+<div id="translate-widget" style="
+  position: fixed; bottom: 20px; left: 20px; 
+  width: 280px; padding: 10px; background: #fff; 
+  border: 1px solid #ccc; border-radius: 10px; 
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: sans-serif; font-size: 14px; z-index: 9999;
+">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong>🌐 Dịch Anh – Việt</strong>
+    <button id="toggle-lang" style="
+      font-size: 12px; padding: 2px 6px; border: 1px solid #aaa; border-radius: 6px; background: #eee; cursor: pointer;
+    ">EN → VI</button>
   </div>
-  <input id="google-word" type="text" placeholder="Nhập từ..." />
-  <button id="google-search" class="small-btn">Tìm</button>
-
-  <div id="google-iframe-container" style="margin-top: 6px;">
-    <iframe id="g-translate" style="width:100%; height:120px; border:1px solid #aaa; margin-bottom:6px;"></iframe>
-    <iframe id="g-image" style="width:100%; height:150px; border:1px solid #aaa;"></iframe>
-  </div>
+  <input type="text" id="input-word" placeholder="Nhập từ cần dịch" style="
+    width: 100%; padding: 6px; font-size: 14px; border: 1px solid #aaa; border-radius: 6px;
+  "/>
+  <button id="btn-translate" style="
+    margin-top: 8px; width: 100%; padding: 8px; font-size: 14px;
+    border-radius: 6px; border: 1px solid #aaa; background: #eee; cursor: pointer;
+  ">Dịch</button>
 </div>
 
-<style>
-#google-widget {
-  position: fixed; bottom: 20px; left: 20px;
-  width: 300px; padding: 10px;
-  background: #fff; border: 1px solid #ccc; border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  font-family: sans-serif; font-size: 14px;
-  z-index: 9999;
-}
-#google-widget input {
-  width: 70%; padding: 4px; font-size: 14px;
-  border: 1px solid #aaa; border-radius: 6px;
-}
-.small-btn {
-  font-size: 12px; padding: 3px 6px;
-  border: 1px solid #aaa; border-radius: 6px;
-  background: #eee; cursor: pointer;
-}
-</style>
-
 <script>
-document.getElementById('google-search').onclick = () => {
-  const word = document.getElementById('google-word').value.trim();
-  if (!word) return alert("Nhập từ cần tra.");
+  const toggleBtn = document.getElementById('toggle-lang');
+  const input = document.getElementById('input-word');
+  const btnTranslate = document.getElementById('btn-translate');
 
-  document.getElementById('g-translate').src = 
-    `https://translate.google.com/?sl=auto&tl=vi&text=${encodeURIComponent(word)}&op=translate`;
+  let langFrom = 'en';
+  let langTo = 'vi';
 
-  document.getElementById('g-image').src = 
-    `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
-};
+  toggleBtn.addEventListener('click', () => {
+    if (langFrom === 'en') {
+      langFrom = 'vi';
+      langTo = 'en';
+      toggleBtn.textContent = 'VI → EN';
+      document.querySelector('#translate-widget strong').textContent = '🌐 Dịch Việt – Anh';
+      input.placeholder = 'Nhập từ cần dịch';
+      btnTranslate.textContent = 'Dịch';
+    } else {
+      langFrom = 'en';
+      langTo = 'vi';
+      toggleBtn.textContent = 'EN → VI';
+      document.querySelector('#translate-widget strong').textContent = '🌐 Dịch Anh – Việt';
+      input.placeholder = 'Nhập từ cần dịch';
+      btnTranslate.textContent = 'Dịch';
+    }
+  });
 
-document.getElementById('google-toggle').onclick = () => {
-  const box = document.getElementById('google-iframe-container');
-  if (box.style.display === 'none') {
-    box.style.display = 'block';
-    document.getElementById('google-toggle').textContent = 'Ẩn';
-  } else {
-    box.style.display = 'none';
-    document.getElementById('google-toggle').textContent = 'Hiện';
-  }
-};
+  btnTranslate.addEventListener('click', () => {
+    const word = input.value.trim();
+    if (!word) {
+      alert('Vui lòng nhập từ cần dịch!');
+      return;
+    }
+
+    const url = `https://translate.google.com/?sl=${langFrom}&tl=${langTo}&text=${encodeURIComponent(word)}&op=translate`;
+    window.open(url, '_blank', 'width=600,height=500');
+  });
 </script>
    
 <!-- Thẻ </body> đóng phần thân của trang web.: The </body> tag closes the body section of the web page. -->
