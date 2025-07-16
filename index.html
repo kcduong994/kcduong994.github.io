@@ -578,7 +578,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
 
 <!-- 🔻 Bảng trộn 3 màu với nút Reset + Ngôn ngữ -->
 <div id="color-widget">
-  <div style="position: relative;">
+  <div style="position: relative; margin-bottom: 10px;">
     <h4 id="title" style="margin: 0;">🎨 Chọn 3 màu để trộn</h4>
     <button id="lang-toggle" class="lang-btn">🌐 EN</button>
   </div>
@@ -680,6 +680,10 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
 
     if (selectedA && selectedB && selectedC) {
       elements.mixButton.style.display = 'block';
+
+      // 🔧 Cập nhật kết quả theo ngôn ngữ
+      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
+      elements.result.textContent = t.result(selectedA.name, selectedB.name, selectedC.name, mixed);
     } else {
       elements.mixButton.style.display = 'none';
     }
@@ -735,7 +739,9 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   elements.mixButton.addEventListener('click', () => {
     if (selectedA && selectedB && selectedC) {
       const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
-      elements.result.textContent = translations[currentLang].result(selectedA.name, selectedB.name, selectedC.name, mixed);
+      elements.result.textContent = translations[currentLang].result(
+        selectedA.name, selectedB.name, selectedC.name, mixed
+      );
       elements.preview.style.backgroundColor = mixed;
     }
   });
@@ -800,7 +806,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     border: 1px solid #aaa;
   }
 
-  #mix-button, #reset-button, #lang-toggle {
+  #mix-button, #reset-button {
     width: 100%;
     padding: 6px;
     font-size: 14px;
@@ -825,16 +831,20 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     border: 1px solid #888;
   }
 
-    /* 🔧 Nút ngôn ngữ nằm trên góc phải của title */
+  /* ✅ Nút đổi ngôn ngữ nhỏ gọn đặt góc phải tiêu đề */
   .lang-btn {
     position: absolute;
     top: 0;
+    right: 0;
     padding: 2px 6px;
     font-size: 12px;
     border: 1px solid #aaa;
     border-radius: 6px;
     background-color: #f5f5f5;
     cursor: pointer;
+  }
+  
+</style>
   }
 </style>  
   
