@@ -175,7 +175,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   }
 </style>
 -->  
-<!-- 🔻 Bảng màu chia nhóm -->
+<!-- 🔻 Bảng màu chia nhóm
 <div id="color-widget">
   <div class="color-group">
     <h4>Màu cơ bản</h4>
@@ -263,6 +263,131 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     margin-top: 10px;
     font-size: 13px;
     color: #333;
+  }
+</style> -->
+
+<!-- Bảng màu pha trộn -->
+<div id="color-widget">
+  <h4>🎨 Click 2 màu để pha</h4>
+  <div id="color-container"></div>
+  <div id="mix-result">👉 Kết quả sẽ hiện ở đây</div>
+  <div id="mix-preview"></div>
+</div>
+
+<script>
+  const colors = [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Green', hex: '#00FF00' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Yellow', hex: '#FFFF00' },
+    { name: 'Cyan', hex: '#00FFFF' },
+    { name: 'Magenta', hex: '#FF00FF' },
+    { name: 'Orange', hex: '#FFA500' },
+    { name: 'Purple', hex: '#800080' },
+    { name: 'Brown', hex: '#A52A2A' },
+    { name: 'Gray', hex: '#808080' },
+    { name: 'Black', hex: '#000000' },
+    { name: 'White', hex: '#FFFFFF' }
+  ];
+
+  const container = document.getElementById('color-container');
+  const result = document.getElementById('mix-result');
+  const preview = document.getElementById('mix-preview');
+  let selected = [];
+
+  function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    const bigint = parseInt(hex, 16);
+    return {
+      r: (bigint >> 16) & 255,
+      g: (bigint >> 8) & 255,
+      b: bigint & 255
+    };
+  }
+
+  function rgbToHex(r, g, b) {
+    return (
+      '#' +
+      [r, g, b]
+        .map(x => {
+          const hex = x.toString(16);
+          return hex.length === 1 ? '0' + hex : hex;
+        })
+        .join('')
+    );
+  }
+
+  function blendColors(c1, c2) {
+    const rgb1 = hexToRgb(c1);
+    const rgb2 = hexToRgb(c2);
+    const r = Math.round((rgb1.r + rgb2.r) / 2);
+    const g = Math.round((rgb1.g + rgb2.g) / 2);
+    const b = Math.round((rgb1.b + rgb2.b) / 2);
+    return rgbToHex(r, g, b);
+  }
+
+  colors.forEach(color => {
+    const box = document.createElement('div');
+    box.className = 'color-box';
+    box.style.backgroundColor = color.hex;
+    box.title = color.name;
+    box.addEventListener('click', () => {
+      selected.push(color.hex);
+      if (selected.length === 2) {
+        const mixed = blendColors(selected[0], selected[1]);
+        result.textContent = `🎨 Pha ${selected[0]} + ${selected[1]} = ${mixed}`;
+        preview.style.backgroundColor = mixed;
+        selected = [];
+      } else {
+        result.textContent = `🟢 Chọn thêm 1 màu để pha với ${color.hex}`;
+      }
+    });
+    container.appendChild(box);
+  });
+</script>
+
+<style>
+  #color-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 12px;
+    width: 240px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: sans-serif;
+  }
+
+  #color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .color-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+  }
+
+  #mix-result {
+    font-size: 13px;
+    margin-top: 5px;
+    color: #444;
+  }
+
+  #mix-preview {
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #888;
   }
 </style>
   
