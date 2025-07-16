@@ -411,25 +411,53 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   const btnImages = document.getElementById('btn-images');
   const widgetTitle = document.getElementById('widget-title');
 
+  // Dữ liệu dịch giao diện
+  const uiTexts = {
+    vi: {
+      title: "🌐 Dịch Anh – Việt",
+      placeholder: "Nhập từ cần dịch",
+      translateBtn: "Dịch",
+      imagesBtn: "Xem ảnh",
+      toggleBtn: "EN → VI",
+      alertTranslateEmpty: "Vui lòng nhập từ cần dịch!",
+      alertImageEmpty: "Vui lòng nhập từ cần xem ảnh!"
+    },
+    en: {
+      title: "🌐 English - Vietnamese Translator",
+      placeholder: "Enter word to translate",
+      translateBtn: "Translate",
+      imagesBtn: "View Images",
+      toggleBtn: "VI → EN",
+      alertTranslateEmpty: "Please enter a word to translate!",
+      alertImageEmpty: "Please enter a word to view images!"
+    }
+  };
+
+  // Ngôn ngữ hiện tại
+  let currentLang = 'vi';
   let langFrom = 'en';
   let langTo = 'vi';
 
+  function updateUI() {
+    const ui = uiTexts[currentLang];
+    widgetTitle.textContent = ui.title;
+    input.placeholder = ui.placeholder;
+    btnTranslate.textContent = ui.translateBtn;
+    btnImages.textContent = ui.imagesBtn;
+    toggleBtn.textContent = ui.toggleBtn;
+  }
+
   toggleBtn.addEventListener('click', () => {
-    if (langFrom === 'en') {
+    if (currentLang === 'vi') {
+      currentLang = 'en';
       langFrom = 'vi';
       langTo = 'en';
-      toggleBtn.textContent = 'VI → EN';
-      widgetTitle.textContent = '🌐 Dịch Việt – Anh';
-      input.placeholder = 'Nhập từ cần dịch';
-      btnTranslate.textContent = 'Dịch';
     } else {
+      currentLang = 'vi';
       langFrom = 'en';
       langTo = 'vi';
-      toggleBtn.textContent = 'EN → VI';
-      widgetTitle.textContent = '🌐 Dịch Anh – Việt';
-      input.placeholder = 'Nhập từ cần dịch';
-      btnTranslate.textContent = 'Dịch';
     }
+    updateUI();
   });
 
   function openCenteredPopup(url, title, w, h) {
@@ -453,7 +481,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   btnTranslate.addEventListener('click', () => {
     const word = input.value.trim();
     if (!word) {
-      alert('Vui lòng nhập từ cần dịch!');
+      alert(uiTexts[currentLang].alertTranslateEmpty);
       return;
     }
     const url = `https://translate.google.com/?sl=${langFrom}&tl=${langTo}&text=${encodeURIComponent(word)}&op=translate`;
@@ -463,12 +491,15 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   btnImages.addEventListener('click', () => {
     const word = input.value.trim();
     if (!word) {
-      alert('Vui lòng nhập từ cần xem ảnh!');
+      alert(uiTexts[currentLang].alertImageEmpty);
       return;
     }
     const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
     openCenteredPopup(url, 'Google Images', 800, 600);
   });
+
+  // Khởi tạo UI lần đầu
+  updateUI();
 </script>
 
    
