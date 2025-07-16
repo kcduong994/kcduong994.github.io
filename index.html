@@ -105,7 +105,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   <!-- Thẻ </main> đóng phần nội dung chính của trang web.: The </main> tag closes the main content section of the web page. -->
   </main>
 
-  <!-- 🔻 Bảng màu mini ở góc dưới bên phải -->
+  <!-- 🔻 Bảng màu mini ở góc dưới bên phải
 <div id="color-widget">
   <div id="color-container"></div>
   <div id="color-info">🎨 Click để xem màu</div>
@@ -158,6 +158,97 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     flex-wrap: wrap;
     gap: 5px;
     justify-content: flex-start;
+  }
+
+  .color-box {
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+  }
+
+  #color-info {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #333;
+  }
+</style>
+-->  
+<!-- 🔻 Bảng màu chia nhóm -->
+<div id="color-widget">
+  <div class="color-group">
+    <h4>Màu cơ bản</h4>
+    <div class="color-container" id="group-primary"></div>
+  </div>
+  <div class="color-group">
+    <h4>Màu thứ cấp</h4>
+    <div class="color-container" id="group-secondary"></div>
+  </div>
+  <div id="color-info">🎨 Click để xem màu</div>
+</div>
+
+<script>
+  const primaryColors = [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Yellow', hex: '#FFFF00' }
+  ];
+
+  const secondaryColors = [
+    { name: 'Green', hex: '#00FF00' },       // Blue + Yellow
+    { name: 'Orange', hex: '#FFA500' },      // Red + Yellow
+    { name: 'Purple', hex: '#800080' }       // Red + Blue
+  ];
+
+  function renderColors(groupId, colors) {
+    const container = document.getElementById(groupId);
+    colors.forEach(color => {
+      const box = document.createElement('div');
+      box.className = 'color-box';
+      box.style.backgroundColor = color.hex;
+      box.title = color.name;
+      box.addEventListener('click', () => {
+        document.getElementById('color-info').textContent = `🎨 ${color.name} - ${color.hex}`;
+      });
+      container.appendChild(box);
+    });
+  }
+
+  renderColors('group-primary', primaryColors);
+  renderColors('group-secondary', secondaryColors);
+</script>
+
+<style>
+  #color-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 12px;
+    width: 220px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: sans-serif;
+  }
+
+  .color-group {
+    margin-bottom: 10px;
+  }
+
+  .color-group h4 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .color-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
   }
 
   .color-box {
