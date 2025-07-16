@@ -105,747 +105,6 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   <!-- Thẻ </main> đóng phần nội dung chính của trang web.: The </main> tag closes the main content section of the web page. -->
   </main>
 
-  <!-- 🔻 Bảng màu mini ở góc dưới bên phải
-<div id="color-widget">
-  <div id="color-container"></div>
-  <div id="color-info">🎨 Click để xem màu</div>
-</div>
-
-<script>
-  const colors = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#00FF00' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Black', hex: '#000000' },
-    { name: 'White', hex: '#FFFFFF' }
-  ];
-
-  const container = document.getElementById('color-container');
-  const info = document.getElementById('color-info');
-
-  colors.forEach(color => {
-    const box = document.createElement('div');
-    box.className = 'color-box';
-    box.style.backgroundColor = color.hex;
-    box.title = color.name;
-    box.addEventListener('click', () => {
-      info.textContent = `🎨 ${color.name} - ${color.hex}`;
-    });
-    container.appendChild(box);
-  });
-</script>
-
-<style>
-  #color-widget {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 10px;
-    width: 180px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-  }
-
-  #color-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    justify-content: flex-start;
-  }
-
-  .color-box {
-    width: 25px;
-    height: 25px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #aaa;
-  }
-
-  #color-info {
-    margin-top: 10px;
-    font-size: 13px;
-    color: #333;
-  }
-</style>
--->  
-<!-- 🔻 Bảng màu chia nhóm
-<div id="color-widget">
-  <div class="color-group">
-    <h4>Màu cơ bản</h4>
-    <div class="color-container" id="group-primary"></div>
-  </div>
-  <div class="color-group">
-    <h4>Màu thứ cấp</h4>
-    <div class="color-container" id="group-secondary"></div>
-  </div>
-  <div id="color-info">🎨 Click để xem màu</div>
-</div>
-
-<script>
-  const primaryColors = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' }
-  ];
-
-  const secondaryColors = [
-    { name: 'Green', hex: '#00FF00' },       // Blue + Yellow
-    { name: 'Orange', hex: '#FFA500' },      // Red + Yellow
-    { name: 'Purple', hex: '#800080' }       // Red + Blue
-  ];
-
-  function renderColors(groupId, colors) {
-    const container = document.getElementById(groupId);
-    colors.forEach(color => {
-      const box = document.createElement('div');
-      box.className = 'color-box';
-      box.style.backgroundColor = color.hex;
-      box.title = color.name;
-      box.addEventListener('click', () => {
-        document.getElementById('color-info').textContent = `🎨 ${color.name} - ${color.hex}`;
-      });
-      container.appendChild(box);
-    });
-  }
-
-  renderColors('group-primary', primaryColors);
-  renderColors('group-secondary', secondaryColors);
-</script>
-
-<style>
-  #color-widget {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 12px;
-    width: 220px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-  }
-
-  .color-group {
-    margin-bottom: 10px;
-  }
-
-  .color-group h4 {
-    margin: 0 0 5px;
-    font-size: 14px;
-    color: #444;
-  }
-
-  .color-container {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 5px;
-  }
-
-  .color-box {
-    width: 25px;
-    height: 25px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #aaa;
-  }
-
-  #color-info {
-    margin-top: 10px;
-    font-size: 13px;
-    color: #333;
-  }
-</style> -->
-
-<!-- Bảng màu pha trộn 
-<div id="color-widget">
-  <h4>🎨 Click 2 màu để pha</h4>
-  <div id="color-container"></div>
-  <div id="mix-result">👉 Kết quả sẽ hiện ở đây</div>
-  <div id="mix-preview"></div>
-</div>
-
-<script>
-  const colors = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#00FF00' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Orange', hex: '#FFA500' },
-    { name: 'Purple', hex: '#800080' },
-    { name: 'Brown', hex: '#A52A2A' },
-    { name: 'Gray', hex: '#808080' },
-    { name: 'Black', hex: '#000000' },
-    { name: 'White', hex: '#FFFFFF' }
-  ];
-
-  const container = document.getElementById('color-container');
-  const result = document.getElementById('mix-result');
-  const preview = document.getElementById('mix-preview');
-  let selected = [];
-
-  function hexToRgb(hex) {
-    hex = hex.replace('#', '');
-    const bigint = parseInt(hex, 16);
-    return {
-      r: (bigint >> 16) & 255,
-      g: (bigint >> 8) & 255,
-      b: bigint & 255
-    };
-  }
-
-  function rgbToHex(r, g, b) {
-    return (
-      '#' +
-      [r, g, b]
-        .map(x => {
-          const hex = x.toString(16);
-          return hex.length === 1 ? '0' + hex : hex;
-        })
-        .join('')
-    );
-  }
-
-  function blendColors(c1, c2) {
-    const rgb1 = hexToRgb(c1);
-    const rgb2 = hexToRgb(c2);
-    const r = Math.round((rgb1.r + rgb2.r) / 2);
-    const g = Math.round((rgb1.g + rgb2.g) / 2);
-    const b = Math.round((rgb1.b + rgb2.b) / 2);
-    return rgbToHex(r, g, b);
-  }
-
-  colors.forEach(color => {
-    const box = document.createElement('div');
-    box.className = 'color-box';
-    box.style.backgroundColor = color.hex;
-    box.title = color.name;
-    box.addEventListener('click', () => {
-      selected.push(color.hex);
-      if (selected.length === 2) {
-        const mixed = blendColors(selected[0], selected[1]);
-        result.textContent = `🎨 Pha ${selected[0]} + ${selected[1]} = ${mixed}`;
-        preview.style.backgroundColor = mixed;
-        selected = [];
-      } else {
-        result.textContent = `🟢 Chọn thêm 1 màu để pha với ${color.hex}`;
-      }
-    });
-    container.appendChild(box);
-  });
-</script>
-
-<style>
-  #color-widget {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 12px;
-    width: 240px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-  }
-
-  #color-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .color-box {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #aaa;
-  }
-
-  #mix-result {
-    font-size: 13px;
-    margin-top: 5px;
-    color: #444;
-  }
-
-  #mix-preview {
-    width: 100%;
-    height: 30px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #888;
-  }
-</style> -->
-
-<!-- 🔻 Bảng trộn 3 màu 
-<div id="color-widget">
-  <h4>🎨 Chọn 3 màu để trộn</h4>
-
-  <div class="picker-row">
-    <span>Màu A:</span> <span id="colorA-label">Chưa chọn</span>
-  </div>
-  <div class="picker-row">
-    <span>Màu B:</span> <span id="colorB-label">Chưa chọn</span>
-  </div>
-  <div class="picker-row">
-    <span>Màu C:</span> <span id="colorC-label">Chưa chọn</span>
-  </div>
-
-  <div id="color-container"></div>
-
-  <button id="mix-button" style="display:none;">👉 Trộn 3 màu này</button>
-
-  <div id="mix-result"></div>
-  <div id="mix-preview"></div>
-</div>
-
-<script>
-  const colors = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#00FF00' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Orange', hex: '#FFA500' },
-    { name: 'Purple', hex: '#800080' },
-    { name: 'Brown', hex: '#A52A2A' },
-    { name: 'Gray', hex: '#808080' },
-    { name: 'Black', hex: '#000000' },
-    { name: 'White', hex: '#FFFFFF' }
-  ];
-
-  let selectedA = null, selectedB = null, selectedC = null;
-
-  const labelA = document.getElementById('colorA-label');
-  const labelB = document.getElementById('colorB-label');
-  const labelC = document.getElementById('colorC-label');
-  const result = document.getElementById('mix-result');
-  const preview = document.getElementById('mix-preview');
-  const mixButton = document.getElementById('mix-button');
-
-  let selectTarget = 'A'; // chọn A trước
-
-  function hexToRgb(hex) {
-    hex = hex.replace('#', '');
-    const bigint = parseInt(hex, 16);
-    return {
-      r: (bigint >> 16) & 255,
-      g: (bigint >> 8) & 255,
-      b: bigint & 255
-    };
-  }
-
-  function rgbToHex(r, g, b) {
-    return (
-      '#' +
-      [r, g, b]
-        .map(x => {
-          const hex = x.toString(16);
-          return hex.length === 1 ? '0' + hex : hex;
-        })
-        .join('')
-    );
-  }
-
-  function blendThree(c1, c2, c3) {
-    const rgb1 = hexToRgb(c1);
-    const rgb2 = hexToRgb(c2);
-    const rgb3 = hexToRgb(c3);
-    const r = Math.round((rgb1.r + rgb2.r + rgb3.r) / 3);
-    const g = Math.round((rgb1.g + rgb2.g + rgb3.g) / 3);
-    const b = Math.round((rgb1.b + rgb2.b + rgb3.b) / 3);
-    return rgbToHex(r, g, b);
-  }
-
-  function updateLabels() {
-    labelA.textContent = selectedA ? `${selectedA.name} (${selectedA.hex})` : "Chưa chọn";
-    labelB.textContent = selectedB ? `${selectedB.name} (${selectedB.hex})` : "Chưa chọn";
-    labelC.textContent = selectedC ? `${selectedC.name} (${selectedC.hex})` : "Chưa chọn";
-
-    if (selectedA && selectedB && selectedC) {
-      mixButton.style.display = 'block';
-    } else {
-      mixButton.style.display = 'none';
-    }
-  }
-
-  const container = document.getElementById('color-container');
-  colors.forEach(color => {
-    const box = document.createElement('div');
-    box.className = 'color-box';
-    box.style.backgroundColor = color.hex;
-    box.title = color.name;
-    box.addEventListener('click', () => {
-      if (selectTarget === 'A') {
-        selectedA = color;
-        selectTarget = 'B';
-      } else if (selectTarget === 'B') {
-        selectedB = color;
-        selectTarget = 'C';
-      } else if (selectTarget === 'C') {
-        selectedC = color;
-        selectTarget = 'A';
-      }
-      updateLabels();
-    });
-    container.appendChild(box);
-  });
-
-  mixButton.addEventListener('click', () => {
-    if (selectedA && selectedB && selectedC) {
-      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
-      result.textContent = `🎨 Kết quả pha ${selectedA.name}, ${selectedB.name}, ${selectedC.name}: ${mixed}`;
-      preview.style.backgroundColor = mixed;
-    }
-  });
-</script>
-
-<style>
-  #color-widget {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 12px;
-    width: 250px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-    font-size: 14px;
-  }
-
-  .picker-row {
-    margin-bottom: 6px;
-  }
-
-  #color-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .color-box {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #aaa;
-  }
-
-  #mix-button {
-    width: 100%;
-    padding: 6px;
-    font-size: 14px;
-    margin-bottom: 8px;
-    background-color: #eee;
-    border: 1px solid #aaa;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  #mix-result {
-    font-size: 13px;
-    margin-top: 5px;
-    color: #444;
-  }
-
-  #mix-preview {
-    width: 100%;
-    height: 30px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #888;
-  }
-</style> -->
-
-<!-- 🔻 Bảng trộn 3 màu với nút Reset + Ngôn ngữ
-<div id="color-widget">
-  <div style="position: relative; margin-bottom: 10px;">
-    <h4 id="title" style="margin: 0;">🎨 Chọn 3 màu để trộn</h4>
-    <button id="lang-toggle" class="lang-btn">🌐 EN</button>
-  </div>
-
-  <div class="picker-row">
-    <span id="labelA">Màu A:</span> <span id="colorA-label">Chưa chọn</span>
-  </div>
-  <div class="picker-row">
-    <span id="labelB">Màu B:</span> <span id="colorB-label">Chưa chọn</span>
-  </div>
-  <div class="picker-row">
-    <span id="labelC">Màu C:</span> <span id="colorC-label">Chưa chọn</span>
-  </div>
-
-  <div id="color-container"></div>
-
-  <button id="mix-button" style="display:none;">👉 Trộn 3 màu này</button>
-  <button id="reset-button">🔁 Làm lại</button>
-
-  <div id="mix-result"></div>
-  <div id="mix-preview"></div>
-</div>
-
-<script>
-  const colors = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#00FF00' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Orange', hex: '#FFA500' },
-    { name: 'Purple', hex: '#800080' },
-    { name: 'Brown', hex: '#A52A2A' },
-    { name: 'Gray', hex: '#808080' },
-    { name: 'Black', hex: '#000000' },
-    { name: 'White', hex: '#FFFFFF' }
-  ];
-
-  let selectedA = null, selectedB = null, selectedC = null;
-  let selectTarget = 'A';
-  let currentLang = 'vi';
-
-  const elements = {
-    title: document.getElementById('title'),
-    labelA: document.getElementById('labelA'),
-    labelB: document.getElementById('labelB'),
-    labelC: document.getElementById('labelC'),
-    labelAvalue: document.getElementById('colorA-label'),
-    labelBvalue: document.getElementById('colorB-label'),
-    labelCvalue: document.getElementById('colorC-label'),
-    result: document.getElementById('mix-result'),
-    preview: document.getElementById('mix-preview'),
-    mixButton: document.getElementById('mix-button'),
-    resetButton: document.getElementById('reset-button'),
-    langToggle: document.getElementById('lang-toggle'),
-    container: document.getElementById('color-container')
-  };
-
-  const translations = {
-    vi: {
-      title: "🎨 Chọn 3 màu để trộn",
-      labelA: "Màu A:",
-      labelB: "Màu B:",
-      labelC: "Màu C:",
-      notSelected: "Chưa chọn",
-      mix: "👉 Trộn 3 màu này",
-      reset: "🔁 Làm lại",
-      result: (a, b, c, hex) => `🎨 Kết quả pha ${a}, ${b}, ${c}: ${hex}`,
-      langBtn: "🌐 EN"
-    },
-    en: {
-      title: "🎨 Choose 3 colors to mix",
-      labelA: "Color A:",
-      labelB: "Color B:",
-      labelC: "Color C:",
-      notSelected: "Not selected",
-      mix: "👉 Mix these 3 colors",
-      reset: "🔁 Reset",
-      result: (a, b, c, hex) => `🎨 Result of mixing ${a}, ${b}, ${c}: ${hex}`,
-      langBtn: "🌐 VI"
-    }
-  };
-
-  function updateLabels() {
-    const t = translations[currentLang];
-
-    elements.title.textContent = t.title;
-    elements.labelA.textContent = t.labelA;
-    elements.labelB.textContent = t.labelB;
-    elements.labelC.textContent = t.labelC;
-    elements.mixButton.textContent = t.mix;
-    elements.resetButton.textContent = t.reset;
-    elements.langToggle.textContent = t.langBtn;
-
-    elements.labelAvalue.textContent = selectedA ? `${selectedA.name} (${selectedA.hex})` : t.notSelected;
-    elements.labelBvalue.textContent = selectedB ? `${selectedB.name} (${selectedB.hex})` : t.notSelected;
-    elements.labelCvalue.textContent = selectedC ? `${selectedC.name} (${selectedC.hex})` : t.notSelected;
-
-    if (selectedA && selectedB && selectedC) {
-      elements.mixButton.style.display = 'block';
-
-      // 🔧 Cập nhật kết quả theo ngôn ngữ
-      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
-      elements.result.textContent = t.result(selectedA.name, selectedB.name, selectedC.name, mixed);
-    } else {
-      elements.mixButton.style.display = 'none';
-    }
-  }
-
-  function hexToRgb(hex) {
-    hex = hex.replace('#', '');
-    const bigint = parseInt(hex, 16);
-    return {
-      r: (bigint >> 16) & 255,
-      g: (bigint >> 8) & 255,
-      b: bigint & 255
-    };
-  }
-
-  function rgbToHex(r, g, b) {
-    return (
-      '#' +
-      [r, g, b]
-        .map(x => {
-          const hex = x.toString(16);
-          return hex.length === 1 ? '0' + hex : hex;
-        })
-        .join('')
-    );
-  }
-
-  function blendThree(c1, c2, c3) {
-    const rgb1 = hexToRgb(c1);
-    const rgb2 = hexToRgb(c2);
-    const rgb3 = hexToRgb(c3);
-    const r = Math.round((rgb1.r + rgb2.r + rgb3.r) / 3);
-    const g = Math.round((rgb1.g + rgb2.g + rgb3.g) / 3);
-    const b = Math.round((rgb1.b + rgb2.b + rgb3.b) / 3);
-    return rgbToHex(r, g, b);
-  }
-
-  function resetAll() {
-    selectedA = selectedB = selectedC = null;
-    selectTarget = 'A';
-    elements.preview.style.backgroundColor = '';
-    elements.result.textContent = '';
-    updateLabels();
-  }
-
-  elements.langToggle.addEventListener('click', () => {
-    currentLang = currentLang === 'vi' ? 'en' : 'vi';
-    updateLabels();
-  });
-
-  elements.resetButton.addEventListener('click', resetAll);
-
-  elements.mixButton.addEventListener('click', () => {
-    if (selectedA && selectedB && selectedC) {
-      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
-      elements.result.textContent = translations[currentLang].result(
-        selectedA.name, selectedB.name, selectedC.name, mixed
-      );
-      elements.preview.style.backgroundColor = mixed;
-    }
-  });
-
-  // Khởi tạo hộp màu
-  colors.forEach(color => {
-    const box = document.createElement('div');
-    box.className = 'color-box';
-    box.style.backgroundColor = color.hex;
-    box.title = color.name;
-    box.addEventListener('click', () => {
-      if (selectTarget === 'A') {
-        selectedA = color;
-        selectTarget = 'B';
-      } else if (selectTarget === 'B') {
-        selectedB = color;
-        selectTarget = 'C';
-      } else if (selectTarget === 'C') {
-        selectedC = color;
-        selectTarget = 'A';
-      }
-      updateLabels();
-    });
-    elements.container.appendChild(box);
-  });
-
-  updateLabels(); // Lần đầu
-</script>
-
-<style>
-  #color-widget {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 12px;
-    width: 270px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-    font-size: 14px;
-  }
-
-  .picker-row {
-    margin-bottom: 6px;
-  }
-
-  #color-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .color-box {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #aaa;
-  }
-
-  #mix-button, #reset-button {
-    width: 100%;
-    padding: 6px;
-    font-size: 14px;
-    margin-top: 6px;
-    background-color: #eee;
-    border: 1px solid #aaa;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  #mix-result {
-    font-size: 13px;
-    margin-top: 8px;
-    color: #444;
-  }
-
-  #mix-preview {
-    width: 100%;
-    height: 30px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #888;
-  }
-
-  /* ✅ Nút đổi ngôn ngữ nhỏ gọn đặt góc phải tiêu đề */
-  .lang-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 2px 6px;
-    font-size: 12px;
-    border: 1px solid #aaa;
-    border-radius: 6px;
-    background-color: #f5f5f5;
-    cursor: pointer;
-  }
-  
-</style> -->
-
 <!-- 🔻 Bảng trộn 3 màu với hiệu ứng mượt + đổi ngôn ngữ -->
 <div id="color-widget">
   <div style="position: relative; margin-bottom: 10px;">
@@ -1116,218 +375,159 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   
 </style> 
   
-<!-- Widget Từ điển Anh - Việt góc trái dưới
+<!-- Widget từ điển hoàn thiện -->
 <div id="dictionary-widget">
-  <h4>Từ điển Anh - Việt</h4>
-  <input type="text" id="dict-input" placeholder="Nhập từ tiếng Anh..." />
-  <button id="dict-search">Tìm</button>
-  <div id="dict-result"></div>
+  <div style="position: relative; margin-bottom: 8px;">
+    <h4 id="dict-title" style="margin: 0;">📚 Dictionary</h4>
+    <button id="dict-lang-toggle" class="lang-btn">🌐 EN→VI</button>
+  </div>
+  <input type="text" id="dict-input" placeholder="Enter a word..." />
+  <button id="dict-search">🔍</button>
+  <div id="dict-definitions" style="margin-top:10px;"></div>
+  <div id="dict-phonetic" style="margin-top:4px;font-style:italic;"></div>
+  <div id="dict-audio" style="margin-top:6px;"></div>
+  <div id="dict-image" style="margin-top:8px;"></div>
 </div>
 
 <style>
-  /* Style widget từ điển bên trái dưới */
-  #dictionary-widget {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 12px;
-    width: 250px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-    font-size: 14px;
-  }
-  #dictionary-widget h4 {
-    margin-top: 0;
-    margin-bottom: 8px;
-  }
-  #dict-input {
-    width: calc(100% - 60px);
-    padding: 6px;
-    font-size: 14px;
-  }
-  #dict-search {
-    padding: 6px 10px;
-    font-size: 14px;
-    margin-left: 6px;
-    cursor: pointer;
-  }
-  #dict-result {
-    margin-top: 10px;
-    min-height: 40px;
-    color: #333;
-    font-weight: 600;
-  }
+#dictionary-widget {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 10px;
+  width: 320px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-family: sans-serif;
+  font-size: 14px;
+  z-index: 9999;
+}
+#dictionary-widget input {
+  width: calc(100% - 70px);
+  padding:6px;border:1px solid #aaa;border-radius:6px;
+}
+#dictionary-widget button {
+  padding:6px 10px;font-size:13px;border:1px solid #aaa;border-radius:6px;background:#eee;cursor:pointer;
+}
+.lang-btn {
+  position:absolute;top:0;right:0;padding:2px 6px;font-size:12px;
+}
+#dict-image img { width:100%;border-radius:8px; }
 </style>
 
 <script>
-  // Từ điển demo dữ liệu cứng
-  const dictionary = {
-    hello: "xin chào",
-    world: "thế giới",
-    apple: "quả táo",
-    book: "quyển sách",
-    computer: "máy tính",
-    cat: "con mèo",
-    dog: "con chó",
-    love: "yêu thương",
-  };
+const PIXABAY_KEY = 'YOUR_PIXABAY_API_KEY_HERE';  // Thay bằng key của bạn
 
-  const dictInput = document.getElementById('dict-input');
-  const dictSearch = document.getElementById('dict-search');
-  const dictResult = document.getElementById('dict-result');
+// UI và dịch
+const dictTranslations = {
+  en:{title:'📚 Dictionary',placeholder:'Enter a word...',toggle:'🌐 EN→VI'},
+  vi:{title:'📚 Từ điển',placeholder:'Nhập từ tiếng Anh...',toggle:'🌐 VI→EN'}
+};
+let currentLang = 'en';
+const elements = {
+  title: document.getElementById('dict-title'),
+  input: document.getElementById('dict-input'),
+  search: document.getElementById('dict-search'),
+  toggle: document.getElementById('dict-lang-toggle'),
+  defs: document.getElementById('dict-definitions'),
+  phon: document.getElementById('dict-phonetic'),
+  audio: document.getElementById('dict-audio'),
+  image: document.getElementById('dict-image')
+};
 
-  function searchDict() {
-    const word = dictInput.value.trim().toLowerCase();
-    if (!word) {
-      dictResult.textContent = "Vui lòng nhập từ để tra.";
-      return;
+function updateUI() {
+  const t = dictTranslations[currentLang];
+  elements.title.textContent = t.title;
+  elements.input.placeholder = t.placeholder;
+  elements.toggle.textContent = t.toggle;
+  clear();
+}
+function clear() {
+  elements.defs.innerHTML = '';
+  elements.phon.textContent = '';
+  elements.audio.innerHTML = '';
+  elements.image.innerHTML = '';
+}
+
+// Khoá chuyển ngôn ngữ
+elements.toggle.addEventListener('click', () => {
+  currentLang = currentLang === 'en' ? 'vi' : 'en';
+  updateUI();
+  elements.input.focus();
+});
+
+// API Dictionary
+async function lookupWord(word) {
+  try {
+    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    const data = await res.json();
+    if (data && Array.isArray(data)) {
+      const entry = data[0];
+      const defs = entry.meanings.map(m =>
+        m.definitions.map(d => `<li><b>${m.partOfSpeech}</b>: ${d.definition}</li>`).join('')
+      ).join('');
+      elements.defs.innerHTML = `<ul>${defs}</ul>`;
+      const phon = entry.phonetic || (entry.phonetics.find(p=>p.text)?.text||'');
+      elements.phon.textContent = phon;
+      const audioSrc = entry.phonetics.find(p=>p.audio)?.audio;
+      if (audioSrc) {
+        elements.audio.innerHTML = `<audio controls src="${audioSrc}"></audio>`;
+      }
+      return word;
     }
-    if (dictionary[word]) {
-      dictResult.textContent = dictionary[word];
-    } else {
-      dictResult.textContent = "Không tìm thấy nghĩa của từ này.";
-    }
+  } catch{}
+  elements.defs.textContent = currentLang==='en'? 'Not found.' : 'Không tìm thấy từ.';
+  return '';
+}
+
+// API dịch
+async function translateText(text, sl, tl) {
+  try {
+    const res = await fetch('https://libretranslate.com/translate', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({q:text,source:sl,target:tl})
+    });
+    const data = await res.json();
+    return data.translatedText;
+  } catch { return currentLang==='en'?'Error':'Lỗi'; }
+}
+
+// Pixabay image
+async function fetchImage(q){
+  try{
+    const res = await fetch(`https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(q)}&image_type=photo&per_page=3`);
+    const obj = await res.json();
+    if(obj.hits && obj.hits[0]) return obj.hits[0].webformatURL;
+  } catch{}
+  return '';
+}
+
+// Xử lý tìm kiếm
+elements.search.addEventListener('click', async ()=>{
+  const text = elements.input.value.trim();
+  if (!text) return alert(currentLang==='en'? 'Enter a word.' : 'Nhập từ.');
+  clear();
+  if (currentLang === 'en') {
+    const found = await lookupWord(text);
+    const imgUrl = await fetchImage(found);
+    if (imgUrl) elements.image.innerHTML = `<img src="${imgUrl}" alt="${found}">`;
+  } else {  // Vi -> En
+    const tr = await translateText(text,'vi','en');
+    elements.defs.textContent = tr;
+    const imgUrl = await fetchImage(tr);
+    if (imgUrl) elements.image.innerHTML = `<img src="${imgUrl}" alt="${tr}">`;
   }
+});
 
-  dictSearch.addEventListener('click', searchDict);
+// Enter = click
+elements.input.addEventListener('keypress', e=>{
+  if (e.key==='Enter') elements.search.click();
+});
 
-  dictInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      searchDict();
-    }
-  }); -->
-
-  <!-- Widget từ điển Anh-Việt / Việt-Anh có API dịch + hình ảnh minh họa -->
-<div id="dictionary-widget">
-  <h4>Từ điển</h4>
-  <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-    <input type="text" id="dict-input" placeholder="Nhập từ hoặc câu..." style="flex:1; padding:6px; font-size:14px;" />
-    <button id="dict-search">Dịch</button>
-  </div>
-  <button id="toggle-direction" style="margin-bottom: 8px; cursor:pointer; font-size:13px; padding: 4px 8px;">
-    Hướng: Anh → Việt
-  </button>
-  <div id="dict-result" style="min-height: 60px; font-weight: 600; color: #333;"></div>
-  <div id="dict-image" style="margin-top:10px;">
-    <!-- Ảnh hiện lên đây -->
-  </div>
-</div>
-
-<style>
-  #dictionary-widget {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 12px;
-    width: 280px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    z-index: 9999;
-    font-family: sans-serif;
-    font-size: 14px;
-  }
-  #dictionary-widget h4 {
-    margin: 0 0 8px 0;
-  }
-  #dict-result {
-    font-size: 15px;
-  }
-  #dict-image img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-top: 6px;
-  }
-</style>
-
-<script>
-  const dictInput = document.getElementById('dict-input');
-  const dictSearch = document.getElementById('dict-search');
-  const dictResult = document.getElementById('dict-result');
-  const dictImage = document.getElementById('dict-image');
-  const toggleDirectionBtn = document.getElementById('toggle-direction');
-
-  // true: Anh->Việt, false: Việt->Anh
-  let isEngToVie = true;
-
-  toggleDirectionBtn.addEventListener('click', () => {
-    isEngToVie = !isEngToVie;
-    toggleDirectionBtn.textContent = isEngToVie ? 'Hướng: Anh → Việt' : 'Hướng: Việt → Anh';
-    dictResult.textContent = '';
-    dictImage.innerHTML = '';
-    dictInput.value = '';
-    dictInput.placeholder = isEngToVie ? 'Nhập từ hoặc câu tiếng Anh...' : 'Nhập từ hoặc câu tiếng Việt...';
-    dictInput.focus();
-  });
-
-  async function translateText(text, sourceLang, targetLang) {
-    try {
-      const res = await fetch('https://libretranslate.de/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          q: text,
-          source: sourceLang,
-          target: targetLang,
-          format: "text"
-        })
-      });
-      const data = await res.json();
-      return data.translatedText;
-    } catch (e) {
-      return 'Lỗi khi dịch, thử lại sau.';
-    }
-  }
-
-  async function fetchImage(keyword) {
-    try {
-      // Lấy ảnh Unsplash qua API source miễn phí
-      const url = `https://source.unsplash.com/300x180/?${encodeURIComponent(keyword)}`;
-      return url; // Trả về URL ảnh
-    } catch (e) {
-      return null;
-    }
-  }
-
-  dictSearch.addEventListener('click', async () => {
-    const text = dictInput.value.trim();
-    if (!text) {
-      dictResult.textContent = 'Vui lòng nhập từ hoặc câu cần dịch.';
-      dictImage.innerHTML = '';
-      return;
-    }
-
-    dictResult.textContent = 'Đang dịch...';
-    dictImage.innerHTML = '';
-
-    // Chọn ngôn ngữ nguồn và đích
-    const sourceLang = isEngToVie ? 'en' : 'vi';
-    const targetLang = isEngToVie ? 'vi' : 'en';
-
-    const translated = await translateText(text, sourceLang, targetLang);
-    dictResult.textContent = translated;
-
-    // Lấy ảnh theo từ khóa tiếng Anh (nếu là dịch Việt->Anh thì dùng từ gốc)
-    const imgKeyword = isEngToVie ? text : translated;
-
-    const imgUrl = await fetchImage(imgKeyword);
-    if (imgUrl) {
-      dictImage.innerHTML = `<img src="${imgUrl}" alt="Image for ${imgKeyword}"/>`;
-    } else {
-      dictImage.innerHTML = '';
-    }
-  });
-
-  dictInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') {
-      dictSearch.click();
-    }
-  });
+// Init
+updateUI();
 </script>
   
 </script>  
