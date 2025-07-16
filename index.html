@@ -1,492 +1,481 @@
+<!-- Đây là phần ghi chú trong HTML: This is a comment in HTML -->
+<!-- Đây là khai báo DOCTYPE, giúp trình duyệt biết đây là tài liệu HTML5.
+This is the DOCTYPE declaration, which helps the browser recognize that this is an HTML5 document 
+-->
 <!DOCTYPE html>
+
+<!-- Thẻ <html> là thẻ gốc bao bọc toàn bộ nội dung trang web: The <html> element is the root element that wraps all content of the web page..
+lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang="vi" attribute specifies that the page's main language is Vietnamese.
+-->
 <html lang="vi">
+
+<!-- Thẻ <head> chứa các thông tin không hiển thị trực tiếp trên trang nhưng rất quan trọng như tiêu đề, mã hóa ký tự, link CSS...
+  The <head> element contains information that is not displayed directly on the web page but is essential,
+  such as the title, character encoding, and CSS links
+-->
 <head>
+
+  <!-- Khai báo bộ mã hóa ký tự là UTF-8 để trình duyệt hiển thị đúng tiếng Việt và các ngôn ngữ khác.
+  Declares the character encoding as UTF-8 so that the browser displays Vietnamese and other languages correctly.
+  -->
   <meta charset="UTF-8" />
+
+  <!-- Thiết lập để trang web hiển thị đúng trên các thiết bị di động và máy tính bảng:
+        Sets the viewport to ensure the website displays properly on mobile devices and tablets.
+  -->
+  <!-- <meta>: thẻ metadata — cung cấp thông tin cho trình duyệt.: The metadata tag provides information to the browser
+  -->
+  <!-- name="viewport": chỉ định rằng đây là thiết lập khung nhìn (viewport), tức là vùng hiển thị trang web.:
+        Specifies that this is a viewport setting, which defines the visible area of the web page.
+  -->
+  <!-- content="...": là giá trị thiết lập cho viewport.: This is the value that configures the viewport
+  -->
+  <!-- width=device-width: Chiều rộng của trang web sẽ bằng đúng chiều rộng màn hình thiết bị (điện thoại, máy tính bảng…):
+        The width of the web page will exactly match the width of the device's screen (phone, tablet, etc.).
+  -->
+  <!-- initial-scale=1.0:Tỷ lệ phóng ban đầu của trang là 1:1, tức là không phóng to hay thu nhỏ.:
+        the initial scale of the page is 1:1, meaning no zoom in or zoom out.
+  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Thẻ <title> định nghĩa tiêu đề của trang web, hiển thị trên tab trình duyệt.:
+        The <title> tag defines the title of the web page, shown on the browser tab.
+  -->
   <title>Trang chủ</title>
-  <style>
-    /* ======= CSS menu ======= */
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      padding: 10px 20px;
-    }
-    .menu ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 15px;
-    }
-    .menu ul li a {
-      color: #eee;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 6px 12px;
-      display: inline-block;
-      border-radius: 6px;
-    }
-    .menu ul li a:hover {
-      background: #444;
-    }
 
-    /* ======= CSS phần tools-container ======= */
-    #tools-container {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 620px;
-      max-width: 95vw;
-      z-index: 10000;
-      background: white;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      font-size: 14px;
-      color: #222;
-    }
-    /* Clear float */
-    #tools-container::after {
-      content: "";
-      display: block;
-      clear: both;
-    }
+  <!-- Thẻ <link> liên kết file CSS để áp dụng kiểu dáng cho trang web. 
+        The <link> tag links a CSS file to apply styles to the web page.
+  -->
+  <!-- <link> là thẻ dùng để kết nối tài nguyên ngoài (external resource) với trang HTML.
+        The <link> tag is used to connect external resources to the HTML page.
+  -->
+  <!-- rel="stylesheet" nghĩa là file được liên kết là một bảng kiểu (stylesheet):
+       rel="stylesheet" means the linked file is a stylesheet.
+  -->
+  <!-- href="style.css" là đường dẫn đến file CSS cần liên kết.:
+        href="style.css" specifies the path to the CSS file that should be linked.
+  -->
+  <link rel="stylesheet" href="style.css" />
 
-    /* ======= CSS bảng màu ======= */
-    #color-widget {
-      float: left;
-      width: 290px;
-      margin-right: 20px;
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 10px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
-    }
-    #color-widget h4 {
-      margin: 0 0 10px 0;
-    }
-    .picker-row {
-      margin-bottom: 6px;
-    }
-    #color-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-    .color-box {
-      width: 28px;
-      height: 28px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid #aaa;
-      transition: transform 0.15s ease;
-    }
-    .color-box:hover {
-      transform: scale(1.1);
-    }
-    #mix-button, #reset-button {
-      width: 100%;
-      padding: 6px;
-      font-size: 14px;
-      margin-top: 6px;
-      background-color: #eee;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    #mix-result {
-      font-size: 13px;
-      margin-top: 8px;
-      color: #444;
-    }
-    #mix-preview {
-      width: 100%;
-      height: 30px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #888;
-      transition: background-color 0.5s ease;
-    }
-    .lang-btn {
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 2px 6px;
-      font-size: 12px;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-      background-color: #f5f5f5;
-      cursor: pointer;
-    }
-
-    /* ======= CSS widget dịch ======= */
-    #translate-widget {
-      float: left;
-      width: 290px;
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 10px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
-      font-family: sans-serif;
-      font-size: 14px;
-    }
-    #translate-widget > div:first-child {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    #translate-widget strong {
-      font-weight: 600;
-    }
-    #translate-widget input[type="text"] {
-      width: 100%;
-      padding: 6px;
-      font-size: 14px;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      box-sizing: border-box;
-    }
-    #translate-widget button {
-      flex: 1;
-      padding: 8px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid #aaa;
-      background: #eee;
-      cursor: pointer;
-    }
-    #translate-widget div.buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-  </style>
+<!-- Thẻ </head> đóng phần đầu trang trong tài liệu HTML.: The </head> tag closes the head section in the HTML document. 
+-->  
 </head>
+
+<!-- Thẻ <body> bắt đầu phần thân của trang web, chứa nội dung hiển thị.:
+    The <body> tag starts the body section of the web page, containing the visible content. --> 
 <body>
 
+  <!-- Thẻ <header> bắt đầu phần đầu trang, chứa logo, menu hoặc tiêu đề.The <header> tag starts the header section, containing the logo, menu, or title. -->
   <header>
+
+    <!-- Thẻ <nav class="menu"> bắt đầu phần điều hướng với lớp CSS "menu".:
+    The <nav class="menu"> tag starts the navigation section with the CSS class "menu".
+    -->
     <nav class="menu">
+
+      <!-- Thẻ <ul> bắt đầu một danh sách không thứ tự.:The <ul> tag starts an unordered list. -->
       <ul>
+
+        <!-- Thẻ <li> chứa liên kết đến trang "index.html" với văn bản "Trang chủ".
+              The <li> tag contains a link to the "index.html" page with the text "Trang chủ".
+        <!-- href="index.html" là đường dẫn đến trang index.html (thường là trang chủ).
+              href="index.html" is the path to the "index.html" page (usually the homepage).
+        -->
         <li><a href="index.html">Trang chủ</a></li>
         <li><a href="about.html">Giới thiệu</a></li>
         <li><a href="projects.html">Dự án</a></li>
         <li><a href="contact.html">Liên hệ</a></li>
-        <li><a href="#" id="tools-toggle">Công cụ & Giải trí ▾</a></li>
       </ul>
+
+    <!-- Thẻ </nav> đóng phần điều hướng trong trang web.: The </nav> tag closes the navigation section of the web page. -->  
     </nav>
+
+  <!-- Thẻ </header> đóng phần đầu trang của trang web.: The </header> tag closes the header section of the web page. -->
   </header>
 
+  <!-- Thẻ <main> bắt đầu phần nội dung chính của trang web.:- The <main> tag starts the main content section of the web page. -->
   <main>
+
+    <!-- Thẻ <h1> định nghĩa tiêu đề chính cấp 1 của trang.: The <h1> tag defines the main heading of the page. -->
     <h1>Chào mừng đến với trang web của tôi</h1>
+
+    <!-- Thẻ <p> định nghĩa một đoạn văn bản.: The <p> tag defines a paragraph. -->
     <p>Đây là trang chủ.</p>
+
+  <!-- Thẻ </main> đóng phần nội dung chính của trang web.: The </main> tag closes the main content section of the web page. -->
   </main>
 
-  <!-- Phần chứa 2 widget (ẩn mặc định) -->
-  <div id="tools-container">
-
-    <!-- Widget bảng màu -->
-    <div id="color-widget">
-      <div style="position: relative; margin-bottom: 10px;">
-        <h4 id="title" style="margin: 0;">🎨 Chọn 3 màu để trộn</h4>
-        <button id="lang-toggle" class="lang-btn">🌐 EN</button>
-      </div>
-
-      <div class="picker-row">
-        <span id="labelA">Màu A:</span> <span id="colorA-label">Chưa chọn</span>
-      </div>
-      <div class="picker-row">
-        <span id="labelB">Màu B:</span> <span id="colorB-label">Chưa chọn</span>
-      </div>
-      <div class="picker-row">
-        <span id="labelC">Màu C:</span> <span id="colorC-label">Chưa chọn</span>
-      </div>
-
-      <div id="color-container"></div>
-
-      <button id="mix-button" style="display:none;">👉 Trộn 3 màu này</button>
-      <button id="reset-button">🔁 Làm lại</button>
-
-      <div id="mix-result"></div>
-      <div id="mix-preview"></div>
-    </div>
-
-    <!-- Widget dịch -->
-    <div id="translate-widget">
-      <div>
-        <strong id="widget-title">🌐 Dịch Anh – Việt</strong>
-        <button id="toggle-lang" style="
-          font-size: 12px; padding: 2px 6px; border: 1px solid #aaa; border-radius: 6px; background: #eee; cursor: pointer;
-        ">EN → VI</button>
-      </div>
-      <input type="text" id="input-word" placeholder="Nhập từ cần dịch" />
-      <div class="buttons">
-        <button id="btn-translate">Dịch</button>
-        <button id="btn-images">Xem ảnh</button>
-      </div>
-    </div>
-
-    <div style="clear: both;"></div>
+<!-- 🔻 Bảng trộn 3 màu với hiệu ứng mượt + đổi ngôn ngữ -->
+<div id="color-widget">
+  <div style="position: relative; margin-bottom: 10px;">
+    <h4 id="title" style="margin: 0;">🎨 Chọn 3 màu để trộn</h4>
+    <button id="lang-toggle" class="lang-btn">🌐 EN</button>
   </div>
 
-  <script>
-    // ======= Mã widget bảng màu =======
-    const colors = [
-      { name: 'Red', hex: '#FF0000' },
-      { name: 'Green', hex: '#00FF00' },
-      { name: 'Blue', hex: '#0000FF' },
-      { name: 'Yellow', hex: '#FFFF00' },
-      { name: 'Cyan', hex: '#00FFFF' },
-      { name: 'Magenta', hex: '#FF00FF' },
-      { name: 'Orange', hex: '#FFA500' },
-      { name: 'Purple', hex: '#800080' },
-      { name: 'Brown', hex: '#A52A2A' },
-      { name: 'Gray', hex: '#808080' },
-      { name: 'Black', hex: '#000000' },
-      { name: 'White', hex: '#FFFFFF' }
-    ];
+  <div class="picker-row">
+    <span id="labelA">Màu A:</span> <span id="colorA-label">Chưa chọn</span>
+  </div>
+  <div class="picker-row">
+    <span id="labelB">Màu B:</span> <span id="colorB-label">Chưa chọn</span>
+  </div>
+  <div class="picker-row">
+    <span id="labelC">Màu C:</span> <span id="colorC-label">Chưa chọn</span>
+  </div>
 
-    let selectedA = null, selectedB = null, selectedC = null;
-    let selectTarget = 'A';
-    let currentLang = 'vi';
+  <div id="color-container"></div>
 
-    const elementsColor = {
-      title: document.getElementById('title'),
-      labelA: document.getElementById('labelA'),
-      labelB: document.getElementById('labelB'),
-      labelC: document.getElementById('labelC'),
-      labelAvalue: document.getElementById('colorA-label'),
-      labelBvalue: document.getElementById('colorB-label'),
-      labelCvalue: document.getElementById('colorC-label'),
-      result: document.getElementById('mix-result'),
-      preview: document.getElementById('mix-preview'),
-      mixButton: document.getElementById('mix-button'),
-      resetButton: document.getElementById('reset-button'),
-      langToggle: document.getElementById('lang-toggle'),
-      container: document.getElementById('color-container')
-    };
+  <button id="mix-button" style="display:none;">👉 Trộn 3 màu này</button>
+  <button id="reset-button">🔁 Làm lại</button>
 
-    const translationsColor = {
-      vi: {
-        title: "🎨 Chọn 3 màu để trộn",
-        labelA: "Màu A:",
-        labelB: "Màu B:",
-        labelC: "Màu C:",
-        notSelected: "Chưa chọn",
-        mix: "👉 Trộn 3 màu này",
-        reset: "🔁 Làm lại",
-        result: (a, b, c, hex) => `🎨 Kết quả pha ${a}, ${b}, ${c}: ${hex}`,
-        langBtn: "🌐 EN"
-      },
-      en: {
-        title: "🎨 Choose 3 colors to mix",
-        labelA: "Color A:",
-        labelB: "Color B:",
-        labelC: "Color C:",
-        notSelected: "Not selected",
-        mix: "👉 Mix these 3 colors",
-        reset: "🔁 Reset",
-        result: (a, b, c, hex) => `🎨 Result of mixing ${a}, ${b}, ${c}: ${hex}`,
-        langBtn: "🌐 VI"
-      }
-    };
+  <div id="mix-result"></div>
+  <div id="mix-preview"></div>
+</div>
 
-    function updateLabels() {
-      const t = translationsColor[currentLang];
-
-      elementsColor.title.textContent = t.title;
-      elementsColor.labelA.textContent = t.labelA;
-      elementsColor.labelB.textContent = t.labelB;
-      elementsColor.labelC.textContent = t.labelC;
-      elementsColor.mixButton.textContent = t.mix;
-      elementsColor.resetButton.textContent = t.reset;
-      elementsColor.langToggle.textContent = t.langBtn;
-
-      elementsColor.labelAvalue.textContent = selectedA ? `${selectedA.name} (${selectedA.hex})` : t.notSelected;
-      elementsColor.labelBvalue.textContent = selectedB ? `${selectedB.name} (${selectedB.hex})` : t.notSelected;
-      elementsColor.labelCvalue.textContent = selectedC ? `${selectedC.name} (${selectedC.hex})` : t.notSelected;
-
-      if (selectedA && selectedB && selectedC) {
-        elementsColor.mixButton.style.display = 'block';
-
-        const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
-        elementsColor.result.textContent = t.result(selectedA.name, selectedB.name, selectedC.name, mixed);
-      } else {
-        elementsColor.mixButton.style.display = 'none';
-        elementsColor.result.textContent = '';
-        elementsColor.preview.style.backgroundColor = '';
-      }
-    }
-
-    function hexToRgb(hex) {
-      hex = hex.replace('#', '');
-      const bigint = parseInt(hex, 16);
-      return {
-        r: (bigint >> 16) & 255,
-        g: (bigint >> 8) & 255,
-        b: bigint & 255
-      };
-    }
-
-    function rgbToHex(r, g, b) {
-      return (
-        '#' +
-        [r, g, b]
-          .map(x => {
-            const hex = x.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-          })
-          .join('')
-      );
-    }
-
-    function blendThree(c1, c2, c3) {
-      const rgb1 = hexToRgb(c1);
-      const rgb2 = hexToRgb(c2);
-      const rgb3 = hexToRgb(c3);
-      const r = Math.round((rgb1.r + rgb2.r + rgb3.r) / 3);
-      const g = Math.round((rgb1.g + rgb2.g + rgb3.g) / 3);
-      const b = Math.round((rgb1.b + rgb2.b + rgb3.b) / 3);
-      return rgbToHex(r, g, b);
-    }
-
-    function resetAll() {
-      selectedA = selectedB = selectedC = null;
-      selectTarget = 'A';
-      elementsColor.preview.style.backgroundColor = '';
-      elementsColor.result.textContent = '';
-      updateLabels();
-    }
-
-    elementsColor.langToggle.addEventListener('click', () => {
-      currentLang = currentLang === 'vi' ? 'en' : 'vi';
-      updateLabels();
-    });
-
-    elementsColor.resetButton.addEventListener('click', resetAll);
-
-    elementsColor.mixButton.addEventListener('click', () => {
-      if (selectedA && selectedB && selectedC) {
-        const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
-        elementsColor.result.textContent = translationsColor[currentLang].result(
-          selectedA.name, selectedB.name, selectedC.name, mixed
-        );
-        elementsColor.preview.style.backgroundColor = mixed;
-      }
-    });
-
-    // Tạo các hộp màu chọn
-    colors.forEach(color => {
-      const box = document.createElement('div');
-      box.className = 'color-box';
-      box.style.backgroundColor = color.hex;
-      box.title = color.name;
-      box.addEventListener('click', () => {
-        if (selectTarget === 'A') {
-          selectedA = color;
-          selectTarget = 'B';
-        } else if (selectTarget === 'B') {
-          selectedB = color;
-          selectTarget = 'C';
-        } else if (selectTarget === 'C') {
-          selectedC = color;
-          selectTarget = 'A';
-        }
-        updateLabels();
-      });
-      elementsColor.container.appendChild(box);
-    });
-
-    updateLabels(); // Khởi tạo lần đầu
-
-    // ======= Mã widget dịch =======
-    const toggleBtn = document.getElementById('toggle-lang');
-    const input = document.getElementById('input-word');
-    const btnTranslate = document.getElementById('btn-translate');
-    const btnImages = document.getElementById('btn-images');
-    const widgetTitle = document.getElementById('widget-title');
-
-    let langFrom = 'en';
-    let langTo = 'vi';
-
-    toggleBtn.addEventListener('click', () => {
-      if (langFrom === 'en') {
-        langFrom = 'vi';
-        langTo = 'en';
-        toggleBtn.textContent = 'VI → EN';
-        widgetTitle.textContent = '🌐 Dịch Việt – Anh';
-        input.placeholder = 'Nhập từ cần dịch';
-        btnTranslate.textContent = 'Dịch';
-        btnImages.textContent = 'Xem ảnh';
-      } else {
-        langFrom = 'en';
-        langTo = 'vi';
-        toggleBtn.textContent = 'EN → VI';
-        widgetTitle.textContent = '🌐 Dịch Anh – Việt';
-        input.placeholder = 'Enter word to translate';
-        btnTranslate.textContent = 'Translate';
-        btnImages.textContent = 'View Images';
-      }
-    });
-
-    function openCenteredPopup(url, title, w, h) {
-      const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-      const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
-
-      const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
-      const height = window.innerHeight || document.documentElement.clientHeight || screen.height;
-
-      const left = ((width / 2) - (w / 2)) + dualScreenLeft;
-      const top = ((height / 2) - (h / 2)) + dualScreenTop;
-
-      const newWindow = window.open(url, title, 
-        `scrollbars=yes, width=${w}, height=${h}, top=${top}, left=${left}`);
-
-      if (window.focus && newWindow) {
-        newWindow.focus();
-      }
-    }
-
-    btnTranslate.addEventListener('click', () => {
-      const word = input.value.trim();
-      if (!word) {
-        alert(langFrom === 'en' ? 'Please enter a word to translate!' : 'Vui lòng nhập từ cần dịch!');
-        return;
-      }
-      const url = `https://translate.google.com/?sl=${langFrom}&tl=${langTo}&text=${encodeURIComponent(word)}&op=translate`;
-      openCenteredPopup(url, 'Google Translate', 600, 500);
-    });
-
-    btnImages.addEventListener('click', () => {
-      const word = input.value.trim();
-      if (!word) {
-        alert(langFrom === 'en' ? 'Please enter a word to view images!' : 'Vui lòng nhập từ cần xem ảnh!');
-        return;
-      }
-      const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
-      openCenteredPopup(url, 'Google Images', 800, 600);
-    });
 <script>
-  // ======= Toggle hiển thị tools-container khi bấm menu "Công cụ & Giải trí" =======//
-  document.getElementById('tools-toggle').addEventListener('click', function(e) {
-    e.preventDefault(); // Ngăn trình duyệt chuyển trang khi bấm <a href="#">
-    const container = document.getElementById('tools-container');
-    // Nếu đang ẩn thì hiện, nếu đang hiện thì ẩn
-    container.style.display = (container.style.display === 'none' || container.style.display === '') 
-      ? 'block' : 'none';
+  const colors = [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Green', hex: '#00FF00' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Yellow', hex: '#FFFF00' },
+    { name: 'Cyan', hex: '#00FFFF' },
+    { name: 'Magenta', hex: '#FF00FF' },
+    { name: 'Orange', hex: '#FFA500' },
+    { name: 'Purple', hex: '#800080' },
+    { name: 'Brown', hex: '#A52A2A' },
+    { name: 'Gray', hex: '#808080' },
+    { name: 'Black', hex: '#000000' },
+    { name: 'White', hex: '#FFFFFF' }
+  ];
+
+  let selectedA = null, selectedB = null, selectedC = null;
+  let selectTarget = 'A';
+  let currentLang = 'vi';
+
+  const elements = {
+    title: document.getElementById('title'),
+    labelA: document.getElementById('labelA'),
+    labelB: document.getElementById('labelB'),
+    labelC: document.getElementById('labelC'),
+    labelAvalue: document.getElementById('colorA-label'),
+    labelBvalue: document.getElementById('colorB-label'),
+    labelCvalue: document.getElementById('colorC-label'),
+    result: document.getElementById('mix-result'),
+    preview: document.getElementById('mix-preview'),
+    mixButton: document.getElementById('mix-button'),
+    resetButton: document.getElementById('reset-button'),
+    langToggle: document.getElementById('lang-toggle'),
+    container: document.getElementById('color-container')
+  };
+
+  const translations = {
+    vi: {
+      title: "🎨 Chọn 3 màu để trộn",
+      labelA: "Màu A:",
+      labelB: "Màu B:",
+      labelC: "Màu C:",
+      notSelected: "Chưa chọn",
+      mix: "👉 Trộn 3 màu này",
+      reset: "🔁 Làm lại",
+      result: (a, b, c, hex) => `🎨 Kết quả pha ${a}, ${b}, ${c}: ${hex}`,
+      langBtn: "🌐 EN"
+    },
+    en: {
+      title: "🎨 Choose 3 colors to mix",
+      labelA: "Color A:",
+      labelB: "Color B:",
+      labelC: "Color C:",
+      notSelected: "Not selected",
+      mix: "👉 Mix these 3 colors",
+      reset: "🔁 Reset",
+      result: (a, b, c, hex) => `🎨 Result of mixing ${a}, ${b}, ${c}: ${hex}`,
+      langBtn: "🌐 VI"
+    }
+  };
+
+  function updateLabels() {
+    const t = translations[currentLang];
+
+    elements.title.textContent = t.title;
+    elements.labelA.textContent = t.labelA;
+    elements.labelB.textContent = t.labelB;
+    elements.labelC.textContent = t.labelC;
+    elements.mixButton.textContent = t.mix;
+    elements.resetButton.textContent = t.reset;
+    elements.langToggle.textContent = t.langBtn;
+
+    elements.labelAvalue.textContent = selectedA ? `${selectedA.name} (${selectedA.hex})` : t.notSelected;
+    elements.labelBvalue.textContent = selectedB ? `${selectedB.name} (${selectedB.hex})` : t.notSelected;
+    elements.labelCvalue.textContent = selectedC ? `${selectedC.name} (${selectedC.hex})` : t.notSelected;
+
+    if (selectedA && selectedB && selectedC) {
+      elements.mixButton.style.display = 'block';
+
+      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
+      elements.result.textContent = t.result(selectedA.name, selectedB.name, selectedC.name, mixed);
+    } else {
+      elements.mixButton.style.display = 'none';
+    }
+  }
+
+  function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    const bigint = parseInt(hex, 16);
+    return {
+      r: (bigint >> 16) & 255,
+      g: (bigint >> 8) & 255,
+      b: bigint & 255
+    };
+  }
+
+  function rgbToHex(r, g, b) {
+    return (
+      '#' +
+      [r, g, b]
+        .map(x => {
+          const hex = x.toString(16);
+          return hex.length === 1 ? '0' + hex : hex;
+        })
+        .join('')
+    );
+  }
+
+  function blendThree(c1, c2, c3) {
+    const rgb1 = hexToRgb(c1);
+    const rgb2 = hexToRgb(c2);
+    const rgb3 = hexToRgb(c3);
+    const r = Math.round((rgb1.r + rgb2.r + rgb3.r) / 3);
+    const g = Math.round((rgb1.g + rgb2.g + rgb3.g) / 3);
+    const b = Math.round((rgb1.b + rgb2.b + rgb3.b) / 3);
+    return rgbToHex(r, g, b);
+  }
+
+  function resetAll() {
+    selectedA = selectedB = selectedC = null;
+    selectTarget = 'A';
+    elements.preview.style.backgroundColor = '';
+    elements.result.textContent = '';
+    updateLabels();
+  }
+
+  elements.langToggle.addEventListener('click', () => {
+    currentLang = currentLang === 'vi' ? 'en' : 'vi';
+    updateLabels();
+  });
+
+  elements.resetButton.addEventListener('click', resetAll);
+
+  elements.mixButton.addEventListener('click', () => {
+    if (selectedA && selectedB && selectedC) {
+      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
+      elements.result.textContent = translations[currentLang].result(
+        selectedA.name, selectedB.name, selectedC.name, mixed
+      );
+      elements.preview.style.backgroundColor = mixed;
+    }
+  });
+
+  // Khởi tạo hộp màu
+  colors.forEach(color => {
+    const box = document.createElement('div');
+    box.className = 'color-box';
+    box.style.backgroundColor = color.hex;
+    box.title = color.name;
+    box.addEventListener('click', () => {
+      if (selectTarget === 'A') {
+        selectedA = color;
+        selectTarget = 'B';
+      } else if (selectTarget === 'B') {
+        selectedB = color;
+        selectTarget = 'C';
+      } else if (selectTarget === 'C') {
+        selectedC = color;
+        selectTarget = 'A';
+      }
+      updateLabels();
+    });
+    elements.container.appendChild(box);
+  });
+
+  updateLabels(); // Lần đầu
+</script>
+
+<style>
+  #color-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 12px;
+    width: 270px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: sans-serif;
+    font-size: 14px;
+  }
+
+  .picker-row {
+    margin-bottom: 6px;
+  }
+
+  #color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .color-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+  }
+
+  #mix-button, #reset-button {
+    width: 100%;
+    padding: 6px;
+    font-size: 14px;
+    margin-top: 6px;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  #mix-result {
+    font-size: 13px;
+    margin-top: 8px;
+    color: #444;
+  }
+
+  #mix-preview {
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #888;
+    transition: background-color 0.5s ease; /* ✅ Hiệu ứng mượt khi đổi màu */
+  }
+
+  .lang-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px 6px;
+    font-size: 12px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+
+  }
+  
+</style> 
+  
+<!-- Widget dịch + xem ảnh + popup trung tâm -->
+<div id="translate-widget" style="
+  position: fixed; bottom: 20px; left: 20px; 
+  width: 300px; padding: 10px; background: #fff; 
+  border: 1px solid #ccc; border-radius: 10px; 
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: sans-serif; font-size: 14px; z-index: 9999;
+">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <strong id="widget-title">🌐 Dịch Anh – Việt</strong>
+    <button id="toggle-lang" style="
+      font-size: 12px; padding: 2px 6px; border: 1px solid #aaa; border-radius: 6px; background: #eee; cursor: pointer;
+    ">EN → VI</button>
+  </div>
+  <input type="text" id="input-word" placeholder="Nhập từ cần dịch" style="
+    width: 100%; padding: 6px; font-size: 14px; border: 1px solid #aaa; border-radius: 6px;
+    margin-bottom: 8px;
+  "/>
+  <div style="display: flex; gap: 8px;">
+    <button id="btn-translate" style="
+      flex: 1; padding: 8px; font-size: 14px;
+      border-radius: 6px; border: 1px solid #aaa; background: #eee; cursor: pointer;
+    ">Dịch</button>
+    <button id="btn-images" style="
+      flex: 1; padding: 8px; font-size: 14px;
+      border-radius: 6px; border: 1px solid #aaa; background: #eee; cursor: pointer;
+    ">Xem ảnh</button>
+  </div>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('toggle-lang');
+  const input = document.getElementById('input-word');
+  const btnTranslate = document.getElementById('btn-translate');
+  const btnImages = document.getElementById('btn-images');
+  const widgetTitle = document.getElementById('widget-title');
+
+  let langFrom = 'en';
+  let langTo = 'vi';
+
+  toggleBtn.addEventListener('click', () => {
+    if (langFrom === 'en') {
+      langFrom = 'vi';
+      langTo = 'en';
+      toggleBtn.textContent = 'VI → EN';
+      widgetTitle.textContent = '🌐 Dịch Việt – Anh';
+      input.placeholder = 'Nhập từ cần dịch';
+      btnTranslate.textContent = 'Dịch';
+      btnImages.textContent = 'Xem ảnh';
+    } else {
+      langFrom = 'en';
+      langTo = 'vi';
+      toggleBtn.textContent = 'EN → VI';
+      widgetTitle.textContent = '🌐 Dịch Anh – Việt';
+      input.placeholder = 'Enter word to translate';
+      btnTranslate.textContent = 'Translate';
+      btnImages.textContent = 'View Images';
+    }
+  });
+
+  function openCenteredPopup(url, title, w, h) {
+    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+    const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
+    const height = window.innerHeight || document.documentElement.clientHeight || screen.height;
+
+    const left = ((width / 2) - (w / 2)) + dualScreenLeft;
+    const top = ((height / 2) - (h / 2)) + dualScreenTop;
+
+    const newWindow = window.open(url, title, 
+      `scrollbars=yes, width=${w}, height=${h}, top=${top}, left=${left}`);
+
+    if (window.focus && newWindow) {
+      newWindow.focus();
+    }
+  }
+
+  btnTranslate.addEventListener('click', () => {
+    const word = input.value.trim();
+    if (!word) {
+      alert(langFrom === 'en' ? 'Please enter a word to translate!' : 'Vui lòng nhập từ cần dịch!');
+      return;
+    }
+    const url = `https://translate.google.com/?sl=${langFrom}&tl=${langTo}&text=${encodeURIComponent(word)}&op=translate`;
+    openCenteredPopup(url, 'Google Translate', 600, 500);
+  });
+
+  btnImages.addEventListener('click', () => {
+    const word = input.value.trim();
+    if (!word) {
+      alert(langFrom === 'en' ? 'Please enter a word to view images!' : 'Vui lòng nhập từ cần xem ảnh!');
+      return;
+    }
+    const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
+    openCenteredPopup(url, 'Google Images', 800, 600);
   });
 </script>
 
-</body> </html> ```
+   
+<!-- Thẻ </body> đóng phần thân của trang web.: The </body> tag closes the body section of the web page. -->
+</body>
+
+<!-- Thẻ </html> đóng toàn bộ tài liệu HTML.:The </html> tag closes the entire HTML document. -->    
+</html>
