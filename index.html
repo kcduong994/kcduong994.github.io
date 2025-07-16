@@ -1114,8 +1114,9 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
 
   }
   
-</style>  
-<!-- Widget Từ điển Anh - Việt góc trái dưới -->
+</style> 
+  
+<!-- Widget Từ điển Anh - Việt góc trái dưới
 <div id="dictionary-widget">
   <h4>Từ điển Anh - Việt</h4>
   <input type="text" id="dict-input" placeholder="Nhập từ tiếng Anh..." />
@@ -1198,7 +1199,137 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     if (e.key === 'Enter') {
       searchDict();
     }
+  }); -->
+
+  <!-- Widget từ điển Anh-Việt / Việt-Anh có API dịch + hình ảnh minh họa -->
+<div id="dictionary-widget">
+  <h4>Từ điển</h4>
+  <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+    <input type="text" id="dict-input" placeholder="Nhập từ hoặc câu..." style="flex:1; padding:6px; font-size:14px;" />
+    <button id="dict-search">Dịch</button>
+  </div>
+  <button id="toggle-direction" style="margin-bottom: 8px; cursor:pointer; font-size:13px; padding: 4px 8px;">
+    Hướng: Anh → Việt
+  </button>
+  <div id="dict-result" style="min-height: 60px; font-weight: 600; color: #333;"></div>
+  <div id="dict-image" style="margin-top:10px;">
+    <!-- Ảnh hiện lên đây -->
+  </div>
+</div>
+
+<style>
+  #dictionary-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 12px;
+    width: 280px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: sans-serif;
+    font-size: 14px;
+  }
+  #dictionary-widget h4 {
+    margin: 0 0 8px 0;
+  }
+  #dict-result {
+    font-size: 15px;
+  }
+  #dict-image img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 6px;
+  }
+</style>
+
+<script>
+  const dictInput = document.getElementById('dict-input');
+  const dictSearch = document.getElementById('dict-search');
+  const dictResult = document.getElementById('dict-result');
+  const dictImage = document.getElementById('dict-image');
+  const toggleDirectionBtn = document.getElementById('toggle-direction');
+
+  // true: Anh->Việt, false: Việt->Anh
+  let isEngToVie = true;
+
+  toggleDirectionBtn.addEventListener('click', () => {
+    isEngToVie = !isEngToVie;
+    toggleDirectionBtn.textContent = isEngToVie ? 'Hướng: Anh → Việt' : 'Hướng: Việt → Anh';
+    dictResult.textContent = '';
+    dictImage.innerHTML = '';
+    dictInput.value = '';
+    dictInput.placeholder = isEngToVie ? 'Nhập từ hoặc câu tiếng Anh...' : 'Nhập từ hoặc câu tiếng Việt...';
+    dictInput.focus();
   });
+
+  async function translateText(text, sourceLang, targetLang) {
+    try {
+      const res = await fetch('https://libretranslate.de/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          q: text,
+          source: sourceLang,
+          target: targetLang,
+          format: "text"
+        })
+      });
+      const data = await res.json();
+      return data.translatedText;
+    } catch (e) {
+      return 'Lỗi khi dịch, thử lại sau.';
+    }
+  }
+
+  async function fetchImage(keyword) {
+    try {
+      // Lấy ảnh Unsplash qua API source miễn phí
+      const url = `https://source.unsplash.com/300x180/?${encodeURIComponent(keyword)}`;
+      return url; // Trả về URL ảnh
+    } catch (e) {
+      return null;
+    }
+  }
+
+  dictSearch.addEventListener('click', async () => {
+    const text = dictInput.value.trim();
+    if (!text) {
+      dictResult.textContent = 'Vui lòng nhập từ hoặc câu cần dịch.';
+      dictImage.innerHTML = '';
+      return;
+    }
+
+    dictResult.textContent = 'Đang dịch...';
+    dictImage.innerHTML = '';
+
+    // Chọn ngôn ngữ nguồn và đích
+    const sourceLang = isEngToVie ? 'en' : 'vi';
+    const targetLang = isEngToVie ? 'vi' : 'en';
+
+    const translated = await translateText(text, sourceLang, targetLang);
+    dictResult.textContent = translated;
+
+    // Lấy ảnh theo từ khóa tiếng Anh (nếu là dịch Việt->Anh thì dùng từ gốc)
+    const imgKeyword = isEngToVie ? text : translated;
+
+    const imgUrl = await fetchImage(imgKeyword);
+    if (imgUrl) {
+      dictImage.innerHTML = `<img src="${imgUrl}" alt="Image for ${imgKeyword}"/>`;
+    } else {
+      dictImage.innerHTML = '';
+    }
+  });
+
+  dictInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') {
+      dictSearch.click();
+    }
+  });
+</script>
+  
 </script>  
 <!-- Thẻ </body> đóng phần thân của trang web.: The </body> tag closes the body section of the web page. -->
 </body>
