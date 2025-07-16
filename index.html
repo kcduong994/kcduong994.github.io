@@ -375,7 +375,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   
 </style> 
   
-<!-- Widget dịch + xem ảnh + nút đổi ngôn ngữ -->
+<!-- Widget dịch + xem ảnh + popup trung tâm -->
 <div id="translate-widget" style="
   position: fixed; bottom: 20px; left: 20px; 
   width: 300px; padding: 10px; background: #fff; 
@@ -411,76 +411,66 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   const btnImages = document.getElementById('btn-images');
   const widgetTitle = document.getElementById('widget-title');
 
-  const uiTexts = {
-    vi: {
-      title: "🌐 Dịch Anh – Việt",
-      placeholder: "Nhập từ cần dịch",
-      translateBtn: "Dịch",
-      imagesBtn: "Xem ảnh",
-      toggleBtn: "EN → VI",
-      alertTranslateEmpty: "Vui lòng nhập từ cần dịch!",
-      alertImageEmpty: "Vui lòng nhập từ cần xem ảnh!"
-    },
-    en: {
-      title: "🌐 English - Vietnamese Translator",
-      placeholder: "Enter word to translate",
-      translateBtn: "Translate",
-      imagesBtn: "View Images",
-      toggleBtn: "VI → EN",
-      alertTranslateEmpty: "Please enter a word to translate!",
-      alertImageEmpty: "Please enter a word to view images!"
-    }
-  };
-
-  let currentLang = 'vi';
   let langFrom = 'en';
   let langTo = 'vi';
 
-  function updateUI() {
-    const ui = uiTexts[currentLang];
-    widgetTitle.textContent = ui.title;
-    input.placeholder = ui.placeholder;
-    btnTranslate.textContent = ui.translateBtn;
-    btnImages.textContent = ui.imagesBtn;
-    toggleBtn.textContent = ui.toggleBtn;
-  }
-
   toggleBtn.addEventListener('click', () => {
-    if (currentLang === 'vi') {
-      currentLang = 'en';
+    if (langFrom === 'en') {
       langFrom = 'vi';
       langTo = 'en';
+      toggleBtn.textContent = 'VI → EN';
+      widgetTitle.textContent = '🌐 Dịch Việt – Anh';
+      input.placeholder = 'Nhập từ cần dịch';
+      btnTranslate.textContent = 'Dịch';
+      btnImages.textContent = 'Xem ảnh';
     } else {
-      currentLang = 'vi';
       langFrom = 'en';
       langTo = 'vi';
+      toggleBtn.textContent = 'EN → VI';
+      widgetTitle.textContent = '🌐 Dịch Anh – Việt';
+      input.placeholder = 'Enter word to translate';
+      btnTranslate.textContent = 'Translate';
+      btnImages.textContent = 'View Images';
     }
-    updateUI();
   });
+
+  function openCenteredPopup(url, title, w, h) {
+    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+    const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
+    const height = window.innerHeight || document.documentElement.clientHeight || screen.height;
+
+    const left = ((width / 2) - (w / 2)) + dualScreenLeft;
+    const top = ((height / 2) - (h / 2)) + dualScreenTop;
+
+    const newWindow = window.open(url, title, 
+      `scrollbars=yes, width=${w}, height=${h}, top=${top}, left=${left}`);
+
+    if (window.focus && newWindow) {
+      newWindow.focus();
+    }
+  }
 
   btnTranslate.addEventListener('click', () => {
     const word = input.value.trim();
     if (!word) {
-      alert(uiTexts[currentLang].alertTranslateEmpty);
+      alert(langFrom === 'en' ? 'Please enter a word to translate!' : 'Vui lòng nhập từ cần dịch!');
       return;
     }
     const url = `https://translate.google.com/?sl=${langFrom}&tl=${langTo}&text=${encodeURIComponent(word)}&op=translate`;
-    const popup = window.open(url, 'GoogleTranslate', 'width=600,height=500,scrollbars=yes');
-    if (popup) popup.focus();
+    openCenteredPopup(url, 'Google Translate', 600, 500);
   });
 
   btnImages.addEventListener('click', () => {
     const word = input.value.trim();
     if (!word) {
-      alert(uiTexts[currentLang].alertImageEmpty);
+      alert(langFrom === 'en' ? 'Please enter a word to view images!' : 'Vui lòng nhập từ cần xem ảnh!');
       return;
     }
     const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
-    const popup = window.open(url, 'GoogleImages', 'width=800,height=600,scrollbars=yes');
-    if (popup) popup.focus();
+    openCenteredPopup(url, 'Google Images', 800, 600);
   });
-
-  updateUI();
 </script>
 
    
