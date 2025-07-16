@@ -375,7 +375,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   
 </style> 
   
-<!-- Widget dịch + xem ảnh + popup trung tâm -->
+<!-- Widget dịch + xem ảnh + nút đổi ngôn ngữ -->
 <div id="translate-widget" style="
   position: fixed; bottom: 20px; left: 20px; 
   width: 300px; padding: 10px; background: #fff; 
@@ -411,7 +411,6 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   const btnImages = document.getElementById('btn-images');
   const widgetTitle = document.getElementById('widget-title');
 
-  // Dữ liệu dịch giao diện
   const uiTexts = {
     vi: {
       title: "🌐 Dịch Anh – Việt",
@@ -433,7 +432,6 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     }
   };
 
-  // Ngôn ngữ hiện tại
   let currentLang = 'vi';
   let langFrom = 'en';
   let langTo = 'vi';
@@ -460,24 +458,6 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     updateUI();
   });
 
-  function openCenteredPopup(url, title, w, h) {
-    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
-
-    const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
-    const height = window.innerHeight || document.documentElement.clientHeight || screen.height;
-
-    const left = ((width / 2) - (w / 2)) + dualScreenLeft;
-    const top = ((height / 2) - (h / 2)) + dualScreenTop;
-
-    const newWindow = window.open(url, title, 
-      `scrollbars=yes, width=${w}, height=${h}, top=${top}, left=${left}`);
-
-    if (window.focus) {
-      newWindow.focus();
-    }
-  }
-
   btnTranslate.addEventListener('click', () => {
     const word = input.value.trim();
     if (!word) {
@@ -485,7 +465,8 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
       return;
     }
     const url = `https://translate.google.com/?sl=${langFrom}&tl=${langTo}&text=${encodeURIComponent(word)}&op=translate`;
-    openCenteredPopup(url, 'Google Translate', 600, 500);
+    const popup = window.open(url, 'GoogleTranslate', 'width=600,height=500,scrollbars=yes');
+    if (popup) popup.focus();
   });
 
   btnImages.addEventListener('click', () => {
@@ -495,10 +476,10 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
       return;
     }
     const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
-    openCenteredPopup(url, 'Google Images', 800, 600);
+    const popup = window.open(url, 'GoogleImages', 'width=800,height=600,scrollbars=yes');
+    if (popup) popup.focus();
   });
 
-  // Khởi tạo UI lần đầu
   updateUI();
 </script>
 
