@@ -1,14 +1,33 @@
 /* Đây là ghi chú trong CSS: This is a comment in CSS */
 /* Reset mặc định */
+
+/*  *: là selector toàn cục, nghĩa là áp dụng cho tất cả các phần tử HTML trên trang.: 
+It is the universal selector, meaning it applies to all HTML elements on the page.  */
+
+
 * {
+  /* margin: 0; đặt khoảng cách ngoài (margin) của tất cả phần tử về 0 (không có khoảng cách bên ngoài):
+  margin: 0; sets the margin of all elements to 0, removing any outer spacing. */
   margin: 0;
+
+  /* padding: 0; đặt khoảng cách bên trong (padding) của tất cả phần tử về 0 (không có khoảng cách bên trong).:
+  padding: 0; sets the inside spacing (padding) of all elements to 0 (no inner spacing). */
   padding: 0;
+
+  /* box-sizing: border-box; thay đổi cách tính kích thước phần tử sao cho padding và border sẽ được tính vào kích thước tổng thể của phần tử.:
+  box-sizing: border-box; changes the way the element’s size is calculated so that padding and border are included within the element’s total size. */
   box-sizing: border-box;
+
+/* Dấu } kết thúc khối quy tắc CSS.: The } symbol closes a CSS rule block. */  
 }
+
+/* Đặt font chữ Arial, chiều cao dòng 1.6 và nền màu xám nhạt cho toàn bộ trang.:
+Sets Arial font, line height of 1.6, and light gray background color for the whole page.
+Đặt màu nền cho trang là màu xám rất nhạt (#f4f4f4): Sets the background color of the page to a very light gray (#f4f4f4). */
 
 body {
   font-family: Arial, sans-serif;
-  line-height: 1.6;
+  line-height: 1.5;
   background-color: #f4f4f4;
 }
 
