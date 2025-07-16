@@ -266,7 +266,7 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   }
 </style> -->
 
-<!-- Bảng màu pha trộn -->
+<!-- Bảng màu pha trộn 
 <div id="color-widget">
   <h4>🎨 Click 2 màu để pha</h4>
   <div id="color-container"></div>
@@ -374,6 +374,191 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
     border-radius: 4px;
     cursor: pointer;
     border: 1px solid #aaa;
+  }
+
+  #mix-result {
+    font-size: 13px;
+    margin-top: 5px;
+    color: #444;
+  }
+
+  #mix-preview {
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #888;
+  }
+</style> -->
+
+<!-- 🔻 Bảng trộn 3 màu -->
+<div id="color-widget">
+  <h4>🎨 Chọn 3 màu để trộn</h4>
+
+  <div class="picker-row">
+    <span>Màu A:</span> <span id="colorA-label">Chưa chọn</span>
+  </div>
+  <div class="picker-row">
+    <span>Màu B:</span> <span id="colorB-label">Chưa chọn</span>
+  </div>
+  <div class="picker-row">
+    <span>Màu C:</span> <span id="colorC-label">Chưa chọn</span>
+  </div>
+
+  <div id="color-container"></div>
+
+  <button id="mix-button" style="display:none;">👉 Trộn 3 màu này</button>
+
+  <div id="mix-result"></div>
+  <div id="mix-preview"></div>
+</div>
+
+<script>
+  const colors = [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Green', hex: '#00FF00' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Yellow', hex: '#FFFF00' },
+    { name: 'Cyan', hex: '#00FFFF' },
+    { name: 'Magenta', hex: '#FF00FF' },
+    { name: 'Orange', hex: '#FFA500' },
+    { name: 'Purple', hex: '#800080' },
+    { name: 'Brown', hex: '#A52A2A' },
+    { name: 'Gray', hex: '#808080' },
+    { name: 'Black', hex: '#000000' },
+    { name: 'White', hex: '#FFFFFF' }
+  ];
+
+  let selectedA = null, selectedB = null, selectedC = null;
+
+  const labelA = document.getElementById('colorA-label');
+  const labelB = document.getElementById('colorB-label');
+  const labelC = document.getElementById('colorC-label');
+  const result = document.getElementById('mix-result');
+  const preview = document.getElementById('mix-preview');
+  const mixButton = document.getElementById('mix-button');
+
+  let selectTarget = 'A'; // chọn A trước
+
+  function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    const bigint = parseInt(hex, 16);
+    return {
+      r: (bigint >> 16) & 255,
+      g: (bigint >> 8) & 255,
+      b: bigint & 255
+    };
+  }
+
+  function rgbToHex(r, g, b) {
+    return (
+      '#' +
+      [r, g, b]
+        .map(x => {
+          const hex = x.toString(16);
+          return hex.length === 1 ? '0' + hex : hex;
+        })
+        .join('')
+    );
+  }
+
+  function blendThree(c1, c2, c3) {
+    const rgb1 = hexToRgb(c1);
+    const rgb2 = hexToRgb(c2);
+    const rgb3 = hexToRgb(c3);
+    const r = Math.round((rgb1.r + rgb2.r + rgb3.r) / 3);
+    const g = Math.round((rgb1.g + rgb2.g + rgb3.g) / 3);
+    const b = Math.round((rgb1.b + rgb2.b + rgb3.b) / 3);
+    return rgbToHex(r, g, b);
+  }
+
+  function updateLabels() {
+    labelA.textContent = selectedA ? `${selectedA.name} (${selectedA.hex})` : "Chưa chọn";
+    labelB.textContent = selectedB ? `${selectedB.name} (${selectedB.hex})` : "Chưa chọn";
+    labelC.textContent = selectedC ? `${selectedC.name} (${selectedC.hex})` : "Chưa chọn";
+
+    if (selectedA && selectedB && selectedC) {
+      mixButton.style.display = 'block';
+    } else {
+      mixButton.style.display = 'none';
+    }
+  }
+
+  const container = document.getElementById('color-container');
+  colors.forEach(color => {
+    const box = document.createElement('div');
+    box.className = 'color-box';
+    box.style.backgroundColor = color.hex;
+    box.title = color.name;
+    box.addEventListener('click', () => {
+      if (selectTarget === 'A') {
+        selectedA = color;
+        selectTarget = 'B';
+      } else if (selectTarget === 'B') {
+        selectedB = color;
+        selectTarget = 'C';
+      } else if (selectTarget === 'C') {
+        selectedC = color;
+        selectTarget = 'A';
+      }
+      updateLabels();
+    });
+    container.appendChild(box);
+  });
+
+  mixButton.addEventListener('click', () => {
+    if (selectedA && selectedB && selectedC) {
+      const mixed = blendThree(selectedA.hex, selectedB.hex, selectedC.hex);
+      result.textContent = `🎨 Kết quả pha ${selectedA.name}, ${selectedB.name}, ${selectedC.name}: ${mixed}`;
+      preview.style.backgroundColor = mixed;
+    }
+  });
+</script>
+
+<style>
+  #color-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 12px;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: sans-serif;
+    font-size: 14px;
+  }
+
+  .picker-row {
+    margin-bottom: 6px;
+  }
+
+  #color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .color-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+  }
+
+  #mix-button {
+    width: 100%;
+    padding: 6px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    cursor: pointer;
   }
 
   #mix-result {
