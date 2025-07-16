@@ -375,132 +375,65 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   
 </style> 
   
-<!-- 📚 Widget Từ điển góc trái: Anh↔Việt, định nghĩa, IPA, audio, ảnh minh họa -->
-<div id="dictionary-widget">
-  <div style="position: relative; margin-bottom: 6px;">
-    <h4 id="dict-title" style="margin: 0; display:inline-block;">📚</h4>
-    <button id="dict-lang-toggle" class="small-btn">EN→VI</button>
+<!-- 🔍 Widget dịch & ảnh popup Google -->
+<div id="google-widget">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+    <strong>🔍 Google Dịch & Ảnh</strong>
+    <button id="google-toggle" class="small-btn">Ẩn</button>
   </div>
-  <div style="display: flex; gap:4px;">
-    <input type="text" id="dict-input" placeholder="Enter word..." />
-    <button id="dict-search" class="small-btn">🔍</button>
+  <input id="google-word" type="text" placeholder="Nhập từ..." />
+  <button id="google-search" class="small-btn">Tìm</button>
+
+  <div id="google-iframe-container" style="margin-top: 6px;">
+    <iframe id="g-translate" style="width:100%; height:120px; border:1px solid #aaa; margin-bottom:6px;"></iframe>
+    <iframe id="g-image" style="width:100%; height:150px; border:1px solid #aaa;"></iframe>
   </div>
-  <div id="dict-definitions" style="margin-top:8px;"></div>
-  <div id="dict-phonetic" style="font-style:italic; margin-top:4px;"></div>
-  <div id="dict-audio" style="margin-top:4px;"></div>
-  <div id="dict-image" style="margin-top:6px;"></div>
 </div>
 
 <style>
-#dictionary-widget {
-  position: fixed; bottom:20px; left:20px;
-  background:#fff; border:1px solid #ccc; border-radius:10px;
-  padding:8px; width:280px; box-shadow:0 0 8px rgba(0,0,0,0.1);
-  font-family:sans-serif; font-size:14px; z-index:9999;
+#google-widget {
+  position: fixed; bottom: 20px; left: 20px;
+  width: 300px; padding: 10px;
+  background: #fff; border: 1px solid #ccc; border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-family: sans-serif; font-size: 14px;
+  z-index: 9999;
 }
-#dictionary-widget input {
-  flex:1; padding:4px; font-size:14px;
-  border:1px solid #aaa; border-radius:6px;
+#google-widget input {
+  width: 70%; padding: 4px; font-size: 14px;
+  border: 1px solid #aaa; border-radius: 6px;
 }
 .small-btn {
-  font-size:12px; padding:2px 6px;
-  border:1px solid #aaa; border-radius:6px;
-  background:#eee; cursor:pointer;
+  font-size: 12px; padding: 3px 6px;
+  border: 1px solid #aaa; border-radius: 6px;
+  background: #eee; cursor: pointer;
 }
-#dict-image img { width:100%; margin-top:6px; border-radius:6px; }
 </style>
 
 <script>
-const PIXABAY_KEY = 'YOUR_PIXABAY_API_KEY_HERE'; // Thêm key Pixabay
+document.getElementById('google-search').onclick = () => {
+  const word = document.getElementById('google-word').value.trim();
+  if (!word) return alert("Nhập từ cần tra.");
 
-let currentLang = 'en'; // 'en'→'vi' or 'vi'→'en'
+  document.getElementById('g-translate').src = 
+    `https://translate.google.com/?sl=auto&tl=vi&text=${encodeURIComponent(word)}&op=translate`;
 
-const tData = {
-  en:{placeholder:'Enter word...', toggle:'EN→VI'},
-  vi:{placeholder:'Nhập từ...', toggle:'VI→EN'}
+  document.getElementById('g-image').src = 
+    `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(word)}`;
 };
 
-const el = {
-  title: document.getElementById('dict-title'),
-  input: document.getElementById('dict-input'),
-  toggle: document.getElementById('dict-lang-toggle'),
-  search: document.getElementById('dict-search'),
-  defs: document.getElementById('dict-definitions'),
-  phon: document.getElementById('dict-phonetic'),
-  audio: document.getElementById('dict-audio'),
-  image: document.getElementById('dict-image')
-};
-
-function updateUI(){
-  el.input.placeholder = tData[currentLang].placeholder;
-  el.toggle.textContent = tData[currentLang].toggle;
-  el.defs.innerHTML = el.phon.textContent = el.audio.innerHTML = el.image.innerHTML = '';
-}
-
-el.toggle.onclick = ()=>{ currentLang = currentLang==='en'?'vi':'en'; updateUI(); el.input.focus(); };
-
-async function lookupEn(word){
-  try{
-    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-    const data = await res.json();
-    if(Array.isArray(data)){
-      const entry = data[0];
-      const defs = entry.meanings.map(m=>m.definitions.map(d=>`<li><b>${m.partOfSpeech}</b>: ${d.definition}</li>`).join('')).join('');
-      el.defs.innerHTML = `<ul style="padding-left:18px;">${defs}</ul>`;
-      const phon = entry.phonetic || entry.phonetics.find(p=>p.text)?.text || '';
-      el.phon.textContent = phon;
-      const audioSrc = entry.phonetics.find(p=>p.audio)?.audio;
-      if(audioSrc) el.audio.innerHTML = `<audio controls src="${audioSrc}" style="width:100%;"></audio>`;
-      return entry.word;
-    }
-  }catch{}
-  el.defs.textContent = currentLang==='en'?'Not found.':'Không tìm thấy.';
-  return '';
-}
-
-async function translate(text){
-  const res = await fetch('https://libretranslate.com/translate',{
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({q:text,source:currentLang,target:currentLang==='en'?'vi':'en'})
-  });
-  const j = await res.json();
-  el.defs.textContent = j.translatedText;
-  return j.translatedText;
-}
-
-async function fetchImage(word){
-  try{
-    const u = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${encodeURIComponent(word)}&image_type=photo&per_page=3`;
-    const r = await fetch(u);
-    const j = await r.json();
-    if(j.hits?.length) return j.hits[0].webformatURL;
-  }catch{}
-  return '';
-}
-
-el.search.onclick = async ()=>{
-  const w = el.input.value.trim();
-  if(!w){ alert(currentLang==='en'?'Enter a word.':'Nhập từ.'); return; }
-  el.defs.innerHTML = '...'; el.phon.textContent=''; el.audio.innerHTML=''; el.image.innerHTML='';
-  if(currentLang==='en'){
-    const word = await lookupEn(w);
-    if(word){
-      const img = await fetchImage(word);
-      if(img) el.image.innerHTML = `<img src="${img}">`;
-    }
+document.getElementById('google-toggle').onclick = () => {
+  const box = document.getElementById('google-iframe-container');
+  if (box.style.display === 'none') {
+    box.style.display = 'block';
+    document.getElementById('google-toggle').textContent = 'Ẩn';
   } else {
-    const tr = await translate(w);
-    const img = await fetchImage(tr.split(' ')[0]);
-    if(img) el.image.innerHTML = `<img src="${img}">`;
+    box.style.display = 'none';
+    document.getElementById('google-toggle').textContent = 'Hiện';
   }
 };
-
-el.input.addEventListener('keypress',e=>e.key==='Enter'&&el.search.click());
-updateUI();
 </script>
-
-  
-</script>  
+   
 <!-- Thẻ </body> đóng phần thân của trang web.: The </body> tag closes the body section of the web page. -->
 </body>
 
