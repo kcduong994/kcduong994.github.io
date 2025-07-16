@@ -1,28 +1,112 @@
+<!-- Đây là phần ghi chú trong HTML: This is a comment in HTML -->
+<!-- Đây là khai báo DOCTYPE, giúp trình duyệt biết đây là tài liệu HTML5.
+This is the DOCTYPE declaration, which helps the browser recognize that this is an HTML5 document 
+-->
 <!DOCTYPE html>
+
+<!-- Thẻ <html> là thẻ gốc bao bọc toàn bộ nội dung trang web: The <html> element is the root element that wraps all content of the web page..
+lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang="vi" attribute specifies that the page's main language is Vietnamese.
+-->
 <html lang="vi">
+
+<!-- Thẻ <head> chứa các thông tin không hiển thị trực tiếp trên trang nhưng rất quan trọng như tiêu đề, mã hóa ký tự, link CSS...
+  The <head> element contains information that is not displayed directly on the web page but is essential,
+  such as the title, character encoding, and CSS links
+-->
 <head>
+
+  <!-- Khai báo bộ mã hóa ký tự là UTF-8 để trình duyệt hiển thị đúng tiếng Việt và các ngôn ngữ khác.
+  Declares the character encoding as UTF-8 so that the browser displays Vietnamese and other languages correctly.
+  -->
   <meta charset="UTF-8" />
+
+  <!-- Thiết lập để trang web hiển thị đúng trên các thiết bị di động và máy tính bảng:
+        Sets the viewport to ensure the website displays properly on mobile devices and tablets.
+  -->
+  <!-- <meta>: thẻ metadata — cung cấp thông tin cho trình duyệt.: The metadata tag provides information to the browser
+  -->
+  <!-- name="viewport": chỉ định rằng đây là thiết lập khung nhìn (viewport), tức là vùng hiển thị trang web.:
+        Specifies that this is a viewport setting, which defines the visible area of the web page.
+  -->
+  <!-- content="...": là giá trị thiết lập cho viewport.: This is the value that configures the viewport
+  -->
+  <!-- width=device-width: Chiều rộng của trang web sẽ bằng đúng chiều rộng màn hình thiết bị (điện thoại, máy tính bảng…):
+        The width of the web page will exactly match the width of the device's screen (phone, tablet, etc.).
+  -->
+  <!-- initial-scale=1.0:Tỷ lệ phóng ban đầu của trang là 1:1, tức là không phóng to hay thu nhỏ.:
+        the initial scale of the page is 1:1, meaning no zoom in or zoom out.
+  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Thẻ <title> định nghĩa tiêu đề của trang web, hiển thị trên tab trình duyệt.:
+        The <title> tag defines the title of the web page, shown on the browser tab.
+  -->
   <title>Trang chủ</title>
+
+  <!-- Thẻ <link> liên kết file CSS để áp dụng kiểu dáng cho trang web. 
+        The <link> tag links a CSS file to apply styles to the web page.
+  -->
+  <!-- <link> là thẻ dùng để kết nối tài nguyên ngoài (external resource) với trang HTML.
+        The <link> tag is used to connect external resources to the HTML page.
+  -->
+  <!-- rel="stylesheet" nghĩa là file được liên kết là một bảng kiểu (stylesheet):
+       rel="stylesheet" means the linked file is a stylesheet.
+  -->
+  <!-- href="style.css" là đường dẫn đến file CSS cần liên kết.:
+        href="style.css" specifies the path to the CSS file that should be linked.
+  -->
   <link rel="stylesheet" href="style.css" />
+
+<!-- Thẻ </head> đóng phần đầu trang trong tài liệu HTML.: The </head> tag closes the head section in the HTML document. 
+-->  
 </head>
+
+<!-- Thẻ <body> bắt đầu phần thân của trang web, chứa nội dung hiển thị.:
+    The <body> tag starts the body section of the web page, containing the visible content. --> 
 <body>
 
+  <!-- Thẻ <header> bắt đầu phần đầu trang, chứa logo, menu hoặc tiêu đề.The <header> tag starts the header section, containing the logo, menu, or title. -->
   <header>
+
+    <!-- Thẻ <nav class="menu"> bắt đầu phần điều hướng với lớp CSS "menu".:
+    The <nav class="menu"> tag starts the navigation section with the CSS class "menu".
+    -->
     <nav class="menu">
+
+      <!-- Thẻ <ul> bắt đầu một danh sách không thứ tự.:The <ul> tag starts an unordered list. -->
       <ul>
+
+        <!-- Thẻ <li> chứa liên kết đến trang "index.html" với văn bản "Trang chủ".
+              The <li> tag contains a link to the "index.html" page with the text "Trang chủ".
+        <!-- href="index.html" là đường dẫn đến trang index.html (thường là trang chủ).
+              href="index.html" is the path to the "index.html" page (usually the homepage). -->
+        -->
         <li><a href="index.html">Trang chủ</a></li>
         <li><a href="about.html">Giới thiệu</a></li>
         <li><a href="projects.html">Dự án</a></li>
         <li><a href="contact.html">Liên hệ</a></li>
       </ul>
+
+    <!-- Thẻ </nav> đóng phần điều hướng trong trang web.: The </nav> tag closes the navigation section of the web page. -->  
     </nav>
+
+  <!-- Thẻ </header> đóng phần đầu trang của trang web.: The </header> tag closes the header section of the web page. -->
   </header>
 
+  <!-- Thẻ <main> bắt đầu phần nội dung chính của trang web.:- The <main> tag starts the main content section of the web page. -->
   <main>
+
+    <!-- Thẻ <h1> định nghĩa tiêu đề chính cấp 1 của trang.: The <h1> tag defines the main heading of the page. -->
     <h1>Chào mừng đến với trang web của tôi</h1>
+
+    <!-- Thẻ <p> định nghĩa một đoạn văn bản.: The <p> tag defines a paragraph. -->
     <p>Đây là trang chủ.</p>
+
+  <!-- Thẻ </main> đóng phần nội dung chính của trang web.: The </main> tag closes the main content section of the web page. -->
   </main>
 
+<!-- Thẻ </body> đóng phần thân của trang web.: The </body> tag closes the body section of the web page. -->
 </body>
+
+<!-- Thẻ </html> đóng toàn bộ tài liệu HTML.:The </html> tag closes the entire HTML document. -->    
 </html>
