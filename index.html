@@ -105,6 +105,76 @@ lang="vi" chỉ định ngôn ngữ chính của trang là tiếng Việt: lang=
   <!-- Thẻ </main> đóng phần nội dung chính của trang web.: The </main> tag closes the main content section of the web page. -->
   </main>
 
+  <!-- 🔻 Bảng màu mini ở góc dưới bên phải -->
+<div id="color-widget">
+  <div id="color-container"></div>
+  <div id="color-info">🎨 Click để xem màu</div>
+</div>
+
+<script>
+  const colors = [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Green', hex: '#00FF00' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Yellow', hex: '#FFFF00' },
+    { name: 'Cyan', hex: '#00FFFF' },
+    { name: 'Magenta', hex: '#FF00FF' },
+    { name: 'Black', hex: '#000000' },
+    { name: 'White', hex: '#FFFFFF' }
+  ];
+
+  const container = document.getElementById('color-container');
+  const info = document.getElementById('color-info');
+
+  colors.forEach(color => {
+    const box = document.createElement('div');
+    box.className = 'color-box';
+    box.style.backgroundColor = color.hex;
+    box.title = color.name;
+    box.addEventListener('click', () => {
+      info.textContent = `🎨 ${color.name} - ${color.hex}`;
+    });
+    container.appendChild(box);
+  });
+</script>
+
+<style>
+  #color-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    width: 180px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: sans-serif;
+  }
+
+  #color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: flex-start;
+  }
+
+  .color-box {
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+  }
+
+  #color-info {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #333;
+  }
+</style>
+  
 <!-- Thẻ </body> đóng phần thân của trang web.: The </body> tag closes the body section of the web page. -->
 </body>
 
