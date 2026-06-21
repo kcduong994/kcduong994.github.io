@@ -1,3 +1,29 @@
+/**
+ * ==========================================================
+ * Duong Kim Cuong Personal Website
+ * File: theme.js
+ * Version: v1.7.0
+ *
+ * Overview:
+ * - Handles interactive behavior for the personal website
+ *
+ * Features:
+ * - Light/Dark mode
+ * - Theme persistence using localStorage
+ * - Live world clocks
+ * - Contact popup
+ *
+ * Updates in v1.7.0:
+ * - Reordered world clocks
+ * - Added Vietnam, UK, USA, Korea, and China clocks
+ * - Updated Vietnam timezone display to Hanoi
+ * ==========================================================
+ */
+
+/* ==================================================
+   THEME TOGGLE
+================================================== */
+
 const root = document.documentElement;
 const toggle = document.getElementById("themeToggle");
 const icon = document.getElementById("themeIcon");
@@ -28,6 +54,10 @@ toggle.addEventListener("click", () => {
   updateIcon();
 });
 
+/* ==================================================
+   WORLD CLOCKS
+================================================== */
+
 function formatTime(timeZone) {
   return new Intl.DateTimeFormat("en-GB", {
     timeZone,
@@ -39,9 +69,10 @@ function formatTime(timeZone) {
 
 function updateWorldClocks() {
   const clocks = [
-    ["clockSeoul", "Asia/Seoul"],
     ["clockVietnam", "Asia/Ho_Chi_Minh"],
     ["clockLondon", "Europe/London"],
+    ["clockNewYork", "America/New_York"],
+    ["clockSeoul", "Asia/Seoul"],
     ["clockChina", "Asia/Shanghai"],
   ];
 
@@ -56,6 +87,10 @@ function updateWorldClocks() {
 
 updateWorldClocks();
 setInterval(updateWorldClocks, 1000);
+
+/* ==================================================
+   CONTACT POPOVER
+================================================== */
 
 const contactButton = document.getElementById("contactButton");
 const contactLinkButton = document.getElementById("contactLinkButton");

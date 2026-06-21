@@ -1,6 +1,30 @@
+/* ==========================================================
+   Duong Kim Cuong Personal Website
+   File: theme.css
+   Version: v1.7.0
+
+   Overview:
+   - Main design system for the personal portfolio website
+   - Uses the same clean product-style visual language as KN Origin Lab
+
+   Updates in v1.7.0:
+   - Added visible animated wave background
+   - Added flag-enhanced world clock cards
+   - Improved brand header balance
+   - Added footer quote styling
+========================================================== */
+
+/* ==================================================
+   GLOBAL RESET
+================================================== */
+
 * {
   box-sizing: border-box;
 }
+
+/* ==================================================
+   DESIGN TOKENS
+================================================== */
 
 :root {
   --bg: #f6f8fc;
@@ -12,6 +36,7 @@
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
   --primary-soft: #dbeafe;
+  --wave: rgba(37, 99, 235, 0.22);
   --shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
 }
 
@@ -25,8 +50,13 @@
   --primary: #3b82f6;
   --primary-dark: #2563eb;
   --primary-soft: rgba(37, 99, 235, 0.18);
+  --wave: rgba(59, 130, 246, 0.26);
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
 }
+
+/* ==================================================
+   BASE LAYOUT
+================================================== */
 
 body {
   margin: 0;
@@ -44,8 +74,8 @@ body {
   color: var(--text);
 
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.16), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.10), transparent 30%),
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.14), transparent 30%),
     var(--bg);
 
   transition:
@@ -62,6 +92,10 @@ button {
   font: inherit;
 }
 
+/* ==================================================
+   ANIMATED WAVE BACKGROUND
+================================================== */
+
 .wave-background {
   position: fixed;
   inset: 0;
@@ -72,32 +106,61 @@ button {
 
 .wave {
   position: absolute;
-  left: -10%;
-  width: 120%;
-  height: 260px;
+  left: -12%;
+  width: 124%;
+  height: 360px;
 
-  opacity: 0.18;
+  opacity: 0.34;
 
   background:
     radial-gradient(
       ellipse at center,
-      rgba(37, 99, 235, 0.28),
-      transparent 65%
+      var(--wave),
+      transparent 68%
     );
 
-  filter: blur(28px);
+  filter: blur(22px);
 }
 
 .wave-one {
-  top: 18%;
-  animation: waveMoveOne 9s ease-in-out infinite alternate;
+  top: 14%;
+  animation: waveMoveOne 10s ease-in-out infinite alternate;
 }
 
 .wave-two {
-  bottom: 8%;
-  opacity: 0.12;
-  animation: waveMoveTwo 12s ease-in-out infinite alternate;
+  bottom: 4%;
+  opacity: 0.22;
+  animation: waveMoveTwo 13s ease-in-out infinite alternate;
 }
+
+.wave-line {
+  position: fixed;
+  left: -20%;
+  width: 140%;
+  height: 120px;
+
+  opacity: 0.22;
+
+  border-radius: 50%;
+  border-top: 2px solid rgba(37, 99, 235, 0.22);
+
+  transform: rotate(-2deg);
+}
+
+.wave-line-one {
+  top: 34%;
+  animation: waveLineOne 12s ease-in-out infinite alternate;
+}
+
+.wave-line-two {
+  top: 42%;
+  opacity: 0.16;
+  animation: waveLineTwo 15s ease-in-out infinite alternate;
+}
+
+/* ==================================================
+   SITE HEADER
+================================================== */
 
 .site-header {
   width: min(1180px, calc(100% - 40px));
@@ -157,6 +220,10 @@ button {
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
+/* ==================================================
+   PAGE STRUCTURE
+================================================== */
+
 .page {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
@@ -170,6 +237,10 @@ button {
   background: var(--surface);
   box-shadow: var(--shadow);
 }
+
+/* ==================================================
+   HERO SECTION
+================================================== */
 
 .hero {
   position: relative;
@@ -262,6 +333,10 @@ h1 {
   gap: 14px;
 }
 
+/* ==================================================
+   BUTTONS AND LINKS
+================================================== */
+
 .button,
 .links a,
 .link-button {
@@ -314,6 +389,10 @@ h1 {
   border-color: rgba(37, 99, 235, 0.42);
   transform: translateY(-2px);
 }
+
+/* ==================================================
+   KN ORIGIN LAB CARD
+================================================== */
 
 .project-card {
   min-height: 300px;
@@ -384,9 +463,13 @@ h1 {
   font-weight: 800;
 }
 
+/* ==================================================
+   WORLD CLOCKS
+================================================== */
+
 .quick-info {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 18px;
 
   margin-top: 24px;
@@ -396,7 +479,7 @@ h1 {
 }
 
 .info-card {
-  padding: 26px;
+  padding: 24px;
   border-radius: 24px;
 
   transition:
@@ -413,10 +496,14 @@ h1 {
   margin-bottom: 14px;
 }
 
+.flag {
+  margin-right: 6px;
+}
+
 .info-card h2 {
   margin: 0;
 
-  font-size: 28px;
+  font-size: 25px;
   letter-spacing: -0.05em;
 }
 
@@ -425,7 +512,12 @@ h1 {
 
   color: var(--muted);
   font-weight: 650;
+  font-size: 14px;
 }
+
+/* ==================================================
+   CONTENT SECTIONS
+================================================== */
 
 .section {
   margin-top: 24px;
@@ -501,6 +593,47 @@ h1 {
   margin-top: 8px;
 }
 
+/* ==================================================
+   FOOTER QUOTE
+================================================== */
+
+.site-footer {
+  margin-top: 28px;
+  padding: 36px;
+
+  border-radius: 28px;
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+  box-shadow: var(--shadow);
+
+  text-align: center;
+
+  animation: fadeUp 0.7s ease both;
+}
+
+.site-footer blockquote {
+  max-width: 880px;
+  margin: 0 auto;
+
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.8;
+  font-weight: 650;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer p + p {
+  margin-top: 14px;
+}
+
+/* ==================================================
+   CONTACT POPOVER
+================================================== */
+
 .contact-popover {
   position: fixed;
   inset: 0;
@@ -561,6 +694,10 @@ h1 {
   font-weight: 700;
 }
 
+/* ==================================================
+   ANIMATIONS
+================================================== */
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -601,7 +738,7 @@ h1 {
   }
 
   to {
-    transform: translateX(40px) translateY(28px) rotate(2deg);
+    transform: translateX(40px) translateY(34px) rotate(2deg);
   }
 }
 
@@ -611,7 +748,37 @@ h1 {
   }
 
   to {
-    transform: translateX(-40px) translateY(-24px) rotate(-2deg);
+    transform: translateX(-40px) translateY(-30px) rotate(-2deg);
+  }
+}
+
+@keyframes waveLineOne {
+  from {
+    transform: translateX(-45px) rotate(-2deg);
+  }
+
+  to {
+    transform: translateX(45px) rotate(2deg);
+  }
+}
+
+@keyframes waveLineTwo {
+  from {
+    transform: translateX(50px) rotate(2deg);
+  }
+
+  to {
+    transform: translateX(-50px) rotate(-2deg);
+  }
+}
+
+/* ==================================================
+   RESPONSIVE DESIGN
+================================================== */
+
+@media (max-width: 1180px) {
+  .quick-info {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -681,5 +848,13 @@ h1 {
 
   .contact-actions {
     flex-direction: column;
+  }
+
+  .site-footer {
+    padding: 26px;
+  }
+
+  .site-footer blockquote {
+    font-size: 16px;
   }
 }

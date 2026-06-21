@@ -1,3 +1,20 @@
+<!-- =======================================================
+     Duong Kim Cuong Personal Website
+     File: index.html
+     Version: v1.7.0
+
+     Overview:
+     - Personal academic/professional portfolio
+     - Linked with KN Origin Lab ecosystem
+
+     Updates in v1.7.0:
+     - Added visible animated wave background
+     - Reordered world clocks: Vietnam, UK, USA, Korea, China
+     - Added national flags to time cards
+     - Updated Vietnam location to Hanoi
+     - Added footer quote section
+======================================================= -->
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -11,14 +28,16 @@
     content="Personal website of Duong Kim Cuong — Coastal Engineering, Scientific Computing, and AI."
   />
 
-  <link rel="stylesheet" href="/theme.css?v=106" />
-  <script defer src="/theme.js?v=106"></script>
+  <link rel="stylesheet" href="/theme.css?v=107" />
+  <script defer src="/theme.js?v=107"></script>
 </head>
 
 <body>
   <div class="wave-background">
     <div class="wave wave-one"></div>
     <div class="wave wave-two"></div>
+    <div class="wave-line wave-line-one"></div>
+    <div class="wave-line wave-line-two"></div>
   </div>
 
   <header class="site-header">
@@ -80,25 +99,31 @@
 
     <section class="quick-info">
       <article class="info-card">
-        <p class="info-label">Korea</p>
-        <h2 id="clockSeoul">--:--:--</h2>
-        <p>Seoul, South Korea</p>
-      </article>
-
-      <article class="info-card">
-        <p class="info-label">Vietnam</p>
+        <p class="info-label"><span class="flag">🇻🇳</span> Vietnam</p>
         <h2 id="clockVietnam">--:--:--</h2>
-        <p>Ho Chi Minh City, Vietnam</p>
+        <p>Hanoi, Vietnam</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">United Kingdom</p>
+        <p class="info-label"><span class="flag">🇬🇧</span> United Kingdom</p>
         <h2 id="clockLondon">--:--:--</h2>
         <p>London, United Kingdom</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">China</p>
+        <p class="info-label"><span class="flag">🇺🇸</span> United States</p>
+        <h2 id="clockNewYork">--:--:--</h2>
+        <p>New York, United States</p>
+      </article>
+
+      <article class="info-card">
+        <p class="info-label"><span class="flag">🇰🇷</span> Korea</p>
+        <h2 id="clockSeoul">--:--:--</h2>
+        <p>Seoul, South Korea</p>
+      </article>
+
+      <article class="info-card">
+        <p class="info-label"><span class="flag">🇨🇳</span> China</p>
         <h2 id="clockChina">--:--:--</h2>
         <p>Beijing, China</p>
       </article>
@@ -168,6 +193,18 @@
         <a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp</a>
       </div>
     </section>
+
+    <footer class="site-footer">
+      <blockquote>
+        <p>
+          “Forget what hurt you in the past. But never forget what it taught you.”
+        </p>
+        <p>
+          “The greatest luck in life is not finding money or winning the lottery,
+          but meeting someone who can help you reach a higher level.”
+        </p>
+      </blockquote>
+    </footer>
   </main>
 
   <div class="contact-popover" id="contactPopover">
