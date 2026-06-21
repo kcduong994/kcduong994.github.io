@@ -11,8 +11,8 @@
     content="Personal website of Duong Kim Cuong — Coastal Engineering, Scientific Computing, and AI."
   />
 
-  <link rel="stylesheet" href="/theme.css?v=102" />
-  <script defer src="/theme.js?v=102"></script>
+  <link rel="stylesheet" href="/theme.css?v=105" />
+  <script defer src="/theme.js?v=105"></script>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
       <a href="https://github.com/kcduong994" target="_blank">GitHub</a>
       <a href="https://www.linkedin.com/in/kim-cuong-duong-153aa4215/" target="_blank">LinkedIn</a>
 
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
         <span id="themeIcon">🌙</span>
       </button>
     </nav>
@@ -51,9 +51,9 @@
             Enter KN Origin Lab →
           </a>
 
-          <a class="button secondary" href="mailto:kcduong994@gmail.com">
+          <button class="button secondary" id="contactButton" type="button">
             Contact
-          </a>
+          </button>
         </div>
       </div>
 
@@ -70,21 +70,27 @@
 
     <section class="quick-info">
       <article class="info-card">
-        <p class="info-label">Local Time</p>
-        <h2 id="clock">--:--:--</h2>
-        <p id="timezone">Seoul, South Korea</p>
+        <p class="info-label">Korea</p>
+        <h2 id="clockSeoul">--:--:--</h2>
+        <p>Seoul, South Korea</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">Today</p>
-        <h2 id="date">Loading...</h2>
-        <p>Research • Learning • Building</p>
+        <p class="info-label">Vietnam</p>
+        <h2 id="clockVietnam">--:--:--</h2>
+        <p>Ho Chi Minh City, Vietnam</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">Status</p>
-        <h2>Active</h2>
-        <p>KN Origin Lab is under development.</p>
+        <p class="info-label">United Kingdom</p>
+        <h2 id="clockLondon">--:--:--</h2>
+        <p>London, United Kingdom</p>
+      </article>
+
+      <article class="info-card">
+        <p class="info-label">China</p>
+        <h2 id="clockChina">--:--:--</h2>
+        <p>Beijing, China</p>
       </article>
     </section>
 
@@ -146,12 +152,45 @@
       </div>
 
       <div class="links">
-        <a href="mailto:kcduong994@gmail.com">Email</a>
+        <button class="link-button" id="contactLinkButton" type="button">Email</button>
         <a href="https://github.com/kcduong994" target="_blank">GitHub</a>
         <a href="https://www.linkedin.com/in/kim-cuong-duong-153aa4215/" target="_blank">LinkedIn</a>
         <a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp</a>
       </div>
     </section>
   </main>
+
+  <div class="contact-popover" id="contactPopover">
+    <div class="contact-box">
+      <button class="close-button" id="closeContact" type="button">
+        ×
+      </button>
+
+      <p class="info-label">Contact</p>
+
+      <h2>Email</h2>
+
+      <p class="contact-email">
+        kcduong994@gmail.com
+      </p>
+
+      <div class="contact-actions">
+        <a
+          class="button primary"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=kcduong994@gmail.com"
+          target="_blank"
+        >
+          Send email →
+        </a>
+
+        <a
+          class="button secondary"
+          href="mailto:kcduong994@gmail.com"
+        >
+          Use mail app
+        </a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

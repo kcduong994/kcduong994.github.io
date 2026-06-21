@@ -58,6 +58,10 @@ a {
   text-decoration: none;
 }
 
+button {
+  font: inherit;
+}
+
 .site-header {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
@@ -193,14 +197,16 @@ h1 {
 }
 
 .actions,
-.links {
+.links,
+.contact-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
 }
 
 .button,
-.links a {
+.links a,
+.link-button {
   min-height: 50px;
   padding: 0 22px;
 
@@ -220,10 +226,15 @@ h1 {
     box-shadow 0.18s ease;
 }
 
+.link-button {
+  cursor: pointer;
+}
+
 .primary {
   color: #ffffff;
   background: var(--primary);
   box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28);
+  border: 1px solid transparent;
 }
 
 .primary:hover {
@@ -232,14 +243,16 @@ h1 {
 }
 
 .secondary,
-.links a {
+.links a,
+.link-button {
   color: var(--text);
   border: 1px solid var(--border);
   background: var(--surface);
 }
 
 .secondary:hover,
-.links a:hover {
+.links a:hover,
+.link-button:hover {
   border-color: rgba(37, 99, 235, 0.42);
   transform: translateY(-2px);
 }
@@ -315,7 +328,7 @@ h1 {
 
 .quick-info {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 
   margin-top: 24px;
@@ -345,7 +358,7 @@ h1 {
 .info-card h2 {
   margin: 0;
 
-  font-size: 30px;
+  font-size: 28px;
   letter-spacing: -0.05em;
 }
 
@@ -430,6 +443,66 @@ h1 {
   margin-top: 8px;
 }
 
+.contact-popover {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(10px);
+
+  z-index: 100;
+}
+
+.contact-popover.open {
+  display: flex;
+}
+
+.contact-box {
+  position: relative;
+
+  width: min(420px, 100%);
+  padding: 32px;
+
+  border-radius: 28px;
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+  box-shadow: var(--shadow);
+
+  animation: popIn 0.22s ease both;
+}
+
+.close-button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 999px;
+  border: 1px solid var(--border);
+
+  background: var(--surface-soft);
+  color: var(--text);
+
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.contact-email {
+  margin: 10px 0 24px;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: 700;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -452,6 +525,18 @@ h1 {
   }
 }
 
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 980px) {
   .hero {
     grid-template-columns: 1fr;
@@ -462,9 +547,12 @@ h1 {
     min-height: 230px;
   }
 
-  .grid,
-  .quick-info {
+  .grid {
     grid-template-columns: 1fr;
+  }
+
+  .quick-info {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .compact {
@@ -495,6 +583,10 @@ h1 {
     border-radius: 24px;
   }
 
+  .quick-info {
+    grid-template-columns: 1fr;
+  }
+
   h1 {
     font-size: 46px;
   }
@@ -504,7 +596,12 @@ h1 {
   }
 
   .button,
-  .links a {
+  .links a,
+  .link-button {
     width: 100%;
+  }
+
+  .contact-actions {
+    flex-direction: column;
   }
 }

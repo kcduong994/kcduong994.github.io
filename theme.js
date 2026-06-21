@@ -28,33 +28,68 @@ toggle.addEventListener("click", () => {
   updateIcon();
 });
 
-function updateClock() {
-  const clock = document.getElementById("clock");
-  const date = document.getElementById("date");
-  const timezone = document.getElementById("timezone");
-
-  if (!clock || !date || !timezone) return;
-
-  const now = new Date();
-
-  const timeText = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Seoul",
+function formatTime(timeZone) {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone,
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-  }).format(now);
-
-  const dateText = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Seoul",
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  }).format(now);
-
-  clock.textContent = timeText;
-  date.textContent = dateText;
-  timezone.textContent = "Seoul, South Korea";
+  }).format(new Date());
 }
 
-updateClock();
-setInterval(updateClock, 1000);
+function updateWorldClocks() {
+  const clocks = [
+    ["clockSeoul", "Asia/Seoul"],
+    ["clockVietnam", "Asia/Ho_Chi_Minh"],
+    ["clockLondon", "Europe/London"],
+    ["clockChina", "Asia/Shanghai"],
+  ];
+
+  clocks.forEach(([id, timeZone]) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.textContent = formatTime(timeZone);
+    }
+  });
+}
+
+updateWorldClocks();
+setInterval(updateWorldClocks, 1000);
+
+const contactButton = document.getElementById("contactButton");
+const contactLinkButton = document.getElementById("contactLinkButton");
+const contactPopover = document.getElementById("contactPopover");
+const closeContact = document.getElementById("closeContact");
+
+function openContactPopover() {
+  contactPopover.classList.add("open");
+}
+
+function closeContactPopover() {
+  contactPopover.classList.remove("open");
+}
+
+if (contactPopover && closeContact) {
+  if (contactButton) {
+    contactButton.addEventListener("click", openContactPopover);
+  }
+
+  if (contactLinkButton) {
+    contactLinkButton.addEventListener("click", openContactPopover);
+  }
+
+  closeContact.addEventListener("click", closeContactPopover);
+
+  contactPopover.addEventListener("click", (event) => {
+    if (event.target === contactPopover) {
+      closeContactPopover();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeContactPopover();
+    }
+  });
+}
