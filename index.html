@@ -1,18 +1,20 @@
 <!-- =======================================================
      Duong Kim Cuong Personal Website
      File: index.html
-     Version: v1.7.0
+     Version: v1.8.0
 
      Overview:
      - Personal academic/professional portfolio
-     - Linked with KN Origin Lab ecosystem
+     - Connected with the KN Origin Lab ecosystem
+     - Built for coastal engineering, scientific computing, and AI
 
-     Updates in v1.7.0:
-     - Added visible animated wave background
-     - Reordered world clocks: Vietnam, UK, USA, Korea, China
-     - Added national flags to time cards
+     Updates in v1.8.0:
+     - Added stronger animated ocean-wave background
+     - Reordered world clocks: Vietnam, United Kingdom, United States, Korea, China
      - Updated Vietnam location to Hanoi
+     - Added national region badges for world clocks
      - Added footer quote section
+     - Added copyright line
 ======================================================= -->
 
 <!DOCTYPE html>
@@ -28,14 +30,15 @@
     content="Personal website of Duong Kim Cuong — Coastal Engineering, Scientific Computing, and AI."
   />
 
-  <link rel="stylesheet" href="/theme.css?v=107" />
-  <script defer src="/theme.js?v=107"></script>
+  <link rel="stylesheet" href="/theme.css?v=108" />
+  <script defer src="/theme.js?v=108"></script>
 </head>
 
 <body>
-  <div class="wave-background">
+  <div class="wave-background" aria-hidden="true">
     <div class="wave wave-one"></div>
     <div class="wave wave-two"></div>
+    <div class="wave wave-three"></div>
     <div class="wave-line wave-line-one"></div>
     <div class="wave-line wave-line-two"></div>
   </div>
@@ -46,10 +49,10 @@
       <span class="brand-role">Coastal Engineer</span>
     </a>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
       <a href="https://kcduong994.github.io/kn-origin-lab/">KN Origin Lab</a>
-      <a href="https://github.com/kcduong994" target="_blank">GitHub</a>
-      <a href="https://www.linkedin.com/in/kim-cuong-duong-153aa4215/" target="_blank">LinkedIn</a>
+      <a href="https://github.com/kcduong994" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/kim-cuong-duong-153aa4215/" target="_blank" rel="noreferrer">LinkedIn</a>
 
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
         <span id="themeIcon">🌙</span>
@@ -99,31 +102,46 @@
 
     <section class="quick-info">
       <article class="info-card">
-        <p class="info-label"><span class="flag">🇻🇳</span> Vietnam</p>
+        <p class="info-label">
+          <span class="flag-badge">VN</span>
+          Vietnam
+        </p>
         <h2 id="clockVietnam">--:--:--</h2>
         <p>Hanoi, Vietnam</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label"><span class="flag">🇬🇧</span> United Kingdom</p>
+        <p class="info-label">
+          <span class="flag-badge">UK</span>
+          United Kingdom
+        </p>
         <h2 id="clockLondon">--:--:--</h2>
         <p>London, United Kingdom</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label"><span class="flag">🇺🇸</span> United States</p>
+        <p class="info-label">
+          <span class="flag-badge">US</span>
+          United States
+        </p>
         <h2 id="clockNewYork">--:--:--</h2>
         <p>New York, United States</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label"><span class="flag">🇰🇷</span> Korea</p>
+        <p class="info-label">
+          <span class="flag-badge">KR</span>
+          Korea
+        </p>
         <h2 id="clockSeoul">--:--:--</h2>
         <p>Seoul, South Korea</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label"><span class="flag">🇨🇳</span> China</p>
+        <p class="info-label">
+          <span class="flag-badge">CN</span>
+          China
+        </p>
         <h2 id="clockChina">--:--:--</h2>
         <p>Beijing, China</p>
       </article>
@@ -188,9 +206,9 @@
 
       <div class="links">
         <button class="link-button" id="contactLinkButton" type="button">Email</button>
-        <a href="https://github.com/kcduong994" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/kim-cuong-duong-153aa4215/" target="_blank">LinkedIn</a>
-        <a href="https://www.freecodecamp.org/" target="_blank">freeCodeCamp</a>
+        <a href="https://github.com/kcduong994" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/kim-cuong-duong-153aa4215/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer">freeCodeCamp</a>
       </div>
     </section>
 
@@ -204,12 +222,16 @@
           but meeting someone who can help you reach a higher level.”
         </p>
       </blockquote>
+
+      <p class="copyright">
+        © 2026 Duong Kim Cuong. Built as part of the KN Origin Lab ecosystem.
+      </p>
     </footer>
   </main>
 
   <div class="contact-popover" id="contactPopover">
     <div class="contact-box">
-      <button class="close-button" id="closeContact" type="button">
+      <button class="close-button" id="closeContact" type="button" aria-label="Close contact popup">
         ×
       </button>
 
@@ -226,6 +248,7 @@
           class="button primary"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=kcduong994@gmail.com"
           target="_blank"
+          rel="noreferrer"
         >
           Send email →
         </a>

@@ -2,7 +2,7 @@
  * ==========================================================
  * Duong Kim Cuong Personal Website
  * File: theme.js
- * Version: v1.7.0
+ * Version: v1.8.0
  *
  * Overview:
  * - Handles interactive behavior for the personal website
@@ -13,7 +13,7 @@
  * - Live world clocks
  * - Contact popup
  *
- * Updates in v1.7.0:
+ * Updates in v1.8.0:
  * - Reordered world clocks
  * - Added Vietnam, UK, USA, Korea, and China clocks
  * - Updated Vietnam timezone display to Hanoi
@@ -39,6 +39,7 @@ if (savedTheme) {
 
 function updateIcon() {
   const theme = root.getAttribute("data-theme");
+
   icon.textContent = theme === "dark" ? "☀️" : "🌙";
 }
 

@@ -1,17 +1,17 @@
 /* ==========================================================
    Duong Kim Cuong Personal Website
    File: theme.css
-   Version: v1.7.0
+   Version: v1.8.0
 
    Overview:
    - Main design system for the personal portfolio website
    - Uses the same clean product-style visual language as KN Origin Lab
 
-   Updates in v1.7.0:
-   - Added visible animated wave background
-   - Added flag-enhanced world clock cards
-   - Improved brand header balance
-   - Added footer quote styling
+   Updates in v1.8.0:
+   - Added stronger animated ocean-wave background
+   - Replaced emoji flags with stable region badges
+   - Reordered world clock cards
+   - Added footer quote section and copyright line
 ========================================================== */
 
 /* ==================================================
@@ -101,7 +101,13 @@ button {
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
+}
+
+.site-header,
+.page {
+  position: relative;
+  z-index: 2;
 }
 
 .wave {
@@ -110,7 +116,7 @@ button {
   width: 124%;
   height: 360px;
 
-  opacity: 0.34;
+  opacity: 0.38;
 
   background:
     radial-gradient(
@@ -119,18 +125,24 @@ button {
       transparent 68%
     );
 
-  filter: blur(22px);
+  filter: blur(18px);
 }
 
 .wave-one {
-  top: 14%;
+  top: 13%;
   animation: waveMoveOne 10s ease-in-out infinite alternate;
 }
 
 .wave-two {
   bottom: 4%;
-  opacity: 0.22;
+  opacity: 0.28;
   animation: waveMoveTwo 13s ease-in-out infinite alternate;
+}
+
+.wave-three {
+  bottom: 24%;
+  opacity: 0.18;
+  animation: waveMoveThree 16s ease-in-out infinite alternate;
 }
 
 .wave-line {
@@ -139,22 +151,22 @@ button {
   width: 140%;
   height: 120px;
 
-  opacity: 0.22;
+  opacity: 0.38;
 
   border-radius: 50%;
-  border-top: 2px solid rgba(37, 99, 235, 0.22);
+  border-top: 2px solid rgba(37, 99, 235, 0.35);
 
   transform: rotate(-2deg);
 }
 
 .wave-line-one {
-  top: 34%;
+  top: 36%;
   animation: waveLineOne 12s ease-in-out infinite alternate;
 }
 
 .wave-line-two {
-  top: 42%;
-  opacity: 0.16;
+  top: 44%;
+  opacity: 0.24;
   animation: waveLineTwo 15s ease-in-out infinite alternate;
 }
 
@@ -496,8 +508,17 @@ h1 {
   margin-bottom: 14px;
 }
 
-.flag {
-  margin-right: 6px;
+.flag-badge {
+  margin-right: 8px;
+  padding: 3px 7px;
+
+  border-radius: 999px;
+
+  color: #ffffff;
+  background: var(--primary);
+
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .info-card h2 {
@@ -630,6 +651,14 @@ h1 {
   margin-top: 14px;
 }
 
+.copyright {
+  margin-top: 24px;
+
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 650;
+}
+
 /* ==================================================
    CONTACT POPOVER
 ================================================== */
@@ -749,6 +778,16 @@ h1 {
 
   to {
     transform: translateX(-40px) translateY(-30px) rotate(-2deg);
+  }
+}
+
+@keyframes waveMoveThree {
+  from {
+    transform: translateX(-20px) translateY(0) rotate(-1deg);
+  }
+
+  to {
+    transform: translateX(30px) translateY(22px) rotate(1deg);
   }
 }
 
