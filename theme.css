@@ -110,22 +110,45 @@ a {
   padding: 34px 0 70px;
 }
 
+.hero,
+.section,
+.info-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
 .hero {
+  position: relative;
+  overflow: hidden;
+
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.85fr);
   align-items: center;
   gap: 48px;
 
   padding: 64px;
-
-  border: 1px solid var(--border);
   border-radius: 34px;
 
   background: rgba(255, 255, 255, 0.66);
-  box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
 
   animation: fadeUp 0.7s ease both;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+  filter: blur(40px);
+  pointer-events: none;
 }
 
 [data-theme="dark"] .hero {
@@ -133,7 +156,8 @@ a {
 }
 
 .eyebrow,
-.section-label {
+.section-label,
+.info-label {
   width: fit-content;
 
   margin: 0 0 24px;
@@ -150,7 +174,6 @@ a {
 
 h1 {
   max-width: 760px;
-
   margin: 0;
 
   font-size: clamp(48px, 7vw, 82px);
@@ -290,15 +313,53 @@ h1 {
   font-weight: 800;
 }
 
+.quick-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+
+  margin-top: 24px;
+
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.12s;
+}
+
+.info-card {
+  padding: 26px;
+  border-radius: 24px;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.38);
+}
+
+.info-label {
+  margin-bottom: 14px;
+}
+
+.info-card h2 {
+  margin: 0;
+
+  font-size: 30px;
+  letter-spacing: -0.05em;
+}
+
+.info-card p:last-child {
+  margin: 8px 0 0;
+
+  color: var(--muted);
+  font-weight: 650;
+}
+
 .section {
   margin-top: 24px;
   padding: 34px;
-
-  border: 1px solid var(--border);
   border-radius: 28px;
-
-  background: var(--surface);
-  box-shadow: var(--shadow);
 
   animation: fadeUp 0.7s ease both;
 }
@@ -401,7 +462,8 @@ h1 {
     min-height: 230px;
   }
 
-  .grid {
+  .grid,
+  .quick-info {
     grid-template-columns: 1fr;
   }
 

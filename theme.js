@@ -27,3 +27,34 @@ toggle.addEventListener("click", () => {
 
   updateIcon();
 });
+
+function updateClock() {
+  const clock = document.getElementById("clock");
+  const date = document.getElementById("date");
+  const timezone = document.getElementById("timezone");
+
+  if (!clock || !date || !timezone) return;
+
+  const now = new Date();
+
+  const timeText = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Seoul",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(now);
+
+  const dateText = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Seoul",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(now);
+
+  clock.textContent = timeText;
+  date.textContent = dateText;
+  timezone.textContent = "Seoul, South Korea";
+}
+
+updateClock();
+setInterval(updateClock, 1000);
