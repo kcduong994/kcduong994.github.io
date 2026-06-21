@@ -1,21 +1,3 @@
-/**
- * ==========================================================
- * Duong Kim Cuong Personal Website
- * File: theme.js
- * Version: v1.8.2
- *
- * Features:
- * - Light/Dark mode
- * - Theme persistence using localStorage
- * - Live world clocks
- * - Contact popup
- * - Footer typewriter quote
-========================================================== */
-
-/* ==================================================
-   THEME TOGGLE
-================================================== */
-
 const root = document.documentElement;
 const toggle = document.getElementById("themeToggle");
 const icon = document.getElementById("themeIcon");
@@ -32,24 +14,24 @@ if (savedTheme) {
 function updateIcon() {
   const theme = root.getAttribute("data-theme");
 
-  icon.textContent = theme === "dark" ? "☀️" : "🌙";
+  if (icon) {
+    icon.textContent = theme === "dark" ? "☀️" : "🌙";
+  }
 }
 
 updateIcon();
 
-toggle.addEventListener("click", () => {
-  const currentTheme = root.getAttribute("data-theme");
-  const nextTheme = currentTheme === "dark" ? "light" : "dark";
+if (toggle) {
+  toggle.addEventListener("click", () => {
+    const currentTheme = root.getAttribute("data-theme");
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
-  root.setAttribute("data-theme", nextTheme);
-  localStorage.setItem("theme", nextTheme);
+    root.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("theme", nextTheme);
 
-  updateIcon();
-});
-
-/* ==================================================
-   WORLD CLOCKS
-================================================== */
+    updateIcon();
+  });
+}
 
 function formatTime(timeZone) {
   return new Intl.DateTimeFormat("en-GB", {
@@ -81,50 +63,48 @@ function updateWorldClocks() {
 updateWorldClocks();
 setInterval(updateWorldClocks, 1000);
 
-/* ==================================================
-   CONTACT POPOVER
-================================================== */
-
 const contactButton = document.getElementById("contactButton");
 const contactLinkButton = document.getElementById("contactLinkButton");
 const contactPopover = document.getElementById("contactPopover");
 const closeContact = document.getElementById("closeContact");
 
 function openContactPopover() {
-  contactPopover.classList.add("open");
+  if (contactPopover) {
+    contactPopover.classList.add("open");
+  }
 }
 
 function closeContactPopover() {
-  contactPopover.classList.remove("open");
+  if (contactPopover) {
+    contactPopover.classList.remove("open");
+  }
 }
 
-if (contactPopover && closeContact) {
-  if (contactButton) {
-    contactButton.addEventListener("click", openContactPopover);
-  }
+if (contactButton) {
+  contactButton.addEventListener("click", openContactPopover);
+}
 
-  if (contactLinkButton) {
-    contactLinkButton.addEventListener("click", openContactPopover);
-  }
+if (contactLinkButton) {
+  contactLinkButton.addEventListener("click", openContactPopover);
+}
 
+if (closeContact) {
   closeContact.addEventListener("click", closeContactPopover);
+}
 
+if (contactPopover) {
   contactPopover.addEventListener("click", (event) => {
     if (event.target === contactPopover) {
       closeContactPopover();
     }
   });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeContactPopover();
-    }
-  });
 }
 
-/* ==================================================
-   FOOTER TYPEWRITER QUOTE
-================================================== */
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeContactPopover();
+  }
+});
 
 const quoteLine = document.getElementById("quoteLine");
 
@@ -142,7 +122,11 @@ function typeQuote() {
 
   const currentQuote = quotes[quoteIndex];
 
-  charIndex += isDeleting ? -1 : 1;
+  if (isDeleting) {
+    charIndex -= 1;
+  } else {
+    charIndex += 1;
+  }
 
   quoteLine.textContent = currentQuote.slice(0, charIndex);
 

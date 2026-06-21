@@ -1,14 +1,3 @@
-/* ==========================================================
-   Duong Kim Cuong Personal Website
-   File: theme.css
-   Version: v1.8.2
-
-   Updates:
-   - Replaced ocean-wave background with Windows-style aurora glow
-   - Improved clock cards and CSS flags
-   - Added typewriter footer styling
-========================================================== */
-
 * {
   box-sizing: border-box;
 }
@@ -71,9 +60,7 @@ button {
   font: inherit;
 }
 
-/* ==================================================
-   WINDOWS-STYLE AURORA BACKGROUND
-================================================== */
+/* Windows-style aurora background */
 
 .aurora-background {
   position: fixed;
@@ -99,11 +86,9 @@ button {
   position: absolute;
   width: 620px;
   height: 620px;
-
   border-radius: 999px;
   filter: blur(70px);
   opacity: 0.55;
-
   mix-blend-mode: multiply;
 }
 
@@ -139,9 +124,7 @@ button {
   z-index: 2;
 }
 
-/* ==================================================
-   HEADER
-================================================== */
+/* Header */
 
 .site-header {
   width: min(1180px, calc(100% - 40px));
@@ -201,9 +184,7 @@ button {
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
-/* ==================================================
-   MAIN LAYOUT
-================================================== */
+/* Layout */
 
 .page {
   width: min(1180px, calc(100% - 40px));
@@ -221,9 +202,7 @@ button {
   backdrop-filter: blur(18px);
 }
 
-/* ==================================================
-   HERO
-================================================== */
+/* Hero */
 
 .hero {
   position: relative;
@@ -295,9 +274,7 @@ h1 {
   gap: 14px;
 }
 
-/* ==================================================
-   BUTTONS
-================================================== */
+/* Buttons */
 
 .button,
 .links a,
@@ -352,9 +329,7 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* ==================================================
-   PROJECT CARD
-================================================== */
+/* Project card */
 
 .project-card {
   min-height: 300px;
@@ -412,26 +387,22 @@ h1 {
 
 .project-card h2 {
   margin: 0;
-
   font-size: 34px;
   letter-spacing: -0.06em;
 }
 
 .project-card p {
   margin: 10px 0 0;
-
   color: var(--muted);
   font-size: 16px;
   font-weight: 800;
 }
 
-/* ==================================================
-   WORLD CLOCKS
-================================================== */
+/* World clocks */
 
 .quick-info {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 18px;
 
   margin-top: 24px;
@@ -441,7 +412,7 @@ h1 {
 }
 
 .info-card {
-  min-height: 178px;
+  min-height: 184px;
   padding: 24px;
   border-radius: 24px;
 
@@ -455,103 +426,155 @@ h1 {
   border-color: rgba(37, 99, 235, 0.38);
 }
 
-.flag {
-  display: inline-block;
-  width: 36px;
-  height: 24px;
-  margin-bottom: 14px;
-
-  border-radius: 7px;
-  box-shadow:
-    inset 0 0 0 1px rgba(15, 23, 42, 0.12),
-    0 8px 18px rgba(15, 23, 42, 0.08);
-}
-
-.flag-vn,
-.flag-cn {
-  position: relative;
-  background: #dc2626;
-}
-
-.flag-vn::after,
-.flag-cn::after {
-  content: "★";
-  position: absolute;
-  inset: 0;
-
-  display: grid;
-  place-items: center;
-
-  color: #facc15;
-  font-size: 13px;
-}
-
-.flag-uk {
-  background:
-    linear-gradient(90deg, transparent 42%, #fff 42%, #fff 58%, transparent 58%),
-    linear-gradient(0deg, transparent 38%, #fff 38%, #fff 62%, transparent 62%),
-    linear-gradient(90deg, transparent 46%, #dc2626 46%, #dc2626 54%, transparent 54%),
-    linear-gradient(0deg, transparent 43%, #dc2626 43%, #dc2626 57%, transparent 57%),
-    #1d4ed8;
-}
-
-.flag-us {
-  position: relative;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #dc2626 0 14%,
-      #fff 14% 28%,
-      #dc2626 28% 42%,
-      #fff 42% 56%,
-      #dc2626 56% 70%,
-      #fff 70% 84%,
-      #dc2626 84% 100%
-    );
-}
-
-.flag-us::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 16px;
-  height: 13px;
-
-  background: #1d4ed8;
-  border-radius: 7px 0 4px 0;
-}
-
-.flag-kr {
-  background:
-    radial-gradient(circle at 50% 50%, #dc2626 0 20%, #2563eb 21% 36%, transparent 37%),
-    #ffffff;
-}
-
 .info-label {
   margin-bottom: 10px;
 }
 
 .info-card h2 {
   margin: 0;
-
-  font-size: 26px;
+  font-size: 25px;
   letter-spacing: -0.05em;
 }
 
 .info-card p:last-child {
   margin: 8px 0 0;
-
   color: var(--muted);
-  font-size: 14px;
   font-weight: 650;
+  font-size: 14px;
 }
 
-/* ==================================================
-   SECTIONS
-================================================== */
+/* CSS flags */
+
+.flag {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 25px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  border-radius: 7px;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.16),
+    0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+/* Vietnam */
+.flag-vn {
+  background: #da251d;
+}
+
+.flag-vn::after {
+  content: "★";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #ffdf00;
+  font-size: 15px;
+}
+
+/* China */
+.flag-cn {
+  background: #de2910;
+}
+
+.flag-cn::before {
+  content: "★";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  color: #ffde00;
+  font-size: 13px;
+}
+
+.flag-cn::after {
+  content: "★ ★\A ★ ★";
+  white-space: pre;
+  position: absolute;
+  top: 3px;
+  left: 18px;
+  color: #ffde00;
+  font-size: 5px;
+  line-height: 8px;
+}
+
+/* United Kingdom */
+.flag-uk {
+  background:
+    linear-gradient(33deg, transparent 42%, #ffffff 42%, #ffffff 49%, #c8102e 49%, #c8102e 54%, #ffffff 54%, #ffffff 61%, transparent 61%),
+    linear-gradient(-33deg, transparent 42%, #ffffff 42%, #ffffff 49%, #c8102e 49%, #c8102e 54%, #ffffff 54%, #ffffff 61%, transparent 61%),
+    linear-gradient(90deg, transparent 41%, #ffffff 41%, #ffffff 59%, transparent 59%),
+    linear-gradient(0deg, transparent 36%, #ffffff 36%, #ffffff 64%, transparent 64%),
+    linear-gradient(90deg, transparent 46%, #c8102e 46%, #c8102e 54%, transparent 54%),
+    linear-gradient(0deg, transparent 43%, #c8102e 43%, #c8102e 57%, transparent 57%),
+    #012169;
+}
+
+/* United States */
+.flag-us {
+  background:
+    linear-gradient(
+      to bottom,
+      #b22234 0 7.7%,
+      #ffffff 7.7% 15.4%,
+      #b22234 15.4% 23.1%,
+      #ffffff 23.1% 30.8%,
+      #b22234 30.8% 38.5%,
+      #ffffff 38.5% 46.2%,
+      #b22234 46.2% 53.9%,
+      #ffffff 53.9% 61.6%,
+      #b22234 61.6% 69.3%,
+      #ffffff 69.3% 77%,
+      #b22234 77% 84.7%,
+      #ffffff 84.7% 92.4%,
+      #b22234 92.4% 100%
+    );
+}
+
+.flag-us::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 13.5px;
+  left: 0;
+  top: 0;
+  background: #3c3b6e;
+  border-radius: 7px 0 4px 0;
+}
+
+/* Korea */
+.flag-kr {
+  background: #ffffff;
+}
+
+.flag-kr::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 30%, #cd2e3a 0 48%, transparent 49%),
+    radial-gradient(circle at 50% 70%, #0047a0 0 48%, transparent 49%);
+}
+
+.flag-kr::after {
+  content: "";
+  position: absolute;
+  inset: 4px 5px;
+  background:
+    linear-gradient(#111 0 0) left top / 8px 2px no-repeat,
+    linear-gradient(#111 0 0) left 4px top 4px / 8px 2px no-repeat,
+    linear-gradient(#111 0 0) left 8px top 8px / 8px 2px no-repeat,
+    linear-gradient(#111 0 0) right top / 8px 2px no-repeat,
+    linear-gradient(#111 0 0) right 4px top 4px / 8px 2px no-repeat,
+    linear-gradient(#111 0 0) right 8px top 8px / 8px 2px no-repeat;
+  opacity: 0.8;
+}
+
+/* Sections */
 
 .section {
   margin-top: 24px;
@@ -564,7 +587,6 @@ h1 {
 .section-heading h2,
 .compact h2 {
   margin: 0;
-
   font-size: 28px;
   letter-spacing: -0.05em;
 }
@@ -577,10 +599,8 @@ h1 {
 
 .card {
   padding: 24px;
-
   border: 1px solid var(--border);
   border-radius: 22px;
-
   background: var(--surface-soft);
 
   transition:
@@ -599,7 +619,6 @@ h1 {
 
 .card h3 {
   margin: 16px 0 10px;
-
   font-size: 19px;
   letter-spacing: -0.03em;
 }
@@ -607,7 +626,6 @@ h1 {
 .card p,
 .section-text {
   margin: 0;
-
   color: var(--muted);
   line-height: 1.65;
 }
@@ -627,18 +645,13 @@ h1 {
   margin-top: 8px;
 }
 
-/* ==================================================
-   FOOTER TYPEWRITER
-================================================== */
+/* Footer */
 
 .site-footer {
   margin-top: 28px;
   padding: 42px 36px;
-
   border-radius: 28px;
   text-align: center;
-
-  animation: fadeUp 0.7s ease both;
 }
 
 .footer-label {
@@ -649,9 +662,7 @@ h1 {
   max-width: 860px;
   min-height: 96px;
   margin: 0 auto;
-
   color: var(--text);
-
   font-size: 22px;
   line-height: 1.75;
   font-weight: 750;
@@ -666,15 +677,12 @@ h1 {
 
 .copyright {
   margin-top: 28px;
-
   color: var(--muted);
   font-size: 14px;
   font-weight: 650;
 }
 
-/* ==================================================
-   CONTACT POPOVER
-================================================== */
+/* Contact popup */
 
 .contact-popover {
   position: fixed;
@@ -731,15 +739,12 @@ h1 {
 
 .contact-email {
   margin: 10px 0 24px;
-
   color: var(--muted);
   font-size: 18px;
   font-weight: 700;
 }
 
-/* ==================================================
-   ANIMATIONS
-================================================== */
+/* Animations */
 
 @keyframes fadeUp {
   from {
@@ -775,36 +780,6 @@ h1 {
   }
 }
 
-@keyframes auroraFloatOne {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  to {
-    transform: translate3d(90px, 80px, 0) scale(1.08);
-  }
-}
-
-@keyframes auroraFloatTwo {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  to {
-    transform: translate3d(-110px, 90px, 0) scale(1.12);
-  }
-}
-
-@keyframes auroraFloatThree {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  to {
-    transform: translate3d(80px, -80px, 0) scale(1.1);
-  }
-}
-
 @keyframes cursorBlink {
   0%, 45% {
     opacity: 1;
@@ -815,9 +790,37 @@ h1 {
   }
 }
 
-/* ==================================================
-   RESPONSIVE DESIGN
-================================================== */
+@keyframes auroraFloatOne {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(80px, 40px) scale(1.08);
+  }
+}
+
+@keyframes auroraFloatTwo {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(-80px, 60px) scale(1.05);
+  }
+}
+
+@keyframes auroraFloatThree {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(70px, -70px) scale(1.12);
+  }
+}
+
+/* Responsive */
 
 @media (max-width: 1180px) {
   .quick-info {
@@ -893,12 +896,12 @@ h1 {
     flex-direction: column;
   }
 
+  .site-footer {
+    padding: 26px;
+  }
+
   .typewriter {
     min-height: 140px;
     font-size: 18px;
-  }
-
-  .site-footer {
-    padding: 28px;
   }
 }
