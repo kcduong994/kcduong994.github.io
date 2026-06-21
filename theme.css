@@ -62,6 +62,43 @@ button {
   font: inherit;
 }
 
+.wave-background {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wave {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 260px;
+
+  opacity: 0.18;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(37, 99, 235, 0.28),
+      transparent 65%
+    );
+
+  filter: blur(28px);
+}
+
+.wave-one {
+  top: 18%;
+  animation: waveMoveOne 9s ease-in-out infinite alternate;
+}
+
+.wave-two {
+  bottom: 8%;
+  opacity: 0.12;
+  animation: waveMoveTwo 12s ease-in-out infinite alternate;
+}
+
 .site-header {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
@@ -74,9 +111,21 @@ button {
 }
 
 .brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-name {
   font-size: 18px;
   font-weight: 850;
   letter-spacing: -0.04em;
+}
+
+.brand-role {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .nav {
@@ -183,6 +232,15 @@ h1 {
   font-size: clamp(48px, 7vw, 82px);
   line-height: 0.95;
   letter-spacing: -0.07em;
+}
+
+.subtitle {
+  margin: 18px 0 0;
+
+  color: var(--primary);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .lead {
@@ -534,6 +592,26 @@ h1 {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes waveMoveOne {
+  from {
+    transform: translateX(-40px) translateY(0) rotate(-2deg);
+  }
+
+  to {
+    transform: translateX(40px) translateY(28px) rotate(2deg);
+  }
+}
+
+@keyframes waveMoveTwo {
+  from {
+    transform: translateX(40px) translateY(0) rotate(2deg);
+  }
+
+  to {
+    transform: translateX(-40px) translateY(-24px) rotate(-2deg);
   }
 }
 
