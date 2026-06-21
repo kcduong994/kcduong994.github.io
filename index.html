@@ -1,20 +1,13 @@
 <!-- =======================================================
      Duong Kim Cuong Personal Website
      File: index.html
-     Version: v1.8.0
+     Version: v1.8.2
 
-     Overview:
-     - Personal academic/professional portfolio
-     - Connected with the KN Origin Lab ecosystem
-     - Built for coastal engineering, scientific computing, and AI
-
-     Updates in v1.8.0:
-     - Added stronger animated ocean-wave background
-     - Reordered world clocks: Vietnam, United Kingdom, United States, Korea, China
-     - Updated Vietnam location to Hanoi
-     - Added national region badges for world clocks
-     - Added footer quote section
-     - Added copyright line
+     Updates:
+     - Replaced wave background with Windows-style aurora background
+     - Improved world clock cards
+     - Added CSS-drawn flags
+     - Added typewriter quote footer
 ======================================================= -->
 
 <!DOCTYPE html>
@@ -30,17 +23,15 @@
     content="Personal website of Duong Kim Cuong — Coastal Engineering, Scientific Computing, and AI."
   />
 
-  <link rel="stylesheet" href="/theme.css?v=108" />
-  <script defer src="/theme.js?v=108"></script>
+  <link rel="stylesheet" href="/theme.css?v=109" />
+  <script defer src="/theme.js?v=109"></script>
 </head>
 
 <body>
-  <div class="wave-background" aria-hidden="true">
-    <div class="wave wave-one"></div>
-    <div class="wave wave-two"></div>
-    <div class="wave wave-three"></div>
-    <div class="wave-line wave-line-one"></div>
-    <div class="wave-line wave-line-two"></div>
+  <div class="aurora-background" aria-hidden="true">
+    <div class="aurora aurora-one"></div>
+    <div class="aurora aurora-two"></div>
+    <div class="aurora aurora-three"></div>
   </div>
 
   <header class="site-header">
@@ -63,15 +54,11 @@
   <main class="page">
     <section class="hero">
       <div class="hero-text">
-        <p class="eyebrow">
-          Coastal Engineering • Scientific Computing • AI
-        </p>
+        <p class="eyebrow">Coastal Engineering • Scientific Computing • AI</p>
 
         <h1>Duong Kim Cuong</h1>
 
-        <p class="subtitle">
-          MSc Researcher • Prospective PhD Student
-        </p>
+        <p class="subtitle">MSc Researcher • Prospective PhD Student</p>
 
         <p class="lead">
           Researching coastal processes, numerical modeling,
@@ -91,57 +78,43 @@
 
       <a class="project-card" href="https://kcduong994.github.io/kn-origin-lab/">
         <div class="kn-logo">KN</div>
-
         <h2>Origin Lab</h2>
-
-        <p>
-          Languages • Engineering • AI
-        </p>
+        <p>Languages • Engineering • AI</p>
       </a>
     </section>
 
     <section class="quick-info">
       <article class="info-card">
-        <p class="info-label">
-          <span class="flag-badge">VN</span>
-          Vietnam
-        </p>
+        <span class="flag flag-vn"></span>
+        <p class="info-label">Vietnam</p>
         <h2 id="clockVietnam">--:--:--</h2>
         <p>Hanoi, Vietnam</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">
-          <span class="flag-badge">UK</span>
-          United Kingdom
-        </p>
+        <span class="flag flag-uk"></span>
+        <p class="info-label">United Kingdom</p>
         <h2 id="clockLondon">--:--:--</h2>
         <p>London, United Kingdom</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">
-          <span class="flag-badge">US</span>
-          United States
-        </p>
+        <span class="flag flag-us"></span>
+        <p class="info-label">United States</p>
         <h2 id="clockNewYork">--:--:--</h2>
         <p>New York, United States</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">
-          <span class="flag-badge">KR</span>
-          Korea
-        </p>
+        <span class="flag flag-kr"></span>
+        <p class="info-label">Korea</p>
         <h2 id="clockSeoul">--:--:--</h2>
         <p>Seoul, South Korea</p>
       </article>
 
       <article class="info-card">
-        <p class="info-label">
-          <span class="flag-badge">CN</span>
-          China
-        </p>
+        <span class="flag flag-cn"></span>
+        <p class="info-label">China</p>
         <h2 id="clockChina">--:--:--</h2>
         <p>Beijing, China</p>
       </article>
@@ -213,15 +186,8 @@
     </section>
 
     <footer class="site-footer">
-      <blockquote>
-        <p>
-          “Forget what hurt you in the past. But never forget what it taught you.”
-        </p>
-        <p>
-          “The greatest luck in life is not finding money or winning the lottery,
-          but meeting someone who can help you reach a higher level.”
-        </p>
-      </blockquote>
+      <p class="footer-label">Personal Note</p>
+      <p class="typewriter" id="quoteLine"></p>
 
       <p class="copyright">
         © 2026 Duong Kim Cuong. Built as part of the KN Origin Lab ecosystem.
@@ -236,12 +202,9 @@
       </button>
 
       <p class="info-label">Contact</p>
-
       <h2>Email</h2>
 
-      <p class="contact-email">
-        kcduong994@gmail.com
-      </p>
+      <p class="contact-email">kcduong994@gmail.com</p>
 
       <div class="contact-actions">
         <a
@@ -253,10 +216,7 @@
           Send email →
         </a>
 
-        <a
-          class="button secondary"
-          href="mailto:kcduong994@gmail.com"
-        >
+        <a class="button secondary" href="mailto:kcduong994@gmail.com">
           Use mail app
         </a>
       </div>
