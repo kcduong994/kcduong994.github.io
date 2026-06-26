@@ -1,100 +1,309 @@
-# Duong Kim Cuong
+# Duong Kim Cuong Portfolio
 
-Personal website of Duong Kim Cuong.
+Personal academic, engineering, and software portfolio of **Duong Kim Cuong**.
 
-Research interests include:
+The website presents my work and interests across coastal engineering, hydrodynamic modeling, scientific computing, software development, and artificial intelligence.
 
-* Coastal Engineering
-* Scientific Computing
-* Numerical Modeling
-* Artificial Intelligence
-
-## Website
+## Live Website
 
 https://kcduong994.github.io/
 
-## About
+## Overview
 
-This website serves as a personal academic and professional homepage.
+This portfolio serves as a central professional website for presenting:
 
-It presents research interests, engineering projects, computational tools, and ongoing learning activities in coastal engineering, scientific computing, and artificial intelligence.
+* academic and engineering interests;
+* coastal and environmental research;
+* hydrodynamic and salinity modeling;
+* scientific computing and data analysis;
+* software development projects;
+* artificial intelligence and educational technology;
+* professional profiles and contact information.
 
-The website shares the same design language as KN Origin Lab, forming a unified ecosystem for research, learning, and technology.
+The portfolio is the main personal website of Duong Kim Cuong.
 
-## Research Interests
+Projects such as **KN Origin Lab** are presented as independent projects within this broader portfolio.
 
-### Coastal Engineering
+## Professional Profile
 
-Hydrodynamic modeling, salinity intrusion, estuarine processes, and coastal applications.
+**Duong Kim Cuong**
+
+Coastal Engineer · Researcher · Developer
+
+Primary areas of work and development include:
+
+* coastal and environmental engineering;
+* hydrodynamic modeling;
+* salinity intrusion analysis;
+* numerical modeling;
+* scientific computing;
+* environmental data analysis;
+* software engineering;
+* artificial intelligence;
+* structured educational systems.
+
+## Research and Development Areas
+
+### Coastal and Environmental Engineering
+
+Research and engineering interests include:
+
+* hydrodynamic processes;
+* salinity intrusion;
+* estuarine and coastal systems;
+* numerical model calibration;
+* model validation;
+* environmental engineering applications;
+* interpretation of observed and simulated data.
 
 ### Scientific Computing
 
-Python, numerical methods, data analysis, visualization, and computational workflows.
+Computational interests include:
 
-### Artificial Intelligence
+* Python programming;
+* numerical methods;
+* engineering data processing;
+* validation workflows;
+* scientific visualization;
+* automation;
+* reproducible computational analysis.
 
-AI-assisted learning, automation, engineering applications, and intelligent educational tools.
+### Software and Artificial Intelligence
 
-## Current Position
+Development interests include:
 
-Researcher and engineer working in coastal processes, numerical modeling, and scientific computing.
+* JavaScript and TypeScript applications;
+* multilingual educational systems;
+* AI-assisted learning;
+* knowledge visualization;
+* structured data systems;
+* interactive technical tools;
+* computational thinking.
 
-## Future Goal
-
-Prospective PhD student in:
-
-* Coastal Engineering
-* Numerical Modeling
-* Environmental Fluid Mechanics
-* Scientific Computing
-
-Actively preparing for future doctoral studies and international research opportunities.
-
-## Featured Project
+## Selected Projects
 
 ### KN Origin Lab
 
-A personal laboratory for:
+KN Origin Lab is a Korean-first multilingual platform for:
 
-* Languages
-* Engineering
-* Scientific Computing
-* Artificial Intelligence
+* Korean grammar engineering;
+* structured language learning;
+* practical communication;
+* vocabulary systems;
+* knowledge visualization;
+* multilingual explanations;
+* AI-assisted education.
 
-Project:
+Live project:
 
-https://kcduong994.github.io/kn-origin-lab/
+https://kn-origin-lab.pages.dev/
 
-## Technologies
+The KN Origin Lab source repository is maintained separately as a private project.
+
+### Hydrodynamic and Salinity Analysis
+
+Research workflows involving:
+
+* hydrodynamic simulation;
+* salinity intrusion modeling;
+* environmental observations;
+* model calibration;
+* model validation;
+* performance evaluation;
+* engineering interpretation.
+
+### Python Learning Portfolio
+
+A structured collection of Python workshops, laboratories, and certification projects focused on programming fundamentals, validation, numerical thinking, and engineering-oriented applications.
+
+Repository:
+
+https://github.com/kcduong994/freecodecamp-python
+
+## Website Features
+
+The portfolio currently includes:
+
+* responsive desktop, tablet, and mobile layouts;
+* light and dark themes;
+* persistent theme preferences;
+* professional research and project sections;
+* selected project cards;
+* live international clocks;
+* a Personal Note typewriter section;
+* an accessible contact dialog;
+* keyboard navigation and focus handling;
+* reduced-motion support;
+* an interactive environmental globe;
+* simulated wind, temperature, wave, and salinity layers;
+* animated environmental vector particles;
+* globe rotation and zoom controls;
+* real-time coordinate display.
+
+## Environmental Visualization
+
+The portfolio includes an original interactive environmental visualization built with the HTML Canvas API.
+
+The current visualization is a conceptual and educational prototype. Its wind, temperature, wave, and salinity fields are generated mathematically for interface development and demonstration.
+
+The visualization does not currently display operational forecasts, measured observations, or validated scientific model results.
+
+Future development may include:
+
+* real environmental datasets;
+* meteorological and oceanographic APIs;
+* validated hydrodynamic model outputs;
+* time-series controls;
+* interactive legends;
+* station observations;
+* coastal and estuarine analysis layers;
+* WebGL rendering for larger datasets.
+
+## Technology Stack
 
 * HTML5
 * CSS3
 * JavaScript
-* Python
-* MATLAB
+* Canvas 2D API
+* `Intl.DateTimeFormat`
 * Git
+* GitHub
 * GitHub Pages
 
-## Features
+The website is intentionally built without a frontend framework to keep the portfolio lightweight, transparent, and easy to maintain.
 
-* Responsive design
-* Light / Dark mode
-* World clocks
-* Contact popup
-* Glassmorphism interface
-* Smooth animations
+## Project Structure
+
+```text
+.
+├── environment-map.js
+├── index.html
+├── LICENSE
+├── README.md
+├── theme.css
+└── theme.js
+```
+
+### File Responsibilities
+
+* `index.html` — main portfolio page and semantic website structure;
+* `theme.css` — complete visual system, responsive layout, themes, and component styling;
+* `theme.js` — theme preferences, world clocks, contact dialog, and typewriter behavior;
+* `environment-map.js` — interactive environmental globe and simulated data layers;
+* `README.md` — project documentation;
+* `LICENSE` — proprietary usage and copyright terms.
+
+## Local Development
+
+Run a local static server from the repository root:
+
+```bash
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000/
+```
+
+Do not open `index.html` directly through the `file://` protocol because absolute asset paths and browser behavior may differ from the deployed website.
+
+## Validation
+
+Check JavaScript syntax with:
+
+```bash
+node --check theme.js
+node --check environment-map.js
+```
+
+Check the source files for accidentally pasted Markdown fences:
+
+````powershell
+Select-String -Path index.html,theme.css,theme.js,environment-map.js -Pattern '```'
+````
+
+The final command should return no matches.
+
+Markdown fences inside `README.md` are intentional and should not be removed.
+
+Check Git formatting issues with:
+
+```bash
+git diff --check
+```
+
+## Interaction Controls
+
+The environmental globe supports:
+
+* pointer dragging to rotate the globe;
+* mouse-wheel scrolling to zoom;
+* double-clicking to reset the view;
+* switching between wind, temperature, wave, and salinity layers;
+* live geographic coordinate display.
+
+The environmental fields are synthetic visualizations and are not intended for operational forecasting or engineering decision-making.
+
+## Deployment
+
+The website is deployed through GitHub Pages from this repository.
+
+Production website:
+
+https://kcduong994.github.io/
+
+Source repository:
+
+https://github.com/kcduong994/kcduong994.github.io
+
+Updates pushed to the published branch are deployed through GitHub Pages.
+
+## Source Availability and Usage
+
+This repository is publicly accessible so that the portfolio website can be deployed and the project structure can be reviewed.
+
+Public repository access does not mean that the project is open-source.
+
+Permission is not granted to copy, modify, redistribute, republish, sublicense, sell, or commercially exploit the original source code, design system, written content, visualizations, personal materials, or other original project materials unless prior written authorization has been provided.
+
+HTML, CSS, JavaScript, and other browser assets are publicly delivered as technically necessary for the website to operate. Their technical delivery does not grant reuse or redistribution rights.
+
+## License
+
+This project is proprietary software.
+
+Copyright © 2026–present Duong Kim Cuong. All rights reserved.
+
+Use, copying, modification, redistribution, publication, sublicensing, sale, or commercial exploitation of the original source code and project materials is prohibited unless prior written permission has been granted.
+
+See the [`LICENSE`](./LICENSE) file for the complete terms.
+
+Certain earlier versions may have been distributed under the MIT License. Those earlier copies remain governed by the license terms that accompanied them. The current and future versions are distributed under the proprietary terms contained in the current `LICENSE` file.
+
+Third-party software, services, fonts, icons, data, and external assets remain subject to their respective licenses and terms.
 
 ## Contact
 
+**Duong Kim Cuong**
+
 Email:
+
 [kcduong994@gmail.com](mailto:kcduong994@gmail.com)
 
 GitHub:
+
 https://github.com/kcduong994
 
 LinkedIn:
+
 https://www.linkedin.com/in/kim-cuong-duong-153aa4215/
+
+KN Origin Lab:
+
+https://kn-origin-lab.pages.dev/
 
 ---
 
-MSc Researcher | Prospective PhD Student
+**Coastal Engineering · Scientific Computing · Artificial Intelligence**
