@@ -137,62 +137,83 @@ var worldClocks = [
 ]
 ];
 
+worldClocks = worldClocks.map(function (clock) {
+return {
+element: document.getElementById(clock[0]),
+city: clock[2],
+timeFormatter: new Intl.DateTimeFormat(
+  "en-GB",
+  {
+    timeZone: clock[1],
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23"
+  }
+),
+dateFormatter: new Intl.DateTimeFormat(
+  "en-GB",
+  {
+    timeZone: clock[1],
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  }
+)
+};
+}).filter(function (clock) {
+return clock.element !== null;
+});
+
 function updateWorldClocks() {
 var now = new Date();
+var isoTime = now.toISOString();
 
 worldClocks.forEach(function (clock) {
-  var id = clock[0];
-  var timeZone = clock[1];
-  var city = clock[2];
-  var element = document.getElementById(id);
+  clock.element.textContent =
+    clock.timeFormatter.format(now);
 
-  if (!element) {
-    return;
-  }
-
-  var time = new Intl.DateTimeFormat(
-    "en-GB",
-    {
-      timeZone: timeZone,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hourCycle: "h23"
-    }
-  ).format(now);
-
-  var date = new Intl.DateTimeFormat(
-    "en-GB",
-    {
-      timeZone: timeZone,
-      weekday: "short",
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }
-  ).format(now);
-
-  element.textContent = time;
-
-  element.setAttribute(
+  clock.element.setAttribute(
     "datetime",
-    now.toISOString()
+    isoTime
   );
 
-  element.setAttribute(
+  clock.element.setAttribute(
     "title",
-    city + " - " + date
+    clock.city +
+      " - " +
+      clock.dateFormatter.format(now)
   );
 });
 
 }
 
+var clockIntervalId = null;
+
+function startWorldClocks() {
+if (clockIntervalId !== null) {
+return;
+}
+
 updateWorldClocks();
 
-var clockIntervalId = window.setInterval(
-updateWorldClocks,
-1000
+clockIntervalId = window.setInterval(
+  updateWorldClocks,
+  1000
 );
+}
+
+function stopWorldClocks() {
+if (clockIntervalId === null) {
+return;
+}
+
+window.clearInterval(clockIntervalId);
+clockIntervalId = null;
+}
+
+startWorldClocks();
 
 var contactButton =
 document.getElementById("contactButton");
@@ -514,15 +535,20 @@ document.addEventListener(
 "visibilitychange",
 function () {
 if (document.hidden) {
+stopWorldClocks();
 stopTypewriter();
-} else if (
-!reducedMotionQuery.matches &&
-quoteTimerId === null
+} else {
+startWorldClocks();
+
+if (
+  !reducedMotionQuery.matches &&
+  quoteTimerId === null
 ) {
 quoteTimerId = window.setTimeout(
 runTypewriter,
 250
 );
+}
 }
 }
 );
@@ -532,7 +558,7 @@ startTypewriter();
 window.addEventListener(
 "beforeunload",
 function () {
-window.clearInterval(clockIntervalId);
+stopWorldClocks();
 stopTypewriter();
 }
 );

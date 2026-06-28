@@ -13,6 +13,16 @@ if (!ctx) {
 return;
 }
 
+var backgroundCanvas =
+document.createElement("canvas");
+
+var backgroundCtx =
+backgroundCanvas.getContext("2d");
+
+if (!backgroundCtx) {
+return;
+}
+
 var buttons = Array.prototype.slice.call(
 document.querySelectorAll("[data-environment-layer]")
 );
@@ -165,7 +175,10 @@ startLon: 110,
 startTilt: 18,
 
 lastTime: 0,
-frameId: 0
+frameId: 0,
+pageVisible: !document.hidden,
+canvasVisible: true,
+backgroundDirty: true
 
 };
 
@@ -438,7 +451,22 @@ canvas.height =
     state.dpr
   );
 
+backgroundCanvas.width =
+  canvas.width;
+
+backgroundCanvas.height =
+  canvas.height;
+
 ctx.setTransform(
+  state.dpr,
+  0,
+  0,
+  state.dpr,
+  0,
+  0
+);
+
+backgroundCtx.setTransform(
   state.dpr,
   0,
   0,
@@ -462,6 +490,8 @@ state.radius =
   state.zoom;
 
 createParticles();
+state.backgroundDirty = true;
+requestRender();
 
 }
 
@@ -944,7 +974,30 @@ ctx.restore();
 
 }
 
+function drawBackground() {
+var foregroundCtx = ctx;
+
+ctx = backgroundCtx;
+
+ctx.clearRect(
+  0,
+  0,
+  state.width,
+  state.height
+);
+
+drawBase();
+drawHeat();
+drawGrid();
+drawLand();
+
+ctx = foregroundCtx;
+state.backgroundDirty = false;
+}
+
 function drawScene(timestamp) {
+state.frameId = 0;
+
 var delta =
 state.lastTime
 ? timestamp -
@@ -961,20 +1014,56 @@ ctx.clearRect(
   state.height
 );
 
-drawBase();
-drawHeat();
-drawGrid();
-drawLand();
+if (state.backgroundDirty) {
+  drawBackground();
+}
+
+ctx.drawImage(
+  backgroundCanvas,
+  0,
+  0,
+  state.width,
+  state.height
+);
 
 if (!reducedMotion.matches) {
   drawParticles(delta);
+}
+
+if (
+  state.pageVisible &&
+  state.canvasVisible &&
+  !reducedMotion.matches
+) {
+  state.frameId =
+    window.requestAnimationFrame(
+      drawScene
+    );
+}
+
+}
+
+function requestRender() {
+if (state.frameId !== 0) {
+return;
 }
 
 state.frameId =
   window.requestAnimationFrame(
     drawScene
   );
+}
 
+function stopRendering() {
+if (state.frameId !== 0) {
+  window.cancelAnimationFrame(
+    state.frameId
+  );
+
+  state.frameId = 0;
+}
+
+state.lastTime = 0;
 }
 
 function updateLayerInterface() {
@@ -1028,8 +1117,10 @@ return;
 state.activeLayer =
   layer;
 
+state.backgroundDirty = true;
 updateLayerInterface();
 createParticles();
+requestRender();
 
 }
 
@@ -1188,6 +1279,9 @@ state.tiltLat =
     55
   );
 
+state.backgroundDirty = true;
+requestRender();
+
 }
 
 function pointerUp(event) {
@@ -1229,6 +1323,9 @@ state.radius =
   0.42 *
   state.zoom;
 
+state.backgroundDirty = true;
+requestRender();
+
 }
 
 function resetView() {
@@ -1247,6 +1344,9 @@ state.radius =
     state.height
   ) *
   0.42;
+
+state.backgroundDirty = true;
+requestRender();
 
 }
 
@@ -1310,9 +1410,71 @@ canvas
 updateLayerInterface();
 resize();
 
-state.frameId =
-window.requestAnimationFrame(
-drawScene
+requestRender();
+
+var intersectionObserver = null;
+
+if ("IntersectionObserver" in window) {
+intersectionObserver =
+  new IntersectionObserver(
+    function (entries) {
+      state.canvasVisible =
+        entries[0].isIntersecting;
+
+      if (state.canvasVisible) {
+        requestRender();
+      } else {
+        stopRendering();
+      }
+    },
+    {
+      rootMargin: "120px 0px"
+    }
+  );
+
+intersectionObserver.observe(canvas);
+}
+
+document.addEventListener(
+"visibilitychange",
+function () {
+state.pageVisible = !document.hidden;
+
+if (state.pageVisible) {
+  requestRender();
+} else {
+  stopRendering();
+}
+}
+);
+
+if (
+typeof reducedMotion.addEventListener ===
+"function"
+) {
+reducedMotion.addEventListener(
+  "change",
+  function () {
+    stopRendering();
+    requestRender();
+  }
+);
+}
+
+var themeObserver =
+new MutationObserver(
+function () {
+state.backgroundDirty = true;
+requestRender();
+}
+);
+
+themeObserver.observe(
+document.documentElement,
+{
+attributes: true,
+attributeFilter: ["data-theme"]
+}
 );
 
 window.addEventListener(
@@ -1323,6 +1485,12 @@ state.frameId
 );
 
   resizeObserver.disconnect();
+
+  if (intersectionObserver) {
+    intersectionObserver.disconnect();
+  }
+
+  themeObserver.disconnect();
 }
 
 );
