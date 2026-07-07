@@ -2655,3 +2655,27 @@ transition-duration: 0.01ms !important;
 animation: none;
 }
 }
+.environment-map canvas,
+.environment-visual canvas,
+.hero-visual canvas,
+.hero-map canvas {
+  min-height: 560px;
+}
+
+.environment-map,
+.environment-visual,
+.hero-visual,
+.hero-map {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (max-width: 900px) {
+  .environment-map canvas,
+  .environment-visual canvas,
+  .hero-visual canvas,
+  .hero-map canvas {
+    min-height: 460px;
+  }
+}
