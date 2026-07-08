@@ -283,16 +283,23 @@
     return null;
   }
 
-  function getThemeMode() {
-    const root = document.documentElement;
-    const body = document.body;
-    const rootTheme = root.getAttribute("data-theme");
-    const bodyTheme = body.getAttribute("data-theme");
+  function getVisualizationThemeMode() {
+    /*
+      Keep the environmental visualization in a permanent night rendering.
+      This isolates the globe and solar-system visual from the outer page theme,
+      so the light website layout remains unchanged while the scientific map
+      keeps the darker atmosphere requested for the hero visual.
 
-    if (rootTheme === "dark" || bodyTheme === "dark") return "dark";
-    if (root.classList.contains("dark") || body.classList.contains("dark")) return "dark";
+      Optional future override:
+      <html data-environment-visual-theme="light"> or "dark".
+    */
+    const explicitTheme = document.documentElement.getAttribute("data-environment-visual-theme");
 
-    return "light";
+    if (explicitTheme === "light" || explicitTheme === "dark") {
+      return explicitTheme;
+    }
+
+    return "dark";
   }
 
   function createStarField(count) {
@@ -419,7 +426,7 @@
         lastPointerY: 0,
         userInteractedAt: 0,
         reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-        theme: getThemeMode(),
+        theme: getVisualizationThemeMode(),
         pointerCoord: { lat: 20, lon: 110 },
       };
 
@@ -1017,7 +1024,7 @@
       const dt = Math.min(0.05, Math.max(0.001, (now - this.lastFrameTime) / 1000));
       this.lastFrameTime = now;
 
-      this.state.theme = getThemeMode();
+      this.state.theme = getVisualizationThemeMode();
       this.state.zoom = lerp(this.state.zoom, this.state.targetZoom, 0.08);
 
       const idleTime = now - this.state.userInteractedAt;
@@ -1095,19 +1102,30 @@
     }
 
     drawBackgroundOrrery(elapsed) {
-      if (this.width < 540 || this.height < 420) return;
+      if (this.width < 300 || this.height < 320) return;
 
       const ctx = this.ctx;
       const dark = this.state.theme === "dark";
       const layout = this.getLayout();
+      const compact = this.width < 540 || this.height < 420;
 
       /*
         Decorative solar-system orrery.
-        It is intentionally not boxed like a UI panel and does not need clicks.
+        Desktop keeps the existing scientific background composition.
+        Mobile uses a compact top-left orbit so the solar-system context remains
+        visible instead of being hidden behind the Earth-only crop.
       */
-      const cx = clamp(layout.safeLeft + layout.safeWidth * 0.19, 86, this.width * 0.42);
-      const cy = clamp(layout.safeTop - 10, 74, this.height * 0.31);
-      const maxOrbit = Math.min(layout.radius * 0.9, this.width * 0.18, 118);
+      const cx = compact
+        ? clamp(this.width * 0.3, 74, this.width - 118)
+        : clamp(layout.safeLeft + layout.safeWidth * 0.19, 86, this.width * 0.42);
+      const cy = compact
+        ? clamp(this.height * 0.16, 58, 96)
+        : clamp(layout.safeTop - 10, 74, this.height * 0.31);
+      const maxOrbit = compact
+        ? Math.min(this.width * 0.15, this.height * 0.115, 58)
+        : Math.min(layout.radius * 0.9, this.width * 0.18, 118);
+      const orbitCompression = compact ? 0.34 : 0.38;
+      const labelOffset = compact ? 0.68 : 0.55;
 
       ctx.save();
       ctx.globalCompositeOperation = dark ? "screen" : "source-over";
@@ -1121,13 +1139,13 @@
       ctx.ellipse(cx, cy, maxOrbit * 1.36, maxOrbit * 0.56, -0.28, 0, TWO_PI);
       ctx.fill();
 
-      this.drawOrrerySun(cx, cy);
+      this.drawOrrerySun(cx, cy, compact);
 
       for (let i = 1; i < SOLAR_SYSTEM.length; i += 1) {
         const planet = SOLAR_SYSTEM[i];
         const t = i / (SOLAR_SYSTEM.length - 1);
         const orbitX = maxOrbit * (0.2 + t * 0.92);
-        const orbitY = orbitX * 0.38;
+        const orbitY = orbitX * orbitCompression;
         const angle = elapsed * (0.9 / (i * 0.55 + 0.8)) + i * 0.74;
         const x = cx + Math.cos(angle) * orbitX;
         const y = cy + Math.sin(angle) * orbitY;
@@ -1135,27 +1153,29 @@
 
         ctx.save();
         ctx.strokeStyle = dark ? "rgba(125, 211, 252, 0.26)" : "rgba(2, 132, 199, 0.2)";
-        ctx.lineWidth = 0.85;
+        ctx.lineWidth = compact ? 0.72 : 0.85;
         ctx.beginPath();
         ctx.ellipse(cx, cy, orbitX, orbitY, 0, 0, TWO_PI);
         ctx.stroke();
         ctx.restore();
 
-        this.drawOrreryPlanet(planet, x, y, front, i);
+        this.drawOrreryPlanet(planet, x, y, front, i, compact);
       }
 
       ctx.fillStyle = dark ? "rgba(226, 232, 240, 0.56)" : "rgba(15, 23, 42, 0.42)";
-      ctx.font = "800 8px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      ctx.font = compact
+        ? "800 7px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        : "800 8px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("Solar system", cx, cy + maxOrbit * 0.55);
+      ctx.fillText("Solar system", cx, cy + maxOrbit * labelOffset);
 
       ctx.restore();
     }
 
-    drawOrrerySun(x, y) {
+    drawOrrerySun(x, y, compact) {
       const ctx = this.ctx;
-      const radius = 13;
+      const radius = compact ? 8.5 : 13;
 
       const glow = ctx.createRadialGradient(x, y, 2, x, y, radius * 3.2);
       glow.addColorStop(0, "rgba(254, 240, 138, 0.95)");
@@ -1178,9 +1198,11 @@
       ctx.fill();
     }
 
-    drawOrreryPlanet(planet, x, y, front, index) {
+    drawOrreryPlanet(planet, x, y, front, index, compact) {
       const ctx = this.ctx;
-      const radius = Math.max(2.6, planet.radius * 0.82 * (front ? 1.1 : 0.9));
+      const planetScale = compact ? 0.55 : 0.82;
+      const minRadius = compact ? 1.8 : 2.6;
+      const radius = Math.max(minRadius, planet.radius * planetScale * (front ? 1.1 : 0.9));
 
       ctx.save();
       ctx.globalAlpha = front ? 0.96 : 0.55;
@@ -1191,7 +1213,7 @@
 
       if (planet.ring) {
         ctx.strokeStyle = "rgba(254, 243, 199, 0.72)";
-        ctx.lineWidth = 1.1;
+        ctx.lineWidth = compact ? 0.82 : 1.1;
         ctx.beginPath();
         ctx.ellipse(x, y, radius * 1.9, radius * 0.6, -0.28, 0, TWO_PI);
         ctx.stroke();
@@ -1204,17 +1226,23 @@
 
       if (planet.name === "Jupiter") {
         ctx.strokeStyle = "rgba(120, 53, 15, 0.32)";
-        ctx.lineWidth = 1;
+        ctx.lineWidth = compact ? 0.72 : 1;
         ctx.beginPath();
         ctx.ellipse(x, y, radius * 0.82, radius * 0.08, 0, 0, TWO_PI);
         ctx.stroke();
       }
 
-      if (front || planet.name === "Jupiter" || planet.name === "Saturn") {
+      const shouldShowLabel = compact
+        ? planet.name === "Sun" || planet.name === "Jupiter" || planet.name === "Saturn" || planet.name === "Neptune"
+        : front || planet.name === "Jupiter" || planet.name === "Saturn";
+
+      if (shouldShowLabel) {
         ctx.fillStyle = this.state.theme === "dark" ? "rgba(226, 232, 240, 0.68)" : "rgba(15, 23, 42, 0.5)";
-        ctx.font = "700 7px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+        ctx.font = compact
+          ? "700 6px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          : "700 7px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(planet.name, x, y + radius + 4);
+        ctx.fillText(planet.name, x, y + radius + (compact ? 3 : 4));
       }
 
       ctx.restore();
@@ -2407,7 +2435,7 @@
 
       ctx.font = "700 10px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = "rgba(15, 23, 42, 0.72)";
+      ctx.fillStyle = this.state.theme === "dark" ? "rgba(226, 232, 240, 0.82)" : "rgba(15, 23, 42, 0.72)";
 
       ctx.textAlign = "right";
       ctx.fillText("Low", x - 8, y + height / 2);
