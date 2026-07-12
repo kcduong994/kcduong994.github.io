@@ -12,13 +12,13 @@ https://kcduong994.github.io/
 
 This portfolio serves as a central professional website for presenting:
 
-* academic and engineering interests;
-* coastal and environmental research;
-* hydrodynamic and salinity modeling;
-* scientific computing and data analysis;
-* software development projects;
-* artificial intelligence and educational technology;
-* professional profiles and contact information.
+- academic and engineering interests;
+- coastal and environmental research;
+- hydrodynamic and salinity modeling;
+- scientific computing and data analysis;
+- software development projects;
+- artificial intelligence and educational technology;
+- professional profiles and contact information.
 
 The portfolio is the main personal website of Duong Kim Cuong.
 
@@ -32,15 +32,15 @@ Coastal Engineer · Researcher · Developer
 
 Primary areas of work and development include:
 
-* coastal and environmental engineering;
-* hydrodynamic modeling;
-* salinity intrusion analysis;
-* numerical modeling;
-* scientific computing;
-* environmental data analysis;
-* software engineering;
-* artificial intelligence;
-* structured educational systems.
+- coastal and environmental engineering;
+- hydrodynamic modeling;
+- salinity intrusion analysis;
+- numerical modeling;
+- scientific computing;
+- environmental data analysis;
+- software engineering;
+- artificial intelligence;
+- structured educational systems.
 
 ## Research and Development Areas
 
@@ -48,97 +48,138 @@ Primary areas of work and development include:
 
 Research and engineering interests include:
 
-* hydrodynamic processes;
-* salinity intrusion;
-* estuarine and coastal systems;
-* numerical model calibration;
-* model validation;
-* environmental engineering applications;
-* interpretation of observed and simulated data.
+- hydrodynamic processes;
+- salinity intrusion;
+- estuarine and coastal systems;
+- numerical model calibration;
+- model validation;
+- environmental engineering applications;
+- interpretation of observed and simulated data.
 
 ### Scientific Computing
 
 Computational interests include:
 
-* Python programming;
-* numerical methods;
-* engineering data processing;
-* validation workflows;
-* scientific visualization;
-* automation;
-* reproducible computational analysis.
+- Python programming;
+- numerical methods;
+- engineering data processing;
+- model validation workflows;
+- data structures and algorithms;
+- graph traversal and shortest-path methods;
+- dynamic programming;
+- scientific visualization;
+- automation;
+- reproducible computational analysis.
 
 ### Software and Artificial Intelligence
 
 Development interests include:
 
-* JavaScript and TypeScript applications;
-* multilingual educational systems;
-* AI-assisted learning;
-* knowledge visualization;
-* structured data systems;
-* interactive technical tools;
-* computational thinking.
+- JavaScript and TypeScript applications;
+- C# and .NET learning;
+- multilingual educational systems;
+- AI-assisted learning;
+- knowledge visualization;
+- structured data systems;
+- interactive technical tools;
+- computational thinking.
 
 ## Selected Projects
 
 ### KN Origin Lab
 
-KN Origin Lab is a Korean-first multilingual platform for:
+KN Origin Lab is a multilingual learning, assessment, and knowledge-engineering platform designed for structured education and evidence-based skill development.
 
-* Korean grammar engineering;
-* structured language learning;
-* practical communication;
-* vocabulary systems;
-* knowledge visualization;
-* multilingual explanations;
-* AI-assisted education.
+Current and planned learning systems include:
+
+- Korean language learning;
+- English foundations;
+- IELTS assessment and preparation;
+- coastal engineering education;
+- scientific and engineering learning systems;
+- structured learner progress and evidence workflows;
+- local-first learning tools;
+- AI-assisted explanation and feedback;
+- multilingual knowledge visualization.
 
 Live project:
 
 https://kn-origin-lab.pages.dev/
 
-The KN Origin Lab source repository is maintained separately as a private project.
+The production frontend is publicly accessible, while the source repository is maintained separately as a private project.
 
 ### Hydrodynamic and Salinity Analysis
 
 Research workflows involving:
 
-* hydrodynamic simulation;
-* salinity intrusion modeling;
-* environmental observations;
-* model calibration;
-* model validation;
-* performance evaluation;
-* engineering interpretation.
+- hydrodynamic simulation;
+- salinity intrusion modeling;
+- environmental observations;
+- model calibration;
+- model validation;
+- performance evaluation;
+- engineering interpretation.
 
-### Python Learning Portfolio
+### Python Developer Portfolio
 
-A structured collection of Python workshops, laboratories, and certification projects focused on programming fundamentals, validation, numerical thinking, and engineering-oriented applications.
+A structured collection of Python workshops, laboratories, certification projects, and technical review notes focused on programming fundamentals, software design, algorithms, numerical thinking, and engineering-oriented problem solving.
+
+The repository covers:
+
+- Python fundamentals;
+- object-oriented programming;
+- data validation;
+- linked lists and hash tables;
+- searching and sorting algorithms;
+- graph representations;
+- breadth-first and depth-first search;
+- shortest-path algorithms;
+- recursion and backtracking;
+- dynamic programming;
+- numerical methods;
+- engineering-oriented problem solving.
 
 Repository:
 
 https://github.com/kcduong994/freecodecamp-python
 
+### C# and .NET Learning Portfolio
+
+A developing collection of workshops, exercises, study notes, and certification work from the freeCodeCamp Foundational C# with Microsoft Certification.
+
+The repository is focused on:
+
+- foundational C# syntax;
+- static typing;
+- .NET console applications;
+- Visual Studio solution and project workflows;
+- structured programming;
+- object-oriented programming;
+- debugging and software development fundamentals.
+
+Repository:
+
+https://github.com/kcduong994/freecodecamp-csharp
+
 ## Website Features
 
 The portfolio currently includes:
 
-* responsive desktop, tablet, and mobile layouts;
-* light and dark themes;
-* persistent theme preferences;
-* professional research and project sections;
-* selected project cards;
-* live international clocks;
-* a Personal Note typewriter section;
-* an accessible contact dialog;
-* keyboard navigation and focus handling;
-* reduced-motion support;
-* an interactive environmental globe;
-* simulated wind, temperature, wave, and salinity layers;
-* animated environmental vector particles;
-* globe rotation and zoom controls;
-* real-time coordinate display.
+- responsive desktop, tablet, and mobile layouts;
+- light and dark themes;
+- persistent theme preferences;
+- professional research and project sections;
+- selected project cards;
+- live international clocks;
+- a Personal Note typewriter section;
+- an accessible contact dialog;
+- keyboard navigation and focus handling;
+- reduced-motion support;
+- an interactive environmental globe;
+- simulated wind, temperature, wave, and salinity layers;
+- animated environmental vector particles;
+- globe rotation and zoom controls;
+- real-time coordinate display.
 
 ## Environmental Visualization
 
@@ -150,25 +191,25 @@ The visualization does not currently display operational forecasts, measured obs
 
 Future development may include:
 
-* real environmental datasets;
-* meteorological and oceanographic APIs;
-* validated hydrodynamic model outputs;
-* time-series controls;
-* interactive legends;
-* station observations;
-* coastal and estuarine analysis layers;
-* WebGL rendering for larger datasets.
+- real environmental datasets;
+- meteorological and oceanographic APIs;
+- validated hydrodynamic model outputs;
+- time-series controls;
+- interactive legends;
+- station observations;
+- coastal and estuarine analysis layers;
+- WebGL rendering for larger datasets.
 
 ## Technology Stack
 
-* HTML5
-* CSS3
-* JavaScript
-* Canvas 2D API
-* `Intl.DateTimeFormat`
-* Git
-* GitHub
-* GitHub Pages
+- HTML5
+- CSS3
+- JavaScript
+- Canvas 2D API
+- `Intl.DateTimeFormat`
+- Git
+- GitHub
+- GitHub Pages
 
 The website is intentionally built without a frontend framework to keep the portfolio lightweight, transparent, and easy to maintain.
 
@@ -186,12 +227,12 @@ The website is intentionally built without a frontend framework to keep the port
 
 ### File Responsibilities
 
-* `index.html` — main portfolio page and semantic website structure;
-* `theme.css` — complete visual system, responsive layout, themes, and component styling;
-* `theme.js` — theme preferences, world clocks, contact dialog, and typewriter behavior;
-* `environment-map.js` — interactive environmental globe and simulated data layers;
-* `README.md` — project documentation;
-* `LICENSE` — proprietary usage and copyright terms.
+- `index.html` — main portfolio page and semantic website structure;
+- `theme.css` — complete visual system, responsive layout, themes, and component styling;
+- `theme.js` — theme preferences, world clocks, contact dialog, and typewriter behavior;
+- `environment-map.js` — interactive environmental globe and simulated data layers;
+- `README.md` — project documentation;
+- `LICENSE` — proprietary usage and copyright terms.
 
 ## Local Development
 
@@ -238,11 +279,11 @@ git diff --check
 
 The environmental globe supports:
 
-* pointer dragging to rotate the globe;
-* mouse-wheel scrolling to zoom;
-* double-clicking to reset the view;
-* switching between wind, temperature, wave, and salinity layers;
-* live geographic coordinate display.
+- pointer dragging to rotate the globe;
+- mouse-wheel scrolling to zoom;
+- double-clicking to reset the view;
+- switching between wind, temperature, wave, and salinity layers;
+- live geographic coordinate display.
 
 The environmental fields are synthetic visualizations and are not intended for operational forecasting or engineering decision-making.
 
@@ -306,4 +347,4 @@ https://kn-origin-lab.pages.dev/
 
 ---
 
-**Coastal Engineering · Scientific Computing · Artificial Intelligence**
+**Coastal Engineering · Hydrodynamic Modeling · Scientific Computing · Software Engineering · Artificial Intelligence**
