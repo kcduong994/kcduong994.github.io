@@ -104,7 +104,7 @@ Current and planned learning systems include:
 
 Live project:
 
-https://kn-origin-lab.pages.dev/
+https://knoriginlab.com/
 
 The production frontend is publicly accessible, while the source repository is maintained separately as a private project.
 
@@ -343,7 +343,7 @@ https://www.linkedin.com/in/kim-cuong-duong-153aa4215/
 
 KN Origin Lab:
 
-https://kn-origin-lab.pages.dev/
+https://knoriginlab.com/
 
 ---
 
