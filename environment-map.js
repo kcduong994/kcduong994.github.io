@@ -4,6 +4,9 @@
   const TWO_PI = Math.PI * 2;
   const DEG = Math.PI / 180;
   const EARTH_OBLIQUITY = 23.44 * DEG;
+  const MIN_ZOOM = 0.70;
+  const MAX_ZOOM = 1.40;
+  const ZOOM_STEP = 0.12;
 
   const LAYER_ALIASES = {
     wind: "wind",
@@ -31,16 +34,15 @@
     salinity: "Ocean salinity structure with major river-plume signatures.",
   };
 
-  const SOLAR_SYSTEM = [
-    { name: "Sun", radius: 18, colorA: "#fde68a", colorB: "#f97316", order: 0 },
-    { name: "Mercury", radius: 3.6, colorA: "#e5e7eb", colorB: "#64748b", order: 1 },
-    { name: "Venus", radius: 5.2, colorA: "#fed7aa", colorB: "#c2410c", order: 2 },
-    { name: "Earth", radius: 5.6, colorA: "#67e8f9", colorB: "#2563eb", order: 3 },
-    { name: "Mars", radius: 4.6, colorA: "#fecaca", colorB: "#b91c1c", order: 4 },
-    { name: "Jupiter", radius: 10.5, colorA: "#fde68a", colorB: "#92400e", order: 5 },
-    { name: "Saturn", radius: 9.2, colorA: "#fef3c7", colorB: "#a16207", order: 6, ring: true },
-    { name: "Uranus", radius: 7.2, colorA: "#bae6fd", colorB: "#0891b2", order: 7 },
-    { name: "Neptune", radius: 7.0, colorA: "#93c5fd", colorB: "#1d4ed8", order: 8 },
+  const PLANETS = [
+    { name: "Mercury", radius: 3.6, colorA: "#e5e7eb", colorB: "#64748b" },
+    { name: "Venus", radius: 5.2, colorA: "#fed7aa", colorB: "#c2410c" },
+    { name: "Earth", radius: 5.6, colorA: "#67e8f9", colorB: "#2563eb" },
+    { name: "Mars", radius: 4.6, colorA: "#fecaca", colorB: "#b91c1c" },
+    { name: "Jupiter", radius: 10.5, colorA: "#fde68a", colorB: "#92400e" },
+    { name: "Saturn", radius: 9.2, colorA: "#fef3c7", colorB: "#a16207", ring: true },
+    { name: "Uranus", radius: 7.2, colorA: "#bae6fd", colorB: "#0891b2" },
+    { name: "Neptune", radius: 7.0, colorA: "#93c5fd", colorB: "#1d4ed8" },
   ];
 
   const CONTINENTS = [
@@ -414,11 +416,18 @@
       this.width = 0;
       this.height = 0;
       this.dpr = 1;
+      this.coordinateOutput = document.getElementById("environmentCoordinates");
+      this.zoomLevel = document.getElementById("environmentZoomLevel");
+      this.zoomInButton = document.getElementById("environmentZoomIn");
+      this.zoomOutButton = document.getElementById("environmentZoomOut");
+      this.pointerCoord = null;
+      this.hoverPosition = null;
+      this.dragPointerId = null;
 
       this.state = {
         activeLayer: "wind",
-        rotationLon: -20,
-        pitch: -8,
+        rotationLon: -110,
+        pitch: 18,
         zoom: 1,
         targetZoom: 1,
         isDragging: false,
@@ -427,7 +436,6 @@
         userInteractedAt: 0,
         reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         theme: getVisualizationThemeMode(),
-        pointerCoord: { lat: 20, lon: 110 },
       };
 
       this.starField = createStarField(220);
@@ -448,7 +456,7 @@
       this.boundPointerUp = this.handlePointerUp.bind(this);
       this.boundWheel = this.handleWheel.bind(this);
       this.boundPointerHover = this.handlePointerHover.bind(this);
-      this.boundDocumentLayerEvent = this.handleDocumentLayerEvent.bind(this);
+
 
       this.init();
     }
@@ -459,26 +467,13 @@
       this.canvas.style.display = "block";
       this.canvas.style.width = "100%";
       this.canvas.style.height = "100%";
-      this.canvas.style.touchAction = "none";
-      this.canvas.setAttribute(
-        "aria-label",
-        "Interactive 2.5D Earth system visualization with axial tilt, moon-driven tides, waves, wind, temperature, salinity, and ordered solar-system background."
-      );
-
+      this.canvas.style.touchAction = "pan-y pinch-zoom";
       this.attachCanvasEvents();
       this.attachLayerButtons();
-      this.hideExternalCoordinateReadout();
-      document.addEventListener("click", this.boundDocumentLayerEvent, true);
-      document.addEventListener("pointerdown", this.boundDocumentLayerEvent, true);
-      window.setTimeout(() => {
-        this.attachLayerButtons();
-        this.hideExternalCoordinateReadout();
-      }, 250);
-      window.setTimeout(() => {
-        this.attachLayerButtons();
-        this.hideExternalCoordinateReadout();
-      }, 900);
-      window.setTimeout(() => this.hideExternalCoordinateReadout(), 1800);
+      this.zoomInButton?.addEventListener("click", () => this.changeZoom(ZOOM_STEP));
+      this.zoomOutButton?.addEventListener("click", () => this.changeZoom(-ZOOM_STEP));
+      this.updateZoomControls();
+      this.updateExternalStatus();
 
       this.resize();
 
@@ -496,183 +491,23 @@
       this.canvas.addEventListener("pointerdown", this.boundPointerDown);
       window.addEventListener("pointermove", this.boundPointerMove);
       window.addEventListener("pointerup", this.boundPointerUp);
+      this.canvas.addEventListener("pointercancel", this.boundPointerUp);
       this.canvas.addEventListener("wheel", this.boundWheel, { passive: false });
       this.canvas.addEventListener("pointermove", this.boundPointerHover);
-      this.canvas.addEventListener("mousemove", this.boundPointerHover);
+      this.canvas.addEventListener("pointerleave", (event) => {
+        if (!this.state.isDragging && event.pointerType !== "touch") this.clearCoordinates();
+      });
+      this.canvas.addEventListener("keydown", (event) => this.handleKeyDown(event));
     }
 
     attachLayerButtons() {
-      const selectors = [
-        "[data-layer]",
-        "[data-map-layer]",
-        ".layer-button",
-        ".map-layer",
-        ".environment-layer button",
-        ".environment-controls button",
-        ".environment-control button",
-        ".hero-visual button",
-        ".hero-map button",
-      ];
+      const panel = this.canvas.closest(".environment-panel");
+      this.layerButtons = panel ? panel.querySelectorAll(".environment-toolbar button[data-layer]") : [];
 
-      let candidates = Array.prototype.slice.call(document.querySelectorAll(selectors.join(",")));
-
-      /*
-        Fallback: inspect buttons only inside the visual parent, not all buttons
-        on the entire page. This avoids binding nav/theme buttons.
-      */
-      if (this.canvas.parentElement) {
-        const localButtons = Array.prototype.slice.call(
-          this.canvas.parentElement.querySelectorAll("button, [role='button'], div, span")
-        );
-        candidates = candidates.concat(localButtons);
+      for (const button of this.layerButtons) {
+        button.addEventListener("click", () => this.setActiveLayer(button.dataset.layer));
       }
-
-      const unique = Array.from(new Set(candidates));
-      const buttons = [];
-
-      for (let i = 0; i < unique.length; i += 1) {
-        const button = unique[i];
-
-        if (!(button instanceof HTMLElement)) continue;
-
-        const layer = this.layerFromElement(button);
-
-        if (!layer) continue;
-
-        button.setAttribute("data-layer", layer);
-
-        if (button.tagName === "BUTTON") {
-          button.setAttribute("type", button.getAttribute("type") || "button");
-        }
-
-        button.style.cursor = "pointer";
-        button.style.pointerEvents = "auto";
-
-        if (button.dataset.knEarthLayerBound !== "true") {
-          const activate = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            this.setActiveLayer(layer);
-          };
-
-          button.addEventListener("click", activate);
-          button.addEventListener("pointerdown", activate);
-          button.dataset.knEarthLayerBound = "true";
-        }
-
-        buttons.push(button);
-      }
-
-      this.layerButtons = buttons;
       this.updateLayerButtons();
-    }
-
-    layerFromText(value) {
-      if (!value) return "";
-
-      const raw = String(value).trim().toLowerCase();
-
-      if (raw === "wind") return "wind";
-      if (raw === "temperature" || raw === "temp") return "temperature";
-      if (raw === "waves" || raw === "wave" || raw === "tides" || raw === "tide") return "tides";
-      if (raw === "salinity" || raw === "salt" || raw === "sali") return "salinity";
-
-      /*
-        Only match short labels. Do not match a parent container whose text is
-        "Wind Temperature Waves Salinity", otherwise every click can resolve as Wind.
-      */
-      if (raw.length <= 28) {
-        if (raw.includes("temperature") || raw.includes("temp")) return "temperature";
-        if (raw.includes("salinity") || raw.includes("salt") || raw.includes("sali")) return "salinity";
-        if (raw.includes("waves") || raw.includes("wave") || raw.includes("tides") || raw.includes("tide")) return "tides";
-        if (raw.includes("wind")) return "wind";
-      }
-
-      return "";
-    }
-
-    layerFromElement(element) {
-      if (!(element instanceof Element)) return "";
-
-      const direct = element instanceof HTMLElement ? element : null;
-
-      if (direct) {
-        const layer =
-          this.layerFromText(direct.getAttribute("data-layer")) ||
-          this.layerFromText(direct.getAttribute("data-map-layer")) ||
-          this.layerFromText(direct.getAttribute("aria-label")) ||
-          this.layerFromText(direct.textContent);
-
-        if (layer) return layer;
-      }
-
-      const closest = element.closest("[data-layer], [data-map-layer], button, [role='button'], .layer-button, .map-layer");
-
-      if (closest instanceof HTMLElement) {
-        return (
-          this.layerFromText(closest.getAttribute("data-layer")) ||
-          this.layerFromText(closest.getAttribute("data-map-layer")) ||
-          this.layerFromText(closest.getAttribute("aria-label")) ||
-          this.layerFromText(closest.textContent)
-        );
-      }
-
-      return "";
-    }
-
-    handleDocumentLayerEvent(event) {
-      const target = event.target;
-
-      if (!(target instanceof Element)) return;
-
-      const inVisual = this.canvas.parentElement && this.canvas.parentElement.contains(target);
-      const layer = this.layerFromElement(target) || this.layerFromCanvasPoint(event.clientX, event.clientY);
-
-      if (!layer) return;
-
-      /*
-        Only consume the event when it is in/near the visual area or exactly on
-        a layer-labeled element.
-      */
-      if (!inVisual && !this.layerFromElement(target)) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-      this.setActiveLayer(layer);
-    }
-
-    layerFromCanvasPoint(clientX, clientY) {
-      if (!this.canvas || typeof clientX !== "number" || typeof clientY !== "number") return "";
-
-      const rect = this.canvas.getBoundingClientRect();
-
-      if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
-        return "";
-      }
-
-      const x = ((clientX - rect.left) / rect.width) * this.width;
-      const y = ((clientY - rect.top) / rect.height) * this.height;
-
-      /*
-        Fallback hit-zone for the existing right-side layer panel.
-        This is intentionally generous because the panel is HTML above/near canvas.
-      */
-      const layers = ["wind", "temperature", "tides", "salinity"];
-      const panelWidth = 126;
-      const panelX = this.width - panelWidth - 14;
-      const panelY = 26;
-      const buttonHeight = 44;
-      const gap = 6;
-
-      for (let i = 0; i < layers.length; i += 1) {
-        const by = panelY + i * (buttonHeight + gap);
-
-        if (x >= panelX && x <= panelX + panelWidth && y >= by && y <= by + buttonHeight) {
-          return layers[i];
-        }
-      }
-
-      return "";
     }
 
     setActiveLayer(layer) {
@@ -683,37 +518,15 @@
       this.state.activeLayer = nextLayer;
       this.state.userInteractedAt = performance.now();
 
-      /*
-        Keep the Earth/Moon view stable. Layer clicks should not make the camera
-        jump around.
-      */
-      this.state.targetZoom = 1;
-
       this.updateLayerButtons();
       this.updateExternalStatus();
     }
 
     updateLayerButtons() {
-      if (!this.layerButtons) return;
-
-      for (let i = 0; i < this.layerButtons.length; i += 1) {
-        const button = this.layerButtons[i];
-        const layer = normalizeLayerName(button.getAttribute("data-layer"));
-        const isActive = layer === this.state.activeLayer;
-
-        button.classList.toggle("active", isActive);
-        button.classList.toggle("is-active", isActive);
-        button.setAttribute("aria-pressed", isActive ? "true" : "false");
-
-        if (isActive && button.textContent && button.textContent.trim().length <= 24) {
-          button.style.background = "linear-gradient(180deg, rgba(37,99,235,0.94), rgba(29,78,216,0.94))";
-          button.style.borderColor = "rgba(191,219,254,0.72)";
-          button.style.color = "rgba(248,250,252,0.98)";
-        } else if (button.textContent && button.textContent.trim().length <= 24) {
-          button.style.background = "";
-          button.style.borderColor = "";
-          button.style.color = "";
-        }
+      for (const button of this.layerButtons) {
+        const active = button.dataset.layer === this.state.activeLayer;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
       }
     }
 
@@ -748,8 +561,8 @@
       const fallbackWidth = 720;
       const fallbackHeight = 620;
 
-      this.width = Math.max(320, rect.width || fallbackWidth);
-      this.height = Math.max(420, rect.height || fallbackHeight);
+      this.width = rect.width || fallbackWidth;
+      this.height = rect.height || fallbackHeight;
 
       this.dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
 
@@ -759,21 +572,23 @@
       this.canvas.style.height = `${this.height}px`;
 
       this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+
+      if (this.hoverPosition) {
+        this.updateCoordinatesAt(this.hoverPosition.x, this.hoverPosition.y, true);
+      }
     }
 
     handlePointerHover(event) {
-      const coord = this.screenToLatLon(event.clientX, event.clientY);
-
-      if (!coord) return;
-
-      this.state.pointerCoord = coord;
-      this.updateExternalCoordinateReadout(coord);
+      if (this.state.isDragging || !event.isPrimary || event.pointerType === "touch") return;
+      this.updateCoordinatesAt(event.clientX, event.clientY, true);
     }
 
     screenToLatLon(clientX, clientY) {
       const rect = this.canvas.getBoundingClientRect();
 
       if (
+        !rect.width ||
+        !rect.height ||
         clientX < rect.left ||
         clientX > rect.right ||
         clientY < rect.top ||
@@ -826,134 +641,137 @@
       return `${Math.abs(coord.lat).toFixed(1)}° ${latDir} · ${Math.abs(coord.lon).toFixed(1)}° ${lonDir}`;
     }
 
-    hideExternalCoordinateReadout() {
-      /*
-        v17: the old page coordinate pill is not useful here and was sitting on
-        top of the visualization. Hide only elements that explicitly look like
-        latitude/longitude readouts.
-      */
-      const selectors = [
-        "[data-map-coordinates]",
-        "[data-environment-coordinates]",
-        ".map-coordinates",
-        ".coordinates",
-        ".coordinate",
-        ".coord",
-        ".hero-coordinates",
-      ];
+    updateCoordinatesAt(x, y, trackHover) {
+      const coord = this.screenToLatLon(x, y);
+      this.hoverPosition = trackHover && coord ? { x, y } : null;
+      this.setCoordinates(coord);
+    }
 
-      const candidates = Array.prototype.slice.call(
-        document.querySelectorAll(selectors.join(","))
-      );
+    setCoordinates(coord) {
+      this.pointerCoord = coord;
+      if (!this.coordinateOutput) return;
 
-      if (this.canvas.parentElement) {
-        candidates.push(
-          ...Array.prototype.slice.call(
-            this.canvas.parentElement.querySelectorAll("div, span, small, p")
-          )
-        );
-      }
-
-      const coordPattern = /\d+(\.\d+)?°\s*[NS]\s*[·,]\s*\d+(\.\d+)?°\s*[EW]/i;
-
-      for (let i = 0; i < candidates.length; i += 1) {
-        const element = candidates[i];
-
-        if (!(element instanceof HTMLElement)) continue;
-
-        const current = element.textContent || "";
-        const hasCoordinateAttr =
-          element.hasAttribute("data-map-coordinates") ||
-          element.hasAttribute("data-environment-coordinates");
-
-        if (hasCoordinateAttr || coordPattern.test(current)) {
-          element.style.display = "none";
-          element.setAttribute("aria-hidden", "true");
-        }
+      const text = coord ? this.formatCoordinate(coord) : "—";
+      if (this.coordinateOutput.textContent !== text) {
+        this.coordinateOutput.textContent = text;
       }
     }
 
-    updateExternalCoordinateReadout(coord) {
-      /*
-        Disabled intentionally in v17.
-        The old lon/lat pill looked static/non-functional and overlapped the
-        lower UI, so we hide it instead of updating it.
-      */
-      this.hideExternalCoordinateReadout();
+    clearCoordinates() {
+      this.hoverPosition = null;
+      this.setCoordinates(null);
     }
 
     handlePointerDown(event) {
-      const layer = this.layerFromCanvasPoint(event.clientX, event.clientY);
+      if (event.button !== 0 || !event.isPrimary) return;
 
-      if (layer) {
-        event.preventDefault();
-        this.setActiveLayer(layer);
-        return;
-      }
-
+      this.dragPointerId = event.pointerId;
       this.state.isDragging = true;
       this.state.lastPointerX = event.clientX;
       this.state.lastPointerY = event.clientY;
       this.state.userInteractedAt = performance.now();
+      this.updateCoordinatesAt(event.clientX, event.clientY, event.pointerType !== "touch");
 
       try {
         this.canvas.setPointerCapture(event.pointerId);
-      } catch (error) {
-        // Pointer capture may fail in older browsers. Dragging still works through window events.
+      } catch {
+        // Window-level pointer listeners also support dragging without capture.
       }
     }
 
     handlePointerMove(event) {
-      if (!this.state.isDragging) return;
+      if (event.pointerId !== this.dragPointerId) return;
 
       const dx = event.clientX - this.state.lastPointerX;
       const dy = event.clientY - this.state.lastPointerY;
 
-      this.state.rotationLon = wrapLon(this.state.rotationLon + dx * 0.24);
-      this.state.pitch = clamp(this.state.pitch + dy * 0.16, -42, 42);
+      this.rotateView(dx * 0.24, dy * 0.16);
 
       this.state.lastPointerX = event.clientX;
       this.state.lastPointerY = event.clientY;
-      this.state.userInteractedAt = performance.now();
+      this.updateCoordinatesAt(event.clientX, event.clientY, event.pointerType !== "touch");
     }
 
-    handlePointerUp() {
+    handlePointerUp(event) {
+      if (event.pointerId !== this.dragPointerId) return;
+
+      this.dragPointerId = null;
       this.state.isDragging = false;
+
+      if (event.type === "pointercancel") {
+        this.clearCoordinates();
+      } else {
+        this.updateCoordinatesAt(event.clientX, event.clientY, event.pointerType !== "touch");
+      }
+    }
+
+    handleKeyDown(event) {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+      switch (event.key) {
+        case "ArrowLeft": this.rotateView(-8, 0); break;
+        case "ArrowRight": this.rotateView(8, 0); break;
+        case "ArrowUp": this.rotateView(0, -6); break;
+        case "ArrowDown": this.rotateView(0, 6); break;
+        case "+":
+        case "=": this.changeZoom(ZOOM_STEP); break;
+        case "-": this.changeZoom(-ZOOM_STEP); break;
+        default: return;
+      }
+      event.preventDefault();
+
+      const layout = this.getLayout();
+      const rect = this.canvas.getBoundingClientRect();
+      const x = rect.left + rect.width * layout.centerX / this.width;
+      const y = rect.top + rect.height * layout.centerY / this.height;
+      this.updateCoordinatesAt(x, y, false);
+    }
+
+    rotateView(longitude, tilt) {
+      this.state.rotationLon = wrapLon(this.state.rotationLon + longitude);
+      this.state.pitch = clamp(this.state.pitch + tilt, -42, 42);
+      this.state.userInteractedAt = performance.now();
     }
 
     handleWheel(event) {
-      event.preventDefault();
+      if (!event.deltaY || event.ctrlKey || event.metaKey ||
+          !this.screenToLatLon(event.clientX, event.clientY)) return;
 
-      const direction = event.deltaY > 0 ? -1 : 1;
-      const nextZoom = this.state.targetZoom + direction * 0.08;
+      if (this.changeZoom(event.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP)) {
+        event.preventDefault();
+      }
+    }
 
-      this.state.targetZoom = clamp(nextZoom, 0.82, 1.34);
+    changeZoom(amount) {
+      const target = clamp(Math.round((this.state.targetZoom + amount) * 100) / 100, MIN_ZOOM, MAX_ZOOM);
+      if (target === this.state.targetZoom) return false;
+
+      this.state.targetZoom = target;
       this.state.userInteractedAt = performance.now();
+      this.updateZoomControls();
+      return true;
+    }
+
+    updateZoomControls() {
+      const zoom = this.state.targetZoom;
+      if (this.zoomLevel) this.zoomLevel.textContent = `${Math.round(zoom * 100)}%`;
+      if (this.zoomOutButton) this.zoomOutButton.disabled = zoom <= MIN_ZOOM;
+      if (this.zoomInButton) this.zoomInButton.disabled = zoom >= MAX_ZOOM;
     }
 
     getLayout() {
-      const rightReserve = Math.min(150, Math.max(112, this.width * 0.2));
-      const topReserve = Math.min(112, Math.max(68, this.height * 0.14));
-      const bottomReserve = Math.min(124, Math.max(96, this.height * 0.18));
-      const safeLeft = 18;
-      const safeRight = this.width - rightReserve;
-      const safeTop = topReserve;
-      const safeBottom = this.height - bottomReserve;
-      const safeWidth = Math.max(260, safeRight - safeLeft);
-      const safeHeight = Math.max(250, safeBottom - safeTop);
-
-      const radius = Math.min(safeWidth * 0.28, safeHeight * 0.39, this.height * 0.265) * this.state.zoom;
+      const sceneHeight = Math.max(1, this.height - 32);
+      const earthTop = Math.min(132, sceneHeight * 0.34);
+      const earthHeight = sceneHeight - earthTop;
+      const centerX = this.width / 2;
 
       return {
-        centerX: safeLeft + safeWidth * 0.58,
-        centerY: safeTop + safeHeight * 0.52,
-        radius,
-        safeLeft,
-        safeRight,
-        safeTop,
-        safeBottom,
-        safeWidth,
-        safeHeight,
+        centerX,
+        centerY: earthTop + earthHeight * 0.48,
+        radius: Math.min(this.width * 0.28, earthHeight * 0.33) * this.state.zoom,
+        earthTop,
+        solarX: centerX,
+        solarY: earthTop * 0.56,
+        solarRadius: Math.min(this.width * 0.33, earthTop * 0.73),
       };
     }
 
@@ -982,9 +800,7 @@
 
       const tilted = this.rotateScreenByObliquity(x, y);
 
-      const distanceScale = 1 + (altitude || 0);
-      const perspective = 0.91 + z * 0.11;
-      const scale = layout.radius * distanceScale * perspective;
+      const scale = layout.radius * (1 + (altitude || 0));
 
       return {
         x: layout.centerX + tilted.x * scale,
@@ -1025,12 +841,20 @@
       this.lastFrameTime = now;
 
       this.state.theme = getVisualizationThemeMode();
-      this.state.zoom = lerp(this.state.zoom, this.state.targetZoom, 0.08);
+      const previousZoom = this.state.zoom;
+      this.state.zoom = this.state.reducedMotion
+        ? this.state.targetZoom
+        : lerp(this.state.zoom, this.state.targetZoom, 0.16);
 
       const idleTime = now - this.state.userInteractedAt;
 
-      if (!this.state.reducedMotion && !this.state.isDragging && idleTime > 1800) {
+      if (!this.state.reducedMotion && !this.state.isDragging && !this.hoverPosition &&
+          document.activeElement !== this.canvas && idleTime > 1800) {
         this.state.rotationLon = wrapLon(this.state.rotationLon + dt * 2.1);
+      }
+
+      if (this.hoverPosition && Math.abs(this.state.zoom - previousZoom) > 0.0001) {
+        this.updateCoordinatesAt(this.hoverPosition.x, this.hoverPosition.y, true);
       }
 
       this.clear();
@@ -1039,8 +863,8 @@
       const satellite = this.getSatelliteState(elapsed);
 
       this.drawSpaceBackground(elapsed);
-      this.drawBackgroundOrrery(elapsed);
       this.drawScientificFrame(elapsed);
+      this.drawSolarSystem(this.state.reducedMotion ? 0 : elapsed);
 
       this.drawBackOrbit(moon, satellite);
       this.drawBackMoonAndSatellite(moon, satellite, elapsed);
@@ -1050,7 +874,8 @@
       this.drawFrontOrbit(moon, satellite);
       this.drawFrontMoonAndSatellite(moon, satellite, elapsed);
 
-      this.drawOverlayPanel(elapsed, moon);
+      this.drawPointerMarker();
+      this.drawOverlayPanel();
 
       this.animationFrame = window.requestAnimationFrame(this.boundRender);
     }
@@ -1101,81 +926,50 @@
       ctx.fillRect(0, 0, this.width, this.height);
     }
 
-    drawBackgroundOrrery(elapsed) {
-      if (this.width < 300 || this.height < 320) return;
-
+    drawSolarSystem(elapsed) {
       const ctx = this.ctx;
-      const dark = this.state.theme === "dark";
-      const layout = this.getLayout();
-      const compact = this.width < 540 || this.height < 420;
-
-      /*
-        Decorative solar-system orrery.
-        Desktop keeps the existing scientific background composition.
-        Mobile uses a compact top-left orbit so the solar-system context remains
-        visible instead of being hidden behind the Earth-only crop.
-      */
-      const cx = compact
-        ? clamp(this.width * 0.3, 74, this.width - 118)
-        : clamp(layout.safeLeft + layout.safeWidth * 0.19, 86, this.width * 0.42);
-      const cy = compact
-        ? clamp(this.height * 0.16, 58, 96)
-        : clamp(layout.safeTop - 10, 74, this.height * 0.31);
-      const maxOrbit = compact
-        ? Math.min(this.width * 0.15, this.height * 0.115, 58)
-        : Math.min(layout.radius * 0.9, this.width * 0.18, 118);
-      const orbitCompression = compact ? 0.34 : 0.38;
-      const labelOffset = compact ? 0.68 : 0.55;
+      const { solarX, solarY, solarRadius } = this.getLayout();
 
       ctx.save();
-      ctx.globalCompositeOperation = dark ? "screen" : "source-over";
-
-      const core = ctx.createRadialGradient(cx, cy, 4, cx, cy, maxOrbit * 1.42);
-      core.addColorStop(0, dark ? "rgba(216, 180, 254, 0.22)" : "rgba(59, 130, 246, 0.12)");
-      core.addColorStop(0.48, dark ? "rgba(125, 211, 252, 0.16)" : "rgba(14, 165, 233, 0.1)");
-      core.addColorStop(1, "rgba(125, 211, 252, 0)");
-      ctx.fillStyle = core;
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, maxOrbit * 1.36, maxOrbit * 0.56, -0.28, 0, TWO_PI);
-      ctx.fill();
-
-      this.drawOrrerySun(cx, cy, compact);
-
-      for (let i = 1; i < SOLAR_SYSTEM.length; i += 1) {
-        const planet = SOLAR_SYSTEM[i];
-        const t = i / (SOLAR_SYSTEM.length - 1);
-        const orbitX = maxOrbit * (0.2 + t * 0.92);
-        const orbitY = orbitX * orbitCompression;
-        const angle = elapsed * (0.9 / (i * 0.55 + 0.8)) + i * 0.74;
-        const x = cx + Math.cos(angle) * orbitX;
-        const y = cy + Math.sin(angle) * orbitY;
-        const front = Math.sin(angle) >= 0;
-
-        ctx.save();
-        ctx.strokeStyle = dark ? "rgba(125, 211, 252, 0.26)" : "rgba(2, 132, 199, 0.2)";
-        ctx.lineWidth = compact ? 0.72 : 0.85;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, orbitX, orbitY, 0, 0, TWO_PI);
-        ctx.stroke();
-        ctx.restore();
-
-        this.drawOrreryPlanet(planet, x, y, front, i, compact);
-      }
-
-      ctx.fillStyle = dark ? "rgba(226, 232, 240, 0.56)" : "rgba(15, 23, 42, 0.42)";
-      ctx.font = compact
-        ? "800 7px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-        : "800 8px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      ctx.fillStyle = "#c5d9ec";
+      ctx.font = "600 11px system-ui, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("Solar system", cx, cy + maxOrbit * labelOffset);
+      ctx.fillText("Solar system · not to scale", solarX, solarY - solarRadius * 0.38 - 17);
+
+      const orbits = PLANETS.map((planet, index) => {
+        const orbitX = solarRadius * (0.25 + index * 0.107);
+        const orbitY = orbitX * 0.38;
+        const angle = elapsed * (1.5 / (1 + index * 0.44)) + index * 1.29;
+        return { planet, orbitX, orbitY, angle };
+      });
+
+      ctx.strokeStyle = "rgba(140, 190, 225, 0.32)";
+      ctx.lineWidth = 0.9;
+      for (const orbit of orbits) {
+        ctx.beginPath();
+        ctx.ellipse(solarX, solarY, orbit.orbitX, orbit.orbitY, 0, 0, TWO_PI);
+        ctx.stroke();
+      }
+
+      this.drawOrrerySun(solarX, solarY, clamp(solarRadius * 0.15, 9, 15));
+
+      const sizeScale = clamp(solarRadius / 88, 0.72, 1.08);
+      for (const { planet, orbitX, orbitY, angle } of orbits) {
+        this.drawOrreryPlanet(
+          planet,
+          solarX + Math.cos(angle) * orbitX,
+          solarY + Math.sin(angle) * orbitY,
+          Math.sin(angle) >= 0,
+          sizeScale
+        );
+      }
 
       ctx.restore();
     }
 
-    drawOrrerySun(x, y, compact) {
+    drawOrrerySun(x, y, radius) {
       const ctx = this.ctx;
-      const radius = compact ? 8.5 : 13;
 
       const glow = ctx.createRadialGradient(x, y, 2, x, y, radius * 3.2);
       glow.addColorStop(0, "rgba(254, 240, 138, 0.95)");
@@ -1198,11 +992,9 @@
       ctx.fill();
     }
 
-    drawOrreryPlanet(planet, x, y, front, index, compact) {
+    drawOrreryPlanet(planet, x, y, front, sizeScale) {
       const ctx = this.ctx;
-      const planetScale = compact ? 0.55 : 0.82;
-      const minRadius = compact ? 1.8 : 2.6;
-      const radius = Math.max(minRadius, planet.radius * planetScale * (front ? 1.1 : 0.9));
+      const radius = Math.max(3, planet.radius * sizeScale * (front ? 1.08 : 0.94));
 
       ctx.save();
       ctx.globalAlpha = front ? 0.96 : 0.55;
@@ -1213,7 +1005,7 @@
 
       if (planet.ring) {
         ctx.strokeStyle = "rgba(254, 243, 199, 0.72)";
-        ctx.lineWidth = compact ? 0.82 : 1.1;
+        ctx.lineWidth = 1.1;
         ctx.beginPath();
         ctx.ellipse(x, y, radius * 1.9, radius * 0.6, -0.28, 0, TWO_PI);
         ctx.stroke();
@@ -1226,141 +1018,11 @@
 
       if (planet.name === "Jupiter") {
         ctx.strokeStyle = "rgba(120, 53, 15, 0.32)";
-        ctx.lineWidth = compact ? 0.72 : 1;
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.ellipse(x, y, radius * 0.82, radius * 0.08, 0, 0, TWO_PI);
         ctx.stroke();
       }
-
-      const shouldShowLabel = compact
-        ? planet.name === "Sun" || planet.name === "Jupiter" || planet.name === "Saturn" || planet.name === "Neptune"
-        : front || planet.name === "Jupiter" || planet.name === "Saturn";
-
-      if (shouldShowLabel) {
-        ctx.fillStyle = this.state.theme === "dark" ? "rgba(226, 232, 240, 0.68)" : "rgba(15, 23, 42, 0.5)";
-        ctx.font = compact
-          ? "700 6px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          : "700 7px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText(planet.name, x, y + radius + (compact ? 3 : 4));
-      }
-
-      ctx.restore();
-    }
-
-    drawSolarSystemStrip(elapsed) {
-      if (this.width < 560) return;
-
-      const ctx = this.ctx;
-      const dark = this.state.theme === "dark";
-      const layout = this.getLayout();
-
-      const panelWidth = Math.min(this.width * 0.82, 660);
-      const panelHeight = 64;
-      const panelX = (this.width - panelWidth) * 0.5;
-      const panelY = Math.max(24, layout.centerY - layout.radius - 106);
-
-      const left = panelX + 28;
-      const right = panelX + panelWidth - 28;
-      const available = right - left;
-      const railY = panelY + 30;
-
-      ctx.save();
-
-      this.roundedRect(ctx, panelX, panelY, panelWidth, panelHeight, 16);
-      ctx.fillStyle = dark ? "rgba(2, 8, 23, 0.42)" : "rgba(255, 255, 255, 0.46)";
-      ctx.fill();
-
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = dark ? "rgba(125, 211, 252, 0.22)" : "rgba(2, 132, 199, 0.18)";
-      ctx.stroke();
-
-      ctx.fillStyle = dark ? "rgba(226, 232, 240, 0.72)" : "rgba(15, 23, 42, 0.58)";
-      ctx.font = "700 9px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "middle";
-      ctx.fillText("SOLAR SYSTEM ORDER", panelX + 16, panelY + 13);
-
-      ctx.strokeStyle = dark ? "rgba(186, 230, 253, 0.34)" : "rgba(2, 132, 199, 0.26)";
-      ctx.lineWidth = 1.2;
-
-      ctx.beginPath();
-
-      for (let i = 0; i <= 100; i += 1) {
-        const t = i / 100;
-        const x = left + available * t;
-        const y = railY + Math.sin(t * Math.PI) * 10;
-
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-
-      ctx.stroke();
-
-      for (let i = 0; i < SOLAR_SYSTEM.length; i += 1) {
-        const planet = SOLAR_SYSTEM[i];
-        const t = planet.order / (SOLAR_SYSTEM.length - 1);
-        const orbitPulse = Math.sin(elapsed * 0.45 + i * 0.75) * 2.4;
-        const x = left + available * t;
-        const y = railY + Math.sin(t * Math.PI) * 10 + orbitPulse;
-
-        this.drawMiniPlanet(planet, x, y, dark);
-      }
-
-      ctx.restore();
-    }
-
-    drawMiniPlanet(planet, x, y, dark) {
-      const ctx = this.ctx;
-      const radius = planet.radius * 1.18;
-
-      ctx.save();
-
-      const gradient = ctx.createRadialGradient(
-        x - radius * 0.35,
-        y - radius * 0.35,
-        radius * 0.1,
-        x,
-        y,
-        radius * 1.2
-      );
-
-      gradient.addColorStop(0, planet.colorA);
-      gradient.addColorStop(1, planet.colorB);
-
-      if (planet.name === "Sun") {
-        const sunGlow = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius * 2.8);
-        sunGlow.addColorStop(0, "rgba(253, 224, 71, 0.68)");
-        sunGlow.addColorStop(1, "rgba(253, 224, 71, 0)");
-
-        ctx.fillStyle = sunGlow;
-        ctx.beginPath();
-        ctx.arc(x, y, radius * 2.8, 0, TWO_PI);
-        ctx.fill();
-      }
-
-      if (planet.ring) {
-        ctx.strokeStyle = dark ? "rgba(254, 243, 199, 0.75)" : "rgba(120, 113, 108, 0.52)";
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.ellipse(x, y, radius * 1.95, radius * 0.66, -0.28, 0, TWO_PI);
-        ctx.stroke();
-      }
-
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, TWO_PI);
-      ctx.fill();
-
-      ctx.lineWidth = 0.8;
-      ctx.strokeStyle = dark ? "rgba(248, 250, 252, 0.42)" : "rgba(15, 23, 42, 0.2)";
-      ctx.stroke();
-
-      ctx.fillStyle = dark ? "rgba(226, 232, 240, 0.88)" : "rgba(15, 23, 42, 0.68)";
-      ctx.font = "700 9px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "top";
-      ctx.fillText(planet.name, x, y + radius + 4);
 
       ctx.restore();
     }
@@ -1404,10 +1066,15 @@
       this.drawOrbitPath(satellite.angle, satellite.orbitTilt, "front", 0.62);
     }
 
+    getOrbitRadius(layout, radiusScale) {
+      const available = Math.min(layout.centerX, this.width - layout.centerX) - 14;
+      return Math.max(layout.radius, Math.min(layout.radius * (1.37 + radiusScale * 0.52), available));
+    }
+
     drawOrbitPath(angle, tilt, half, radiusScale) {
       const ctx = this.ctx;
       const layout = this.getLayout();
-      const orbitRadius = layout.radius * (1.37 + radiusScale * 0.52);
+      const orbitRadius = this.getOrbitRadius(layout, radiusScale);
       const verticalScale = 0.42 + Math.abs(tilt) * 0.18;
       const dark = this.state.theme === "dark";
 
@@ -1460,7 +1127,7 @@
 
     getOrbitalScreenPosition(angle, tilt, radiusScale) {
       const layout = this.getLayout();
-      const orbitRadius = layout.radius * (1.37 + radiusScale * 0.52);
+      const orbitRadius = this.getOrbitRadius(layout, radiusScale);
       const verticalScale = 0.42 + Math.abs(tilt) * 0.18;
       const depth = Math.sin(angle + tilt);
 
@@ -2335,7 +2002,9 @@
       ctx.font = "700 10px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("23.4° axial tilt", x2, y2 - 12);
+      if (y2 - 12 >= layout.earthTop + 8) {
+        ctx.fillText("23.4° axial tilt", x2, y2 - 12);
+      }
 
       ctx.restore();
     }
@@ -2371,35 +2040,28 @@
       ctx.restore();
     }
 
-    drawOverlayPanel(elapsed, moon) {
-      /*
-        v17: no extra layer chip. The right-side layer panel already tells the
-        user which field is active. Keep only the compact Low/High scale bar.
-      */
-      const layer = this.state.activeLayer;
-      const scaleWidth = Math.min(250, this.width * 0.3);
-      const scaleX = this.width - scaleWidth - 48;
-      const scaleY = this.height - 44;
+    drawPointerMarker() {
+      if (!this.pointerCoord) return;
 
-      this.drawScaleBar(scaleX, scaleY, scaleWidth, layer);
+      const point = this.project(this.pointerCoord.lon, this.pointerCoord.lat, 0);
+      if (!point.front) return;
+
+      const ctx = this.ctx;
+      ctx.save();
+      ctx.fillStyle = "#061429";
+      ctx.strokeStyle = "#bafaf3";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 4, 0, TWO_PI);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
     }
 
-    drawSingleLineText(text, x, y, maxWidth) {
-      const ctx = this.ctx;
-      const value = String(text);
-
-      if (ctx.measureText(value).width <= maxWidth) {
-        ctx.fillText(value, x, y);
-        return;
-      }
-
-      let clipped = value;
-
-      while (clipped.length > 8 && ctx.measureText(`${clipped}…`).width > maxWidth) {
-        clipped = clipped.slice(0, -1);
-      }
-
-      ctx.fillText(`${clipped}…`, x, y);
+    drawOverlayPanel() {
+      const scaleWidth = Math.min(220, this.width * 0.46);
+      const scaleX = (this.width - scaleWidth) / 2;
+      this.drawScaleBar(scaleX, this.height - 20, scaleWidth, this.state.activeLayer);
     }
 
     drawScaleBar(x, y, width, layer) {

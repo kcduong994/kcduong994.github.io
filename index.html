@@ -5,11 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Duong Kim Cuong — Coastal Engineer, Researcher & Developer</title>
+  <title>Duong Kim Cuong — Coastal Engineering &amp; Scientific Computing</title>
 
 <meta
  name="description"
- content="Personal portfolio of Duong Kim Cuong — coastal engineering, hydrodynamic modeling, scientific computing, software development, and artificial intelligence."
+ content="Duong Kim Cuong's portfolio of coastal engineering, hydrodynamic modeling, Python practice, and learning projects."
 />
 
   <meta name="author" content="Duong Kim Cuong" />
@@ -17,12 +17,12 @@
 
 <meta
  property="og:title"
- content="Duong Kim Cuong — Coastal Engineer, Researcher & Developer"
+ content="Duong Kim Cuong — Coastal Engineering &amp; Scientific Computing"
 />
 
 <meta
  property="og:description"
- content="Research, engineering, scientific computing, software development, and artificial intelligence."
+ content="Coastal and environmental research, Python practice, and selected learning projects."
 />
 
   <meta property="og:type" content="website" />
@@ -30,11 +30,11 @@
 
   <link rel="canonical" href="https://kcduong994.github.io/" />
 
-  <link rel="stylesheet" href="/theme.css?v=118" />
+  <link rel="stylesheet" href="/theme.css?v=126" />
 
   <script defer src="/theme.js?v=118"></script>
 
-  <script defer src="/environment-map.js?v=17"></script>
+  <script defer src="/environment-map.js?v=22"></script>
 
 </head>
 
@@ -65,7 +65,7 @@
     </span>
 
     <span class="brand-role">
-      Coastal Engineer · Researcher · Developer
+      Coastal Engineer · Researcher
     </span>
   </span>
 </a>
@@ -106,7 +106,7 @@
     >
       <div class="hero-content">
         <p class="eyebrow">
-          Coastal Engineering · Scientific Computing · Artificial Intelligence
+          Coastal Engineering · Scientific Computing · Python
         </p>
 
     <h1 id="hero-title">
@@ -117,10 +117,10 @@
     </h1>
 
     <p class="hero-summary">
-      I am Duong Kim Cuong, a coastal engineer, researcher, and developer
-      working across hydrodynamic modeling, salinity intrusion,
-      environmental analysis, scientific computing, and intelligent
-      educational systems.
+      I am Duong Kim Cuong, a coastal engineer and researcher focused on
+      hydrodynamic modeling and salinity intrusion. Python is my main
+      programming language, with a focus on data validation, algorithms,
+      and numerical methods for scientific computing.
     </p>
 
     <div class="hero-actions">
@@ -138,30 +138,30 @@
         Explore research
       </a>
     </div>
+  </div>
 
-    <div
-      class="hero-meta"
-      aria-label="Professional overview"
-    >
-      <div class="hero-meta-item">
-        <span class="meta-label">
-          Core field
-        </span>
+  <div
+    class="hero-meta"
+    aria-label="Professional overview"
+  >
+    <div class="hero-meta-item">
+      <span class="meta-label">
+        Core field
+      </span>
 
-        <strong>
-          Coastal and Environmental Engineering
-        </strong>
-      </div>
+      <strong>
+        Coastal and Environmental Engineering
+      </strong>
+    </div>
 
-      <div class="hero-meta-item">
-        <span class="meta-label">
-          Development
-        </span>
+    <div class="hero-meta-item">
+      <span class="meta-label">
+        Programming
+      </span>
 
-        <strong>
-          Python · TypeScript · Data · AI
-        </strong>
-      </div>
+      <strong>
+        Python
+      </strong>
     </div>
   </div>
 
@@ -189,19 +189,41 @@
       <canvas
         class="environment-canvas"
         id="environmentCanvas"
-        aria-label="Animated environmental vector field over East and Southeast Asia"
+        tabindex="0"
+        aria-label="Solar system with planets orbiting the Sun, and an interactive Earth with simulated environmental fields"
+        aria-describedby="environmentHint"
       >
         Your browser does not support canvas visualization.
       </canvas>
 
-      <div
-        class="environment-toolbar"
-        aria-label="Environmental visualization layers"
-      >
+      <div class="environment-legend" aria-label="Environmental intensity legend">
+        <span>Low</span>
+        <span>High</span>
+      </div>
+    </div>
+
+    <div class="environment-readout">
+      <div class="environment-coordinate-line">
+        <span id="environmentCoordinateLabel">Coordinates</span>
+        <output id="environmentCoordinates" aria-labelledby="environmentCoordinateLabel" aria-live="off">—</output>
+      </div>
+      <div class="environment-zoom" role="group" aria-label="Earth zoom">
+        <button type="button" id="environmentZoomOut" aria-label="Zoom out on Earth" disabled>−</button>
+        <output id="environmentZoomLevel" aria-label="Earth zoom level" aria-live="off">100%</output>
+        <button type="button" id="environmentZoomIn" aria-label="Zoom in on Earth" disabled>+</button>
+      </div>
+      <p id="environmentHint">Point or tap for coordinates. Drag or use arrows to rotate. Scroll over Earth or use +/− to zoom.</p>
+    </div>
+
+    <div
+      class="environment-toolbar"
+      role="group"
+      aria-label="Environmental visualization layers"
+    >
         <button
           class="environment-tool active"
           type="button"
-          data-environment-layer="wind"
+          data-layer="wind"
           aria-pressed="true"
         >
           Wind
@@ -210,7 +232,7 @@
         <button
           class="environment-tool"
           type="button"
-          data-environment-layer="temperature"
+          data-layer="temperature"
           aria-pressed="false"
         >
           Temperature
@@ -219,7 +241,7 @@
         <button
           class="environment-tool"
           type="button"
-          data-environment-layer="waves"
+          data-layer="tides"
           aria-pressed="false"
         >
           Waves
@@ -228,34 +250,11 @@
         <button
           class="environment-tool"
           type="button"
-          data-environment-layer="salinity"
+          data-layer="salinity"
           aria-pressed="false"
         >
           Salinity
         </button>
-      </div>
-
-      <output
-        class="environment-coordinates"
-        id="environmentCoordinates"
-        aria-live="polite"
-      >
-        20.0° N · 110.0° E
-      </output>
-
-      <div
-        class="environment-legend"
-        aria-label="Environmental intensity legend"
-      >
-        <span>Low</span>
-
-        <span
-          class="environment-legend-bar"
-          aria-hidden="true"
-        ></span>
-
-        <span>High</span>
-      </div>
     </div>
 
     <div class="environment-panel-footer">
@@ -432,7 +431,7 @@
           class="focus-mark"
           aria-hidden="true"
         >
-          AI
+          SD
         </span>
 
         <span class="focus-number">
@@ -441,22 +440,31 @@
       </div>
 
       <h3>
-        Software and Artificial Intelligence
+        Software Learning
       </h3>
 
       <p>
-        Structured educational platforms, AI-assisted learning,
-        multilingual systems, computational thinking, automation, and
-        intelligent research tools.
+        My coursework spans C# foundations, back-end development, and web
+        design. I also explore multilingual learning and AI-assisted education
+        through KN Origin Lab.
       </p>
 
       <ul
-        class="tag-list"
-        aria-label="Software and AI topics"
+        class="coursework-list"
+        aria-label="Coursework repositories on GitHub"
       >
-        <li>TypeScript</li>
-        <li>Knowledge systems</li>
-        <li>AI workflows</li>
+        <li>
+          <a href="https://github.com/kcduong994/freecodecamp-csharp">Foundational C# with Microsoft</a>
+          <span>Completed certification</span>
+        </li>
+        <li>
+          <a href="https://github.com/kcduong994/freecodecamp-backend-development-and-apis">Back-End Development and APIs</a>
+          <span>Node.js and API coursework</span>
+        </li>
+        <li>
+          <a href="https://github.com/kcduong994/freecodecamp-responsive-web-design">Responsive Web Design</a>
+          <span>HTML/CSS coursework in progress</span>
+        </li>
       </ul>
     </article>
   </div>
@@ -489,9 +497,15 @@
         class="project-visual project-visual-kn"
         aria-hidden="true"
       >
-        <span class="project-visual-mark">
-          KN
-        </span>
+        <img
+          class="kn-project-logo"
+          src="/kn-origin-logo.png"
+          alt=""
+          width="96"
+          height="96"
+          loading="lazy"
+          decoding="async"
+        />
 
         <span class="project-visual-caption">
           Origin Lab
@@ -520,6 +534,8 @@
           structured language learning, practical communication,
           knowledge visualization, and AI-assisted education.
         </p>
+
+        <p class="project-stack-label">Project stack</p>
 
         <ul
           class="project-technologies"
@@ -582,6 +598,23 @@
         <li>Environmental data</li>
         <li>Model evaluation</li>
       </ul>
+
+      <div class="coastal-lab-link">
+        <a
+          class="text-link"
+          href="https://knoriginlab.com/vi/engineering/coastal-systems/lab/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Explore Coastal Model Lab
+        </a>
+        <p>Interactive salinity map from KN Origin Lab.</p>
+      </div>
+
+      <p class="project-development-note">
+        <strong>KN HydroStudio</strong> is a desktop tool in development for
+        preparing GIS data and computational grids.
+      </p>
     </article>
 
     <article class="project-card-secondary">
@@ -607,9 +640,9 @@
       </h3>
 
       <p>
-        A structured collection of Python workshops, laboratories, and
-        certification projects focused on programming fundamentals,
-        validation, and engineering-oriented computation.
+        Python workshops, labs, and certification projects covering
+        object-oriented programming, data validation, graph algorithms, and
+        numerical root finding.
       </p>
 
       <ul class="project-technologies">
@@ -624,7 +657,7 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        View repository →
+        View Python repository →
       </a>
     </article>
   </div>
@@ -820,11 +853,11 @@
 
 <section
   class="personal-note-section"
-  aria-labelledby="personal-note-title"
+  aria-labelledby="personal-note-label personal-note-title"
 >
   <div
     class="personal-note-index"
-    aria-hidden="true"
+    id="personal-note-label"
   >
     Personal Note
   </div>
@@ -1081,7 +1114,7 @@
     </a>
 
     <p>
-      Coastal Engineering · Scientific Computing · Artificial Intelligence
+      Coastal Engineering · Scientific Computing · Python
     </p>
   </div>
 

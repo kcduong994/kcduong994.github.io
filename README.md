@@ -28,7 +28,7 @@ Projects such as **KN Origin Lab** are presented as independent projects within 
 
 **Duong Kim Cuong**
 
-Coastal Engineer · Researcher · Developer
+Coastal Engineer · Researcher
 
 Primary areas of work and development include:
 
@@ -71,18 +71,17 @@ Computational interests include:
 - automation;
 - reproducible computational analysis.
 
-### Software and Artificial Intelligence
+### Software Coursework and Project Interests
 
-Development interests include:
+Python is my main programming language. I document other software coursework
+separately:
 
-- JavaScript and TypeScript applications;
-- C# and .NET learning;
-- multilingual educational systems;
-- AI-assisted learning;
-- knowledge visualization;
-- structured data systems;
-- interactive technical tools;
-- computational thinking.
+- [Foundational C# with Microsoft](https://github.com/kcduong994/freecodecamp-csharp) — completed foundational certification.
+- [Back-End Development and APIs](https://github.com/kcduong994/freecodecamp-backend-development-and-apis) — Node.js and API coursework.
+- [Responsive Web Design](https://github.com/kcduong994/freecodecamp-responsive-web-design) — HTML/CSS coursework in progress.
+
+My project interests include multilingual learning, educational tools, and
+AI-assisted learning through KN Origin Lab.
 
 ## Selected Projects
 
@@ -120,6 +119,10 @@ Research workflows involving:
 - performance evaluation;
 - engineering interpretation.
 
+The [Coastal Model Lab](https://knoriginlab.com/vi/engineering/coastal-systems/lab/)
+includes an interactive salinity map. KN HydroStudio is a related desktop tool in
+development for GIS preparation and computational grids.
+
 ### Python Developer Portfolio
 
 A structured collection of Python workshops, laboratories, certification projects, and technical review notes focused on programming fundamentals, software design, algorithms, numerical thinking, and engineering-oriented problem solving.
@@ -145,7 +148,8 @@ https://github.com/kcduong994/freecodecamp-python
 
 ### C# and .NET Learning Portfolio
 
-A developing collection of workshops, exercises, study notes, and certification work from the freeCodeCamp Foundational C# with Microsoft Certification.
+A collection of workshops, exercises, and study notes from the completed
+Foundational C# with Microsoft certification.
 
 The repository is focused on:
 
@@ -179,7 +183,8 @@ The portfolio currently includes:
 - simulated wind, temperature, wave, and salinity layers;
 - animated environmental vector particles;
 - globe rotation and zoom controls;
-- real-time coordinate display.
+- live geographic coordinates for cursor, touch, and keyboard exploration;
+- an animated solar-system diagram with planets orbiting the Sun, not to scale.
 
 ## Environmental Visualization
 
@@ -279,11 +284,10 @@ git diff --check
 
 The environmental globe supports:
 
-- pointer dragging to rotate the globe;
-- mouse-wheel scrolling to zoom;
-- double-clicking to reset the view;
+- pointer dragging or arrow keys to rotate the globe;
+- mouse-wheel scrolling over Earth, on-screen zoom buttons, or the plus/minus keys to zoom;
 - switching between wind, temperature, wave, and salinity layers;
-- live geographic coordinate display.
+- live geographic coordinates when pointing at or tapping the globe, with a marker on the selected position.
 
 The environmental fields are synthetic visualizations and are not intended for operational forecasting or engineering decision-making.
 
